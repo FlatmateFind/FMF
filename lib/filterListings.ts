@@ -18,7 +18,7 @@ export function filterListings(filters: SearchFilters): Listing[] {
     if (filters.petsAllowed === true && !listing.petsAllowed) return false;
     if (filters.query) {
       const q = filters.query.toLowerCase();
-      const searchable = `${listing.title} ${listing.location.city} ${listing.location.suburb} ${listing.description}`.toLowerCase();
+      const searchable = `${listing.title} ${listing.location.city} ${listing.location.suburb} ${listing.location.postcode} ${listing.location.address} ${listing.description}`.toLowerCase();
       if (!searchable.includes(q)) return false;
     }
     return true;

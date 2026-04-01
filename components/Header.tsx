@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Heart } from 'lucide-react';
+import { Home, Heart, LayoutDashboard } from 'lucide-react';
 import { useFavorites } from '@/hooks/useFavorites';
 
 export default function Header() {
@@ -29,6 +29,15 @@ export default function Header() {
               }`}
             >
               Browse Listings
+            </Link>
+            <Link
+              href="/dashboard"
+              className={`flex items-center gap-1.5 text-sm font-medium transition-colors ${
+                pathname === '/dashboard' ? 'text-teal-600' : 'text-slate-600 hover:text-teal-600'
+              }`}
+            >
+              <LayoutDashboard className="w-4 h-4" />
+              Dashboard
             </Link>
             <Link
               href="/favorites"

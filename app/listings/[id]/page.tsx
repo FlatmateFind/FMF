@@ -84,8 +84,8 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
               </div>
               <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">{listing.title}</h1>
               <p className="flex items-center gap-1.5 mt-2 text-slate-500">
-                <MapPin className="w-4 h-4" />
-                {listing.location.suburb}, {listing.location.city}, {listing.location.country}
+                <MapPin className="w-4 h-4 shrink-0" />
+                {listing.location.address}, {listing.location.suburb} {listing.location.postcode}, {listing.location.city}
               </p>
               <p className="text-xs text-slate-400 mt-1">Posted {postedDate}</p>
             </div>
@@ -97,32 +97,48 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
             </div>
           </div>
 
-          {/* Details grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 p-5 bg-slate-50 rounded-xl mb-8">
-            <div className="text-center">
-              <Bed className="w-5 h-5 text-teal-500 mx-auto mb-1" />
-              <div className="font-bold text-slate-900">{listing.bedrooms}</div>
-              <div className="text-xs text-slate-500">Bedroom{listing.bedrooms !== 1 ? 's' : ''}</div>
+          {/* Details grid — two rows */}
+          <div className="border border-slate-200 rounded-xl overflow-hidden mb-8">
+            {/* Row 1: beds / baths / occupants */}
+            <div className="grid grid-cols-3 divide-x divide-slate-200 bg-slate-50">
+              <div className="flex items-center gap-3 px-5 py-4">
+                <Bed className="w-5 h-5 text-teal-500 shrink-0" />
+                <div>
+                  <div className="text-xl font-bold text-slate-900">{listing.bedrooms}</div>
+                  <div className="text-xs text-slate-500">Bedroom{listing.bedrooms !== 1 ? 's' : ''}</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 px-5 py-4">
+                <Bath className="w-5 h-5 text-teal-500 shrink-0" />
+                <div>
+                  <div className="text-xl font-bold text-slate-900">{listing.bathrooms}</div>
+                  <div className="text-xs text-slate-500">Bathroom{listing.bathrooms !== 1 ? 's' : ''}</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 px-5 py-4">
+                <Users className="w-5 h-5 text-teal-500 shrink-0" />
+                <div>
+                  <div className="text-xl font-bold text-slate-900">{listing.currentOccupants}/{listing.totalCapacity}</div>
+                  <div className="text-xs text-slate-500">Occupants</div>
+                </div>
+              </div>
             </div>
-            <div className="text-center">
-              <Bed className="w-5 h-5 text-teal-500 mx-auto mb-1" />
-              <div className="font-bold text-slate-900">{listing.bathrooms}</div>
-              <div className="text-xs text-slate-500">Bathroom{listing.bathrooms !== 1 ? 's' : ''}</div>
-            </div>
-            <div className="text-center">
-              <Users className="w-5 h-5 text-teal-500 mx-auto mb-1" />
-              <div className="font-bold text-slate-900">{listing.currentOccupants}/{listing.totalCapacity}</div>
-              <div className="text-xs text-slate-500">Occupants</div>
-            </div>
-            <div className="text-center">
-              <Calendar className="w-5 h-5 text-teal-500 mx-auto mb-1" />
-              <div className="font-bold text-slate-900">{availableDate}</div>
-              <div className="text-xs text-slate-500">Available from</div>
-            </div>
-            <div className="text-center">
-              <Clock className="w-5 h-5 text-teal-500 mx-auto mb-1" />
-              <div className="font-bold text-slate-900">{listing.minimumStay}</div>
-              <div className="text-xs text-slate-500">Min. stay</div>
+            {/* Row 2: dates */}
+            <div className="grid grid-cols-2 divide-x divide-slate-200 border-t border-slate-200 bg-white">
+              <div className="flex items-center gap-3 px-5 py-4">
+                <Calendar className="w-5 h-5 text-teal-500 shrink-0" />
+                <div>
+                  <div className="font-bold text-slate-900">{availableDate}</div>
+                  <div className="text-xs text-slate-500">Available from</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 px-5 py-4">
+                <Clock className="w-5 h-5 text-teal-500 shrink-0" />
+                <div>
+                  <div className="font-bold text-slate-900">{listing.minimumStay}</div>
+                  <div className="text-xs text-slate-500">Minimum stay</div>
+                </div>
+              </div>
             </div>
           </div>
 

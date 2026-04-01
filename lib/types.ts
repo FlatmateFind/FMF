@@ -5,6 +5,8 @@ export interface Listing {
   location: {
     city: string;
     suburb: string;
+    postcode: string;
+    address: string;
     country: string;
   };
   rent: {
