@@ -116,12 +116,12 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
             </div>
             <div className="text-center">
               <Calendar className="w-5 h-5 text-teal-500 mx-auto mb-1" />
-              <div className="font-bold text-slate-900 text-xs leading-tight">{availableDate}</div>
+              <div className="font-bold text-slate-900">{availableDate}</div>
               <div className="text-xs text-slate-500">Available from</div>
             </div>
             <div className="text-center">
               <Clock className="w-5 h-5 text-teal-500 mx-auto mb-1" />
-              <div className="font-bold text-slate-900 text-xs leading-tight">{listing.minimumStay}</div>
+              <div className="font-bold text-slate-900">{listing.minimumStay}</div>
               <div className="text-xs text-slate-500">Min. stay</div>
             </div>
           </div>

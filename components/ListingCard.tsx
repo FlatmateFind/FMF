@@ -34,20 +34,17 @@ export default function ListingCard({ listing }: ListingCardProps) {
           className="object-cover group-hover:scale-105 transition-transform duration-500"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        {/* Type badge — top left only, no price badge on image */}
-        <div className="absolute top-3 left-3">
+        {/* Type + Featured badges — stacked vertically, top-left */}
+        <div className="absolute top-3 left-3 flex flex-col gap-1.5">
           <span className={clsx('px-2.5 py-1 rounded-full text-xs font-semibold capitalize shadow-sm', TYPE_COLORS[listing.type] ?? 'bg-slate-600 text-white')}>
             {listing.type}
           </span>
-        </div>
-        {/* Featured badge — bottom left so it never overlaps */}
-        {listing.featured && (
-          <div className="absolute bottom-3 left-3">
-            <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-400 text-amber-900 shadow-sm">
+          {listing.featured && (
+            <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-400 text-amber-900 shadow-sm self-start">
               Featured
             </span>
-          </div>
-        )}
+          )}
+        </div>
         {/* Heart / Save button — top right */}
         <button
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleFavorite(listing.id); }}
@@ -84,17 +81,17 @@ export default function ListingCard({ listing }: ListingCardProps) {
         </p>
 
         {/* Key stats */}
-        <div className="flex items-center gap-4 text-sm text-slate-600 mb-3">
-          <span className="flex items-center gap-1.5">
-            <Bed className="w-4 h-4 text-slate-400" />
+        <div className="flex items-center gap-3 text-xs text-slate-600 mb-3">
+          <span className="flex items-center gap-1">
+            <Bed className="w-3.5 h-3.5 text-slate-400" />
             {listing.bedrooms} bed{listing.bedrooms !== 1 ? 's' : ''}
           </span>
-          <span className="flex items-center gap-1.5">
-            <Bath className="w-4 h-4 text-slate-400" />
+          <span className="flex items-center gap-1">
+            <Bath className="w-3.5 h-3.5 text-slate-400" />
             {listing.bathrooms} bath{listing.bathrooms !== 1 ? 's' : ''}
           </span>
-          <span className="flex items-center gap-1.5">
-            <Users className="w-4 h-4 text-slate-400" />
+          <span className="flex items-center gap-1">
+            <Users className="w-3.5 h-3.5 text-slate-400" />
             {listing.currentOccupants}/{listing.totalCapacity} people
           </span>
         </div>
