@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ArrowRight, Home, Search, MessageCircle } from 'lucide-react';
 import SearchBar from '@/components/SearchBar';
 import ListingCard from '@/components/ListingCard';
+import LiveStats from '@/components/LiveStats';
 import { FEATURED_LISTINGS, listings } from '@/data/listings';
 import { AUSTRALIAN_STATES } from '@/lib/types';
 
@@ -16,12 +17,6 @@ const STATE_META: Record<string, { icon: string; color: string; highlight: strin
   NT:  { icon: '🌴', color: 'from-green-500 to-emerald-700',  highlight: 'Darwin & Alice Springs' },
 };
 
-const stats = [
-  { value: '500+', label: 'Listings' },
-  { value: '50+', label: 'Suburbs' },
-  { value: '8', label: 'States & Territories' },
-  { value: 'Free', label: 'To browse' },
-];
 
 const steps = [
   {
@@ -65,19 +60,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Stats bar ────────────────────────────────────────────────────── */}
-      <section className="bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
-            {stats.map((s) => (
-              <div key={s.label}>
-                <div className="text-3xl font-bold text-teal-600">{s.value}</div>
-                <div className="text-sm text-slate-500 mt-1">{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ── Live stats bar ───────────────────────────────────────────────── */}
+      <LiveStats />
 
       {/* ── Featured listings ─────────────────────────────────────────────── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
