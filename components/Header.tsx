@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Home, Heart, LayoutDashboard, LogOut, User, ChevronDown } from 'lucide-react';
+import { Home, Heart, LayoutDashboard, LogOut, User, ChevronDown, Users, Sparkles } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useFavorites } from '@/hooks/useFavorites';
@@ -56,23 +56,46 @@ export default function Header() {
               Browse Listings
             </Link>
 
-            {/* Show Saved + Dashboard only when signed in */}
+            {/* Show role-specific nav only when signed in */}
             {!loading && user && (
               <>
                 {user.role === 'renter' && (
+                  <>
+                    <Link
+                      href="/favorites"
+                      className={`relative flex items-center gap-1.5 text-sm font-medium transition-colors ${
+                        pathname === '/favorites' ? 'text-rose-500' : 'text-slate-600 hover:text-rose-500'
+                      }`}
+                    >
+                      <Heart className={`w-4 h-4 ${pathname === '/favorites' ? 'fill-current' : ''}`} />
+                      Saved
+                      {favorites.length > 0 && (
+                        <span className="absolute -top-1.5 -right-2 bg-rose-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                          {favorites.length}
+                        </span>
+                      )}
+                    </Link>
+                    <Link
+                      href="/profile"
+                      className={`flex items-center gap-1.5 text-sm font-medium transition-colors ${
+                        pathname === '/profile' ? 'text-teal-600' : 'text-slate-600 hover:text-teal-600'
+                      }`}
+                    >
+                      <Sparkles className="w-4 h-4" />
+                      My Profile
+                    </Link>
+                  </>
+                )}
+
+                {user.role === 'subletter' && (
                   <Link
-                    href="/favorites"
-                    className={`relative flex items-center gap-1.5 text-sm font-medium transition-colors ${
-                      pathname === '/favorites' ? 'text-rose-500' : 'text-slate-600 hover:text-rose-500'
+                    href="/renters"
+                    className={`flex items-center gap-1.5 text-sm font-medium transition-colors ${
+                      pathname === '/renters' ? 'text-amber-600' : 'text-slate-600 hover:text-amber-600'
                     }`}
                   >
-                    <Heart className={`w-4 h-4 ${pathname === '/favorites' ? 'fill-current' : ''}`} />
-                    Saved
-                    {favorites.length > 0 && (
-                      <span className="absolute -top-1.5 -right-2 bg-rose-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                        {favorites.length}
-                      </span>
-                    )}
+                    <Users className="w-4 h-4" />
+                    Find Renters
                   </Link>
                 )}
 
@@ -129,24 +152,44 @@ export default function Header() {
                         Dashboard
                       </Link>
                       {user.role === 'renter' && (
-                        <Link
-                          href="/favorites"
-                          onClick={() => setMenuOpen(false)}
-                          className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
-                        >
-                          <Heart className="w-4 h-4 text-slate-400" />
-                          Saved Listings
-                        </Link>
+                        <>
+                          <Link
+                            href="/favorites"
+                            onClick={() => setMenuOpen(false)}
+                            className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                          >
+                            <Heart className="w-4 h-4 text-slate-400" />
+                            Saved Listings
+                          </Link>
+                          <Link
+                            href="/profile"
+                            onClick={() => setMenuOpen(false)}
+                            className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                          >
+                            <Sparkles className="w-4 h-4 text-slate-400" />
+                            My Profile
+                          </Link>
+                        </>
                       )}
                       {user.role === 'subletter' && (
-                        <Link
-                          href="/post"
-                          onClick={() => setMenuOpen(false)}
-                          className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
-                        >
-                          <User className="w-4 h-4 text-slate-400" />
-                          Post a Listing
-                        </Link>
+                        <>
+                          <Link
+                            href="/renters"
+                            onClick={() => setMenuOpen(false)}
+                            className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                          >
+                            <Users className="w-4 h-4 text-slate-400" />
+                            Find Renters
+                          </Link>
+                          <Link
+                            href="/post"
+                            onClick={() => setMenuOpen(false)}
+                            className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                          >
+                            <User className="w-4 h-4 text-slate-400" />
+                            Post a Listing
+                          </Link>
+                        </>
                       )}
                       <div className="border-t border-slate-100 mt-1">
                         <button

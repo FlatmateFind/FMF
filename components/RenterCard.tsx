@@ -1,0 +1,119 @@
+'use client';
+import Link from 'next/link';
+import { MapPin, DollarSign, Calendar, Home, User } from 'lucide-react';
+import { RenterProfile } from '@/lib/types';
+
+function Avatar({ profile, size = 'md' }: { profile: RenterProfile; size?: 'sm' | 'md' | 'lg' }) {
+  const dim = size === 'lg' ? 'w-20 h-20 text-2xl' : size === 'md' ? 'w-14 h-14 text-xl' : 'w-10 h-10 text-sm';
+  if (profile.photo) {
+    return (
+      <img
+        src={profile.photo}
+        alt={profile.name}
+        className={`${dim} rounded-full object-cover border-2 border-white shadow-sm shrink-0`}
+      />
+    );
+  }
+  const initials = profile.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase();
+  return (
+    <div className={`${dim} rounded-full bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center text-white font-bold shrink-0 border-2 border-white shadow-sm`}>
+      {initials}
+    </div>
+  );
+}
+
+export { Avatar as RenterAvatar };
+
+export default function RenterCard({ profile }: { profile: RenterProfile }) {
+  const stateLabel = profile.preferredStates.length > 0
+    ? profile.preferredStates.join(', ')
+    : 'Anywhere in Australia';
+
+  const budgetLabel = profile.budgetMin && profile.budgetMax
+    ? `$${profile.budgetMin}–$${profile.budgetMax}/wk`
+    : profile.budgetMax
+    ? `Up to $${profile.budgetMax}/wk`
+    : profile.budgetMin
+    ? `From $${profile.budgetMin}/wk`
+    : 'Budget flexible';
+
+  const moveInLabel = profile.moveInDate
+    ? new Date(profile.moveInDate).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })
+    : 'Flexible';
+
+  return (
+    <div className="bg-white border border-slate-200 rounded-2xl p-5 hover:shadow-md transition-shadow flex flex-col gap-4">
+      {/* Header row */}
+      <div className="flex items-start gap-4">
+        <Avatar profile={profile} />
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 flex-wrap">
+            <h3 className="font-bold text-slate-900 text-base">{profile.name}</h3>
+            {profile.age && (
+              <span className="text-xs text-slate-400">Age {profile.age}</span>
+            )}
+          </div>
+          <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-0.5">
+            <User className="w-3 h-3" />
+            {profile.nationality}
+          </div>
+          {profile.aboutMe && (
+            <p className="text-sm text-slate-500 mt-2 line-clamp-2 leading-relaxed">{profile.aboutMe}</p>
+          )}
+        </div>
+      </div>
+
+      {/* Key info pills */}
+      <div className="grid grid-cols-2 gap-2 text-xs">
+        <div className="flex items-center gap-1.5 bg-slate-50 rounded-lg px-3 py-2 text-slate-600">
+          <MapPin className="w-3.5 h-3.5 text-teal-500 shrink-0" />
+          <span className="truncate">{stateLabel}</span>
+        </div>
+        <div className="flex items-center gap-1.5 bg-slate-50 rounded-lg px-3 py-2 text-slate-600">
+          <DollarSign className="w-3.5 h-3.5 text-teal-500 shrink-0" />
+          <span className="truncate font-semibold text-teal-700">{budgetLabel}</span>
+        </div>
+        <div className="flex items-center gap-1.5 bg-slate-50 rounded-lg px-3 py-2 text-slate-600">
+          <Calendar className="w-3.5 h-3.5 text-teal-500 shrink-0" />
+          <span className="truncate">Move in {moveInLabel}</span>
+        </div>
+        <div className="flex items-center gap-1.5 bg-slate-50 rounded-lg px-3 py-2 text-slate-600">
+          <Home className="w-3.5 h-3.5 text-teal-500 shrink-0" />
+          <span className="truncate capitalize">
+            {profile.preferredRoomTypes.length > 0
+              ? profile.preferredRoomTypes[0] + (profile.preferredRoomTypes.length > 1 ? ` +${profile.preferredRoomTypes.length - 1}` : '')
+              : 'Any type'}
+          </span>
+        </div>
+      </div>
+
+      {/* Tags row */}
+      <div className="flex flex-wrap gap-1.5">
+        {profile.minimumStay && (
+          <span className="px-2 py-0.5 bg-teal-50 text-teal-700 text-[11px] font-medium rounded-full border border-teal-100">
+            Min. {profile.minimumStay}
+          </span>
+        )}
+        <span className={`px-2 py-0.5 text-[11px] font-medium rounded-full border ${profile.petsOk ? 'bg-green-50 text-green-700 border-green-100' : 'bg-slate-50 text-slate-400 border-slate-200'}`}>
+          {profile.petsOk ? '🐾 Pets ok' : 'No pets'}
+        </span>
+        <span className={`px-2 py-0.5 text-[11px] font-medium rounded-full border ${profile.smokingOk ? 'bg-amber-50 text-amber-700 border-amber-100' : 'bg-slate-50 text-slate-400 border-slate-200'}`}>
+          {profile.smokingOk ? '🚬 Smoking ok' : 'Non-smoker'}
+        </span>
+        {profile.furnishedPreference !== 'any' && (
+          <span className="px-2 py-0.5 bg-slate-50 text-slate-600 text-[11px] font-medium rounded-full border border-slate-200 capitalize">
+            {profile.furnishedPreference}
+          </span>
+        )}
+      </div>
+
+      {/* CTA */}
+      <Link
+        href={`/listings?state=${profile.preferredStates[0] ?? ''}`}
+        className="w-full text-center py-2.5 bg-teal-600 text-white text-sm font-semibold rounded-xl hover:bg-teal-700 transition-colors"
+      >
+        View matching listings
+      </Link>
+    </div>
+  );
+}

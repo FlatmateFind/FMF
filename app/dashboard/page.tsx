@@ -5,15 +5,17 @@ import { useRouter } from 'next/navigation';
 import {
   Heart, Star, Home, PlusCircle, MapPin, Bed, Bath,
   Calendar, Pause, Play, Trash2, MessageCircle, ChevronRight,
-  Users, LayoutDashboard, Search, Building2,
+  Users, LayoutDashboard, Search, Building2, Sparkles, DollarSign,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useShortlist } from '@/hooks/useShortlist';
 import { usePostedListings } from '@/hooks/usePostedListings';
+import { useRenterProfile } from '@/hooks/useRenterProfile';
 import { listings } from '@/data/listings';
 import { Listing } from '@/lib/types';
 import ListingCard from '@/components/ListingCard';
+import { RenterAvatar } from '@/components/RenterCard';
 
 export default function DashboardPage() {
   const { user, loading } = useAuth();
@@ -41,6 +43,7 @@ export default function DashboardPage() {
 function RenterDashboard() {
   const { user } = useAuth();
   const { favorites, loaded: favLoaded } = useFavorites();
+  const { profile, loaded: profileLoaded } = useRenterProfile();
   const savedListings = listings.filter((l) => favorites.includes(l.id));
 
   return (
@@ -57,11 +60,85 @@ function RenterDashboard() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-10">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
         <StatCard icon={<Heart className="w-5 h-5 text-rose-500" />} label="Saved listings" value={favorites.length} bg="bg-rose-50" />
         <StatCard icon={<MessageCircle className="w-5 h-5 text-teal-500" />} label="Active chats" value={favorites.length} bg="bg-teal-50" />
         <StatCard icon={<Search className="w-5 h-5 text-blue-500" />} label="Cities browsed" value={[...new Set(savedListings.map(l => l.location.city))].length} bg="bg-blue-50" />
       </div>
+
+      {/* Profile card */}
+      {profileLoaded && (
+        <section className="mb-10">
+          <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 mb-4">
+            <Sparkles className="w-5 h-5 text-teal-500" />
+            My Renter Profile
+          </h2>
+          {!profile ? (
+            <div className="bg-gradient-to-r from-teal-50 to-cyan-50 border border-teal-200 rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <div className="p-3 bg-teal-100 rounded-xl shrink-0">
+                <Sparkles className="w-7 h-7 text-teal-600" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-slate-900 mb-1">Complete your renter profile</h3>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  Tell subletters who you are, what you&apos;re looking for, and your budget. A complete profile gets you noticed faster.
+                </p>
+              </div>
+              <Link
+                href="/profile"
+                className="shrink-0 flex items-center gap-2 bg-teal-600 text-white text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-teal-700 transition-colors"
+              >
+                <Sparkles className="w-4 h-4" />
+                Build profile
+              </Link>
+            </div>
+          ) : (
+            <div className="bg-white border border-slate-200 rounded-2xl p-5 flex flex-col sm:flex-row items-start gap-5">
+              <RenterAvatar profile={profile} size="lg" />
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1 flex-wrap">
+                  <h3 className="font-bold text-slate-900">{profile.name}</h3>
+                  {profile.age && <span className="text-sm text-slate-400">Age {profile.age}</span>}
+                  {profile.nationality && (
+                    <span className="px-2 py-0.5 bg-teal-50 text-teal-700 text-xs font-medium rounded-full border border-teal-100">
+                      {profile.nationality}
+                    </span>
+                  )}
+                </div>
+                {profile.aboutMe && (
+                  <p className="text-sm text-slate-500 mb-3 line-clamp-2">{profile.aboutMe}</p>
+                )}
+                <div className="flex flex-wrap gap-3 text-xs text-slate-600">
+                  {profile.preferredStates.length > 0 && (
+                    <span className="flex items-center gap-1">
+                      <MapPin className="w-3.5 h-3.5 text-teal-500" />
+                      {profile.preferredStates.join(', ')}
+                    </span>
+                  )}
+                  {profile.budgetMax && (
+                    <span className="flex items-center gap-1">
+                      <DollarSign className="w-3.5 h-3.5 text-teal-500" />
+                      Up to ${profile.budgetMax}/wk
+                    </span>
+                  )}
+                  {profile.moveInDate && (
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-3.5 h-3.5 text-teal-500" />
+                      From {new Date(profile.moveInDate).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <Link
+                href="/profile"
+                className="shrink-0 flex items-center gap-2 text-sm font-medium text-teal-600 hover:text-teal-800 transition-colors border border-teal-200 px-4 py-2 rounded-xl hover:bg-teal-50"
+              >
+                Edit profile <ChevronRight className="w-4 h-4" />
+              </Link>
+            </div>
+          )}
+        </section>
+      )}
 
       {/* Saved listings */}
       <section>

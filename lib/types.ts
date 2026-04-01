@@ -89,3 +89,39 @@ export const NATIONALITIES = [
   'Pakistani', 'Singaporean', 'South African', 'Spanish', 'Sri Lankan',
   'Taiwanese', 'Thai', 'Vietnamese',
 ];
+
+export type RoomType = 'private room' | 'whole apartment' | 'whole house' | 'studio' | 'shared room';
+
+export interface RenterProfile {
+  userId: string;
+  name: string;
+  photo: string | null;           // base64 data URL or null
+  age: number | null;
+  nationality: string;
+  aboutMe: string;
+  // What I'm looking for
+  preferredRoomTypes: RoomType[];
+  preferredStates: string[];      // state abbrs e.g. ['NSW', 'VIC']
+  preferredCities: string[];
+  budgetMin: number | null;       // AUD/week
+  budgetMax: number | null;       // AUD/week
+  moveInDate: string | null;      // YYYY-MM-DD
+  minimumStay: string;            // e.g. '3 months'
+  preferredFacilities: string[];
+  furnishedPreference: 'furnished' | 'unfurnished' | 'any';
+  houseGenderPreference: 'male' | 'female' | 'any';
+  petsOk: boolean;
+  smokingOk: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface RenterProfileFilters {
+  state?: string;
+  maxBudget?: number;
+  availableBy?: string;   // ISO date — renters whose moveInDate <= this
+  roomType?: string;
+  nationality?: string;
+}
+
+export const MIN_STAY_OPTIONS = ['1 month', '2 months', '3 months', '6 months', '12 months', 'Flexible'];
