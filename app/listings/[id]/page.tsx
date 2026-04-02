@@ -5,10 +5,12 @@ import {
   Bed, Bath, Users, MapPin, ArrowLeft, Check, X,
   Wifi, Car, Dumbbell, Waves, Wind, WashingMachine, UtensilsCrossed,
   Flower2, Lock, ChevronRight, Calendar, Clock,
+  ShoppingCart, Train, Bus, Tram, GraduationCap, School, Hospital,
+  Trees, ShoppingBag, Pill, Coffee, Plane, Umbrella, MapPinned,
 } from 'lucide-react';
 import clsx from 'clsx';
 import { getListingById, getSimilarListings } from '@/lib/filterListings';
-import { INCLUSIONS_LIST, ROOM_FEATURES_LIST, NEARBY_PLACE_TYPES } from '@/lib/types';
+import { INCLUSIONS_LIST, ROOM_FEATURES_LIST } from '@/lib/types';
 import ListingCard from '@/components/ListingCard';
 import ListingDetailActions from '@/components/ListingDetailActions';
 import ViewCounter from '@/components/ViewCounter';
@@ -26,6 +28,23 @@ const FACILITY_ICONS: Record<string, React.ElementType> = {
   Garden: Flower2,
   Security: Lock,
   Internet: Wifi,
+};
+
+const NEARBY_ICONS: Record<string, React.ElementType> = {
+  'Supermarket':        ShoppingCart,
+  'Train station':      Train,
+  'Bus stop':           Bus,
+  'Tram stop':          Tram,
+  'University / TAFE':  GraduationCap,
+  'School':             School,
+  'Hospital / Clinic':  Hospital,
+  'Gym':                Dumbbell,
+  'Park':               Trees,
+  'Shopping centre':    ShoppingBag,
+  'Pharmacy':           Pill,
+  'Café / Restaurant':  Coffee,
+  'Airport':            Plane,
+  'Beach':              Umbrella,
 };
 
 const TYPE_COLORS: Record<string, string> = {
@@ -253,10 +272,12 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
               <h2 className="text-lg font-semibold text-slate-900 mb-4">What&apos;s Nearby</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {listing.nearbyPlaces.map((place) => {
-                  const meta = NEARBY_PLACE_TYPES.find((p) => p.type === place.type);
+                  const Icon = NEARBY_ICONS[place.type] ?? MapPinned;
                   return (
                     <div key={place.type} className="flex items-center gap-3 bg-white border border-slate-200 rounded-xl px-4 py-2.5">
-                      <span className="text-xl shrink-0">{meta?.emoji ?? '📍'}</span>
+                      <div className="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center shrink-0">
+                        <Icon className="w-4 h-4 text-teal-600" />
+                      </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-slate-800 truncate">{place.type}</p>
                       </div>
