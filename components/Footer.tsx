@@ -7,8 +7,7 @@ const footerLinks = {
     links: [
       { label: 'Browse Listings', href: '/listings' },
       { label: 'Create Profile', href: '/profile' },
-      { label: 'Renter Guide', href: '/guide' },
-      { label: 'Safety Tips', href: '/guide#safety' },
+      { label: 'How it Works', href: '/how-it-works#renters' },
     ],
   },
   subletters: {
@@ -16,7 +15,7 @@ const footerLinks = {
     links: [
       { label: 'Post a Listing', href: '/post' },
       { label: 'Find Renters', href: '/renters' },
-      { label: 'Listing Guide', href: '/guide#listing-guide' },
+      { label: 'How it Works', href: '/how-it-works#subletters' },
     ],
   },
   company: {
