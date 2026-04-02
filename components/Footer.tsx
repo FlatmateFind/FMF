@@ -6,12 +6,9 @@ const footerLinks = {
     title: 'For Renters',
     links: [
       { label: 'Browse Listings', href: '/listings' },
-      { label: 'My Renter Profile', href: '/profile' },
-      { label: 'How It Works', href: '/guide#how-it-works' },
+      { label: 'Create Profile', href: '/profile' },
       { label: 'Renter Guide', href: '/guide' },
-      { label: 'Safety Tips', href: '/safety' },
-      { label: 'FAQ', href: '/faq' },
-      { label: '📘 Facebook Communities', href: '/community' },
+      { label: 'Safety Tips', href: '/guide#safety' },
     ],
   },
   subletters: {
@@ -20,40 +17,22 @@ const footerLinks = {
       { label: 'Post a Listing', href: '/post' },
       { label: 'Find Renters', href: '/renters' },
       { label: 'Listing Guide', href: '/guide#listing-guide' },
-      { label: 'Subletter FAQ', href: '/faq#subletter' },
-      { label: 'Safety Tips', href: '/safety' },
-      { label: 'Dashboard', href: '/dashboard' },
-    ],
-  },
-  browse: {
-    title: 'Browse by State',
-    links: [
-      { label: 'New South Wales', href: '/listings?state=NSW' },
-      { label: 'Victoria', href: '/listings?state=VIC' },
-      { label: 'Queensland', href: '/listings?state=QLD' },
-      { label: 'Western Australia', href: '/listings?state=WA' },
-      { label: 'South Australia', href: '/listings?state=SA' },
-      { label: 'All States', href: '/listings' },
     ],
   },
   company: {
     title: 'Company',
     links: [
       { label: 'About FlatmateFind', href: '/about' },
-      { label: 'Contact Us', href: '/contact' },
-      { label: 'FB Communities', href: '/community' },
-      { label: 'Privacy Policy', href: '/privacy' },
-      { label: 'Terms of Service', href: '/terms' },
-      { label: 'Cookie Policy', href: '/privacy#cookies' },
+      { label: 'Contact Us', href: '/about#contact' },
+      { label: 'Communities', href: '/community' },
     ],
   },
 };
 
 const bottomLinks = [
   { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Cookie Policy', href: '/privacy#cookies' },
   { label: 'Terms of Service', href: '/terms' },
-  { label: 'Safety', href: '/safety' },
-  { label: 'Contact', href: '/contact' },
 ];
 
 export default function Footer() {
@@ -63,7 +42,7 @@ export default function Footer() {
     <footer className="bg-slate-900 text-slate-300 mt-16">
       {/* Main footer grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand column */}
           <div className="lg:col-span-1">
             <Link href="/" className="inline-flex items-center gap-2 mb-4">
