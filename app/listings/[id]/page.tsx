@@ -341,11 +341,9 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
         </div>
 
         {/* ── Right column — client component ─────────────────────────── */}
-        <div className="mt-8 lg:mt-0">
-          <div className="sticky top-24 space-y-5">
-            <ListingDetailActions listing={listing} availableDate={availableDate} />
-            <AdSlot size="rectangle" />
-          </div>
+        <div className="mt-8 lg:mt-0 sticky top-24 self-start space-y-5">
+          <ListingDetailActions listing={listing} availableDate={availableDate} />
+          <AdSlot size="rectangle" />
         </div>
       </div>
 

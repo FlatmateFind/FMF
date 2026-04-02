@@ -33,8 +33,7 @@ export default function ListingDetailActions({ listing, availableDate }: Listing
 
   return (
     <>
-      {/* Sticky sidebar card */}
-      <div className="sticky top-24 space-y-4">
+      <div className="space-y-4">
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
           <h3 className="font-semibold text-slate-900 mb-4">Listed by</h3>
           <div className="flex items-center gap-3 mb-4">
