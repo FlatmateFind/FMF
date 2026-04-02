@@ -25,7 +25,7 @@ const sections = [
     title: 'Before you inspect',
     tips: [
       'Verify the listing address on Google Maps Street View before attending.',
-      'Search the landlord's name and phone number online to check for complaints.',
+      "Search the landlord's name and phone number online to check for complaints.",
       'Tell a friend or family member where you are going and when to expect you back.',
       'Inspect during daylight hours, ideally with a friend.',
       'Check reviews or ratings of the landlord or agency if available.',
