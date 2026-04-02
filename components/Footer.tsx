@@ -23,6 +23,7 @@ const footerLinks = {
       { label: 'Contact Us', href: '/about#contact' },
       { label: 'Communities', href: '/community' },
       { label: 'Guide', href: '/how-it-works' },
+      { label: 'FAQ', href: '/faq' },
     ],
   },
 };
