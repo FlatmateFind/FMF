@@ -2,9 +2,10 @@
 import { useState, FormEvent } from 'react';
 import { CheckCircle, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
-import { CITIES, PROPERTY_TYPES, INCLUSIONS_LIST, FACILITIES_LIST, NATIONALITIES } from '@/lib/types';
+import { CITIES, PROPERTY_TYPES, ROOM_CATEGORIES_LIST, INCLUSIONS_LIST, FACILITIES_LIST, ROOM_FEATURES_LIST, ROOM_TERMS_LIST, HOUSE_RULES_LIST, NATIONALITIES, NEARBY_PLACE_TYPES, NearbyPlace } from '@/lib/types';
 import { usePostedListings } from '@/hooks/usePostedListings';
 import { checkSpam, isValidAUPostcode, checkRateLimit } from '@/lib/spamGuard';
+import CustomTagInput from '@/components/CustomTagInput';
 
 interface FormData {
   type: string;
@@ -22,10 +23,13 @@ interface FormData {
   totalCapacity: string;
   inclusions: string[];
   facilities: string[];
+  roomFeatures: string[];
+  roomCategories: string[];
   preferredNationalities: string[];
   preferredGender: string;
   petsAllowed: boolean;
   smokingAllowed: boolean;
+  stayType: string;
   minimumStay: string;
   availableFrom: string;
   description: string;
@@ -39,9 +43,9 @@ const initialForm: FormData = {
   city: '', suburb: '', postcode: '', address: '',
   rentAmount: '', currency: 'AUD', period: 'week',
   currentOccupants: '', totalCapacity: '',
-  inclusions: [], facilities: [], preferredNationalities: [],
+  inclusions: [], facilities: [], roomFeatures: [], roomCategories: [], preferredNationalities: [],
   preferredGender: 'any', petsAllowed: false, smokingAllowed: false,
-  minimumStay: '', availableFrom: '', description: '',
+  stayType: '', minimumStay: '', availableFrom: '', description: '',
   contactName: '', contactEmail: '', contactPhone: '',
 };
 
@@ -71,6 +75,12 @@ export default function PostListingPage() {
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [blockError, setBlockError] = useState('');
   const [spamWarnings, setSpamWarnings] = useState<string[]>([]);
+  const [customInclusions, setCustomInclusions] = useState<string[]>([]);
+  const [customFacilities, setCustomFacilities] = useState<string[]>([]);
+  const [customRoomFeatures, setCustomRoomFeatures] = useState<string[]>([]);
+  const [rules, setRules] = useState<string[]>([]);
+  // nearbyDistances: type → distance string (empty = not included)
+  const [nearbyDistances, setNearbyDistances] = useState<Record<string, string>>({});
   const { add } = usePostedListings();
 
   function set(key: keyof FormData, value: FormData[keyof FormData]) {
@@ -78,7 +88,7 @@ export default function PostListingPage() {
     setErrors((prev) => ({ ...prev, [key]: undefined }));
   }
 
-  function toggleList(key: 'inclusions' | 'facilities' | 'preferredNationalities', value: string) {
+  function toggleList(key: 'inclusions' | 'facilities' | 'roomFeatures' | 'roomCategories' | 'preferredNationalities', value: string) {
     const arr = form[key] as string[];
     set(key, arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value]);
   }
@@ -151,6 +161,15 @@ export default function PostListingPage() {
       postedAt: new Date().toISOString(),
       status: 'active',
       contactName: form.contactName,
+      stayType: form.stayType || undefined,
+      rules: rules.length ? rules : undefined,
+      nearbyPlaces: Object.entries(nearbyDistances)
+        .filter(([, d]) => d.trim())
+        .map(([type, distance]) => ({ type, distance: distance.trim() })),
+      inclusions: [...form.inclusions, ...customInclusions],
+      facilities: [...form.facilities, ...customFacilities],
+      roomFeatures: [...form.roomFeatures, ...customRoomFeatures],
+      roomCategories: form.roomCategories,
     });
     setSubmitted(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -217,9 +236,30 @@ export default function PostListingPage() {
       <form onSubmit={handleSubmit} noValidate>
         {/* 1. Property Details */}
         <Section title="1. Property Details">
+          {/* Room category pills */}
+          <div className="mb-5">
+            <Label>Room Category <span className="text-slate-400 font-normal">(select all that apply)</span></Label>
+            <div className="flex flex-wrap gap-2 mt-1">
+              {ROOM_CATEGORIES_LIST.map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => toggleList('roomCategories', cat)}
+                  className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-all ${
+                    form.roomCategories.includes(cat)
+                      ? 'bg-teal-600 text-white border-teal-600'
+                      : 'bg-white text-slate-600 border-slate-200 hover:border-teal-400'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <Label required>Property Type</Label>
+              <Label required>Room Type</Label>
               <select value={form.type} onChange={(e) => set('type', e.target.value)} className={selectClass}>
                 <option value="">Select type...</option>
                 {PROPERTY_TYPES.map((t) => <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>)}
@@ -329,6 +369,12 @@ export default function PostListingPage() {
               </label>
             ))}
           </div>
+          <CustomTagInput
+            items={customInclusions}
+            onChange={setCustomInclusions}
+            existingSelected={form.inclusions}
+            placeholder="e.g. Lawn maintenance, Pool heating…"
+          />
         </Section>
 
         {/* 6. Facilities */}
@@ -341,10 +387,86 @@ export default function PostListingPage() {
               </label>
             ))}
           </div>
+          <CustomTagInput
+            items={customFacilities}
+            onChange={setCustomFacilities}
+            existingSelected={form.facilities}
+            placeholder="e.g. EV charger, Rooftop terrace…"
+          />
         </Section>
 
-        {/* 7. Tenant Preferences */}
-        <Section title="7. Tenant Preferences">
+        {/* 7. Room Features */}
+        <Section title="7. Room Features">
+          <p className="text-xs text-slate-500 mb-3">Select all features that apply to the room being offered.</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            {ROOM_FEATURES_LIST.map((feat) => (
+              <label key={feat} className="flex items-center gap-2.5 cursor-pointer group">
+                <input
+                  type="checkbox"
+                  checked={form.roomFeatures.includes(feat)}
+                  onChange={() => toggleList('roomFeatures', feat)}
+                  className="w-4 h-4 rounded text-teal-600 border-slate-300 focus:ring-teal-500"
+                />
+                <span className="text-sm text-slate-700 group-hover:text-teal-600 transition-colors">{feat}</span>
+              </label>
+            ))}
+          </div>
+          <div className="mt-4 pt-4 border-t border-slate-100">
+            <p className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-2">Terms</p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {ROOM_TERMS_LIST.map((term) => (
+                <label key={term} className="flex items-center gap-2.5 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={form.roomFeatures.includes(term)}
+                    onChange={() => toggleList('roomFeatures', term)}
+                    className="w-4 h-4 rounded text-teal-600 border-slate-300 focus:ring-teal-500"
+                  />
+                  <span className="text-sm text-slate-700 group-hover:text-teal-600 transition-colors">{term}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+          <CustomTagInput
+            items={customRoomFeatures}
+            onChange={setCustomRoomFeatures}
+            existingSelected={form.roomFeatures}
+            placeholder="e.g. Walk-in wardrobe, Bay window…"
+          />
+        </Section>
+
+        {/* 8. House Rules */}
+        <Section title="8. House Rules">
+          <p className="text-xs text-slate-500 mb-3">Let renters know the house expectations. Select all that apply.</p>
+          {/* Group rules by category */}
+          {[
+            { label: 'Guests & Visitors', items: ['No overnight guests', 'Visitors by prior notice only', 'No parties or events'] },
+            { label: 'Noise & Lifestyle',  items: ['Quiet hours after 10pm', 'No loud music', 'Study-friendly environment', 'Working professionals preferred'] },
+            { label: 'Cleanliness',        items: ['Clean kitchen after use', 'Keep common areas tidy', 'Weekly cleaning rotation', 'No shoes inside'] },
+            { label: 'Substances',         items: ['No smoking indoors', 'No drugs', 'No alcohol'] },
+            { label: 'Household',          items: ['No food in bedrooms', 'No pets', 'Vegetarian household', 'Halal household', 'Bills split equally', '2 weeks notice to vacate', 'No subletting without permission'] },
+          ].map(({ label, items }) => (
+            <div key={label} className="mb-4">
+              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">{label}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                {items.map((rule) => (
+                  <label key={rule} className="flex items-center gap-2.5 cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      checked={rules.includes(rule)}
+                      onChange={() => setRules((prev) => prev.includes(rule) ? prev.filter((r) => r !== rule) : [...prev, rule])}
+                      className="w-4 h-4 rounded text-teal-600 border-slate-300 focus:ring-teal-500"
+                    />
+                    <span className="text-sm text-slate-700 group-hover:text-teal-600 transition-colors">{rule}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          ))}
+        </Section>
+
+        {/* 9. Tenant Preferences */}
+        <Section title="9. Tenant Preferences">
           <div className="space-y-5">
             <div>
               <Label>Preferred Nationality (leave blank for any)</Label>
@@ -357,6 +479,30 @@ export default function PostListingPage() {
                 ))}
               </div>
             </div>
+            {/* Stay type */}
+            <div className="mb-4">
+              <Label>Stay Type</Label>
+              <div className="flex gap-2 flex-wrap">
+                {(['short term', 'long term', 'both'] as const).map((opt) => (
+                  <button
+                    key={opt}
+                    type="button"
+                    onClick={() => set('stayType', form.stayType === opt ? '' : opt)}
+                    className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-all capitalize ${
+                      form.stayType === opt
+                        ? opt === 'short term' ? 'bg-blue-600 text-white border-blue-600'
+                          : opt === 'long term' ? 'bg-emerald-600 text-white border-emerald-600'
+                          : 'bg-violet-600 text-white border-violet-600'
+                        : 'bg-white text-slate-600 border-slate-200 hover:border-teal-400'
+                    }`}
+                  >
+                    {opt === 'short term' ? '⚡ Short term' : opt === 'long term' ? '🏠 Long term' : '✦ Both'}
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-slate-400 mt-1.5">Short term = under 3 months · Long term = 3 months or more</p>
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label>Gender Preference</Label>
@@ -384,8 +530,8 @@ export default function PostListingPage() {
           </div>
         </Section>
 
-        {/* 8. Availability */}
-        <Section title="8. Availability">
+        {/* 10. Availability */}
+        <Section title="10. Availability">
           <div>
             <Label required>Available From</Label>
             <input type="date" value={form.availableFrom} onChange={(e) => set('availableFrom', e.target.value)} className={inputClass} />
@@ -393,8 +539,41 @@ export default function PostListingPage() {
           </div>
         </Section>
 
-        {/* 9. Description */}
-        <Section title="9. Description">
+        {/* 11. Nearby Places */}
+        <Section title="11. Nearby Places">
+          <p className="text-xs text-slate-500 mb-4">
+            Enter walking/driving times or distances to help renters understand the location. Leave blank to skip any place type.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {NEARBY_PLACE_TYPES.map(({ type, emoji }) => (
+              <div key={type} className="flex items-center gap-2">
+                <span className="text-base w-6 shrink-0 text-center">{emoji}</span>
+                <span className="text-sm text-slate-700 w-36 shrink-0">{type}</span>
+                <input
+                  type="text"
+                  value={nearbyDistances[type] ?? ''}
+                  onChange={(e) => setNearbyDistances((prev) => ({ ...prev, [type]: e.target.value }))}
+                  placeholder="e.g. 5 min walk"
+                  className="flex-1 text-sm border border-slate-200 rounded-lg py-1.5 px-2.5 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none"
+                />
+              </div>
+            ))}
+          </div>
+          {/* Custom place */}
+          <div className="mt-4 pt-4 border-t border-slate-100">
+            <p className="text-xs font-medium text-slate-600 mb-2">Other (optional)</p>
+            <div className="space-y-2" id="custom-nearby">
+              <CustomNearbyRow
+                onAdd={(type, distance) =>
+                  setNearbyDistances((prev) => ({ ...prev, [type]: distance }))
+                }
+              />
+            </div>
+          </div>
+        </Section>
+
+        {/* 12. Description */}
+        <Section title="12. Description">
           <div>
             <Label required>Tell us about the property and what you&apos;re looking for in a tenant</Label>
             <textarea
@@ -415,8 +594,8 @@ export default function PostListingPage() {
           </div>
         </Section>
 
-        {/* 10. Contact Info */}
-        <Section title="10. Contact Info">
+        {/* 13. Contact Info */}
+        <Section title="13. Contact Info">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="sm:col-span-2">
               <Label required>Your Name</Label>
@@ -442,6 +621,43 @@ export default function PostListingPage() {
           </button>
         </div>
       </form>
+    </div>
+  );
+}
+
+function CustomNearbyRow({ onAdd }: { onAdd: (type: string, distance: string) => void }) {
+  const [type, setType] = useState('');
+  const [distance, setDistance] = useState('');
+  function handleAdd() {
+    if (type.trim() && distance.trim()) {
+      onAdd(type.trim(), distance.trim());
+      setType('');
+      setDistance('');
+    }
+  }
+  return (
+    <div className="flex items-center gap-2">
+      <input
+        type="text"
+        value={type}
+        onChange={(e) => setType(e.target.value)}
+        placeholder="Place name (e.g. Bunnings)"
+        className="flex-1 text-sm border border-slate-200 rounded-lg py-1.5 px-2.5 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none"
+      />
+      <input
+        type="text"
+        value={distance}
+        onChange={(e) => setDistance(e.target.value)}
+        placeholder="Distance"
+        className="w-32 text-sm border border-slate-200 rounded-lg py-1.5 px-2.5 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none"
+      />
+      <button
+        type="button"
+        onClick={handleAdd}
+        className="shrink-0 px-3 py-1.5 bg-teal-600 text-white text-xs font-semibold rounded-lg hover:bg-teal-700 transition-colors"
+      >
+        Add
+      </button>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Home, Heart, LayoutDashboard, LogOut, User, ChevronDown, Users, Sparkles } from 'lucide-react';
+import { Home, Heart, LayoutDashboard, LogOut, User, ChevronDown, Users, Sparkles, Briefcase } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useFavorites } from '@/hooks/useFavorites';
@@ -54,6 +54,15 @@ export default function Header() {
               }`}
             >
               Browse Listings
+            </Link>
+            <Link
+              href="/jobs"
+              className={`hidden sm:flex items-center gap-1 text-sm font-medium transition-colors ${
+                pathname.startsWith('/jobs') ? 'text-teal-600' : 'text-slate-600 hover:text-teal-600'
+              }`}
+            >
+              <Briefcase className="w-3.5 h-3.5" />
+              Jobs
             </Link>
 
             {/* Show role-specific nav only when signed in */}

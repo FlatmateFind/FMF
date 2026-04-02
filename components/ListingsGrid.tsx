@@ -3,6 +3,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Loader2, SearchX } from 'lucide-react';
 import ListingCard from '@/components/ListingCard';
+import AdSlot from '@/components/AdSlot';
 import { Listing } from '@/lib/types';
 
 export default function ListingsGrid() {
@@ -61,8 +62,14 @@ export default function ListingsGrid() {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
-          {listings.map((listing) => (
-            <ListingCard key={listing.id} listing={listing} />
+          {listings.map((listing, i) => (
+            <>
+              <ListingCard key={listing.id} listing={listing} />
+              {/* Inject an inline ad after every 6th card */}
+              {(i + 1) % 6 === 0 && i + 1 < listings.length && (
+                <AdSlot key={`ad-${i}`} size="inline" className="my-1" />
+              )}
+            </>
           ))}
         </div>
       )}

@@ -1,7 +1,11 @@
+export type ListingType =
+  | 'private room' | 'whole apartment' | 'whole house' | 'studio' | 'shared room'
+  | 'master room' | 'second room' | 'study room' | 'sunny room' | 'living room' | 'self-contained';
+
 export interface Listing {
   id: string;
   title: string;
-  type: 'private room' | 'whole apartment' | 'whole house' | 'studio' | 'shared room';
+  type: ListingType;
   location: {
     state: string;
     city: string;
@@ -22,14 +26,20 @@ export interface Listing {
   totalCapacity: number;
   furnished: 'furnished' | 'unfurnished' | 'partially furnished';
   facilities: string[];
+  roomFeatures?: string[];
+  roomCategories?: string[];
   preferredNationality: string[];
   preferredGender: 'male' | 'female' | 'any';
   petsAllowed: boolean;
   smokingAllowed: boolean;
   availableFrom: string;
   minimumStay: string;
+  stayType?: 'short term' | 'long term' | 'both';
+  rules?: string[];
+  nearbyPlaces?: NearbyPlace[];
   images: string[];
   description: string;
+  status?: 'active' | 'taken' | 'expired';
   postedBy: {
     name: string;
     type: 'owner' | 'agent' | 'current tenant';
@@ -77,7 +87,51 @@ export const STATES = AUSTRALIAN_STATES.map((s) => s.abbr);
 // Kept for backwards-compat (city filter in filter panel)
 export const CITIES = AUSTRALIAN_STATES.flatMap((s) => s.cities);
 
-export const PROPERTY_TYPES = ['private room', 'whole apartment', 'whole house', 'studio', 'shared room'] as const;
+// Specific room types shown in the post form dropdown
+export const PROPERTY_TYPES = [
+  'master room', 'second room', 'study room', 'sunny room', 'living room', 'studio',
+] as const;
+
+// Broad living arrangement categories (checklist in post form)
+export const ROOM_CATEGORIES_LIST = ['Private', 'Shared', 'Whole unit', 'Self-contained'] as const;
+
+export const ROOM_FEATURES_LIST = [
+  'Ensuite', 'Balcony', 'Partition', 'Bunk bed', 'Single bed', 'Double bed',
+  'Heater', 'Air conditioning', 'Male only', 'Female only', 'Mixed gender',
+];
+
+export const ROOM_TERMS_LIST = [
+  'Own key', '2 weeks bond', '2 weeks move out notice',
+];
+
+export const HOUSE_RULES_LIST = [
+  // Guests & visitors
+  'No overnight guests',
+  'Visitors by prior notice only',
+  'No parties or events',
+  // Noise & lifestyle
+  'Quiet hours after 10pm',
+  'No loud music',
+  'Study-friendly environment',
+  'Working professionals preferred',
+  // Cleanliness
+  'Clean kitchen after use',
+  'Keep common areas tidy',
+  'Weekly cleaning rotation',
+  'No shoes inside',
+  // Substances
+  'No smoking indoors',
+  'No drugs',
+  'No alcohol',
+  // Household
+  'No food in bedrooms',
+  'No pets',
+  'Vegetarian household',
+  'Halal household',
+  'Bills split equally',
+  '2 weeks notice to vacate',
+  'No subletting without permission',
+] as const;
 
 export const INCLUSIONS_LIST = ['Electricity', 'Water', 'Gas', 'Internet', 'Netflix', 'Cleaning service', 'Council tax'];
 
@@ -91,7 +145,7 @@ export const NATIONALITIES = [
   'Taiwanese', 'Thai', 'Vietnamese',
 ];
 
-export type RoomType = 'private room' | 'whole apartment' | 'whole house' | 'studio' | 'shared room';
+export type RoomType = ListingType;
 
 export interface RenterProfile {
   userId: string;
@@ -109,6 +163,7 @@ export interface RenterProfile {
   moveInDate: string | null;      // YYYY-MM-DD
   minimumStay: string;            // e.g. '3 months'
   preferredFacilities: string[];
+  preferredStayType?: 'short term' | 'long term' | 'any';
   furnishedPreference: 'furnished' | 'unfurnished' | 'any';
   houseGenderPreference: 'male' | 'female' | 'any';
   petsOk: boolean;
@@ -126,3 +181,25 @@ export interface RenterProfileFilters {
 }
 
 export const MIN_STAY_OPTIONS = ['1 month', '2 months', '3 months', '6 months', '12 months', 'Flexible'];
+
+export interface NearbyPlace {
+  type: string;
+  distance: string; // e.g. "5 min walk", "10 min drive", "500m"
+}
+
+export const NEARBY_PLACE_TYPES: { type: string; emoji: string }[] = [
+  { type: 'Supermarket', emoji: '🛒' },
+  { type: 'Train station', emoji: '🚉' },
+  { type: 'Bus stop', emoji: '🚌' },
+  { type: 'Tram stop', emoji: '🚋' },
+  { type: 'University / TAFE', emoji: '🎓' },
+  { type: 'School', emoji: '🏫' },
+  { type: 'Hospital / Clinic', emoji: '🏥' },
+  { type: 'Gym', emoji: '💪' },
+  { type: 'Park', emoji: '🌳' },
+  { type: 'Shopping centre', emoji: '🛍️' },
+  { type: 'Pharmacy', emoji: '💊' },
+  { type: 'Café / Restaurant', emoji: '☕' },
+  { type: 'Airport', emoji: '✈️' },
+  { type: 'Beach', emoji: '🏖️' },
+];

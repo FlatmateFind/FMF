@@ -3,6 +3,8 @@ import { SearchFilters, Listing } from './types';
 
 export function filterListings(filters: SearchFilters): Listing[] {
   return listings.filter((listing) => {
+    // Exclude taken/expired listings from search results
+    if (listing.status === 'taken' || listing.status === 'expired') return false;
     if (filters.state && listing.location.state.toUpperCase() !== filters.state.toUpperCase()) return false;
     if (filters.city && listing.location.city.toLowerCase() !== filters.city.toLowerCase()) return false;
     if (filters.type && listing.type !== filters.type) return false;

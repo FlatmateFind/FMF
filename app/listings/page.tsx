@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import FilterPanel from '@/components/FilterPanel';
 import ListingsGrid from '@/components/ListingsGrid';
 import SearchBar from '@/components/SearchBar';
+import CompareBar from '@/components/CompareBar';
 import { SearchFilters } from '@/lib/types';
 import { Loader2 } from 'lucide-react';
 
@@ -77,6 +78,7 @@ function ListingsPageInner() {
           <ListingsGrid />
         </Suspense>
       </div>
+      <CompareBar />
     </div>
   );
 }

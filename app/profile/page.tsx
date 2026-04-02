@@ -12,6 +12,7 @@ import {
   FACILITIES_LIST, MIN_STAY_OPTIONS, RoomType,
 } from '@/lib/types';
 import { RenterAvatar } from '@/components/RenterCard';
+import CustomTagInput from '@/components/CustomTagInput';
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -59,7 +60,9 @@ export default function ProfilePage() {
   const [budgetMax, setBudgetMax] = useState('');
   const [moveInDate, setMoveInDate] = useState('');
   const [minimumStay, setMinimumStay] = useState('');
+  const [preferredStayType, setPreferredStayType] = useState<'short term' | 'long term' | 'any'>('any');
   const [preferredFacilities, setPreferredFacilities] = useState<string[]>([]);
+  const [customFacilities, setCustomFacilities] = useState<string[]>([]);
   const [furnishedPreference, setFurnishedPreference] = useState<'furnished' | 'unfurnished' | 'any'>('any');
   const [houseGenderPreference, setHouseGenderPreference] = useState<'male' | 'female' | 'any'>('any');
   const [petsOk, setPetsOk] = useState(false);
@@ -85,7 +88,9 @@ export default function ProfilePage() {
     setBudgetMax(profile.budgetMax?.toString() ?? '');
     setMoveInDate(profile.moveInDate ?? '');
     setMinimumStay(profile.minimumStay);
-    setPreferredFacilities(profile.preferredFacilities);
+    setPreferredStayType(profile.preferredStayType ?? 'any');
+    setPreferredFacilities(profile.preferredFacilities.filter((f) => FACILITIES_LIST.includes(f)));
+    setCustomFacilities(profile.preferredFacilities.filter((f) => !FACILITIES_LIST.includes(f)));
     setFurnishedPreference(profile.furnishedPreference);
     setHouseGenderPreference(profile.houseGenderPreference);
     setPetsOk(profile.petsOk);
@@ -129,7 +134,8 @@ export default function ProfilePage() {
       budgetMax: budgetMax ? Number(budgetMax) : null,
       moveInDate: moveInDate || null,
       minimumStay,
-      preferredFacilities,
+      preferredStayType,
+      preferredFacilities: [...preferredFacilities, ...customFacilities],
       furnishedPreference,
       houseGenderPreference,
       petsOk,
@@ -375,6 +381,30 @@ export default function ProfilePage() {
             </div>
           </div>
 
+          {/* Stay type preference */}
+          <div className="mb-5">
+            <label className="block text-sm font-medium text-slate-700 mb-2">Preferred stay type</label>
+            <div className="flex gap-2 flex-wrap">
+              {(['short term', 'long term', 'any'] as const).map((opt) => (
+                <button
+                  key={opt}
+                  type="button"
+                  onClick={() => setPreferredStayType(opt)}
+                  className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-all capitalize ${
+                    preferredStayType === opt
+                      ? opt === 'short term' ? 'bg-blue-600 text-white border-blue-600'
+                        : opt === 'long term' ? 'bg-emerald-600 text-white border-emerald-600'
+                        : 'bg-slate-600 text-white border-slate-600'
+                      : 'bg-white text-slate-600 border-slate-200 hover:border-teal-400'
+                  }`}
+                >
+                  {opt === 'short term' ? '⚡ Short term' : opt === 'long term' ? '🏠 Long term' : '✦ Any'}
+                </button>
+              ))}
+            </div>
+            <p className="text-xs text-slate-400 mt-1.5">Short term = under 3 months · Long term = 3 months or more</p>
+          </div>
+
           {/* Move-in & min stay */}
           <div className="grid grid-cols-2 gap-4 mb-5">
             <div>
@@ -429,6 +459,12 @@ export default function ProfilePage() {
                 </button>
               ))}
             </div>
+            <CustomTagInput
+              items={customFacilities}
+              onChange={setCustomFacilities}
+              existingSelected={preferredFacilities}
+              placeholder="e.g. Study room, Bike storage…"
+            />
           </div>
 
           {/* Furnished */}

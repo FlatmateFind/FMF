@@ -89,6 +89,15 @@ export default function RenterCard({ profile }: { profile: RenterProfile }) {
 
       {/* Tags row */}
       <div className="flex flex-wrap gap-1.5">
+        {profile.preferredStayType && profile.preferredStayType !== 'any' && (
+          <span className={`px-2 py-0.5 text-[11px] font-medium rounded-full border ${
+            profile.preferredStayType === 'short term'
+              ? 'bg-blue-50 text-blue-700 border-blue-100'
+              : 'bg-emerald-50 text-emerald-700 border-emerald-100'
+          }`}>
+            {profile.preferredStayType === 'short term' ? '⚡ Short term' : '🏠 Long term'}
+          </span>
+        )}
         {profile.minimumStay && (
           <span className="px-2 py-0.5 bg-teal-50 text-teal-700 text-[11px] font-medium rounded-full border border-teal-100">
             Min. {profile.minimumStay}

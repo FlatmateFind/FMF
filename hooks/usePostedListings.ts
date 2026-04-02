@@ -16,8 +16,15 @@ export interface PostedListing {
   bathrooms: number;
   availableFrom: string;
   postedAt: string;
-  status: 'active' | 'paused';
+  status: 'active' | 'paused' | 'taken';
   contactName: string;
+  inclusions?: string[];
+  facilities?: string[];
+  stayType?: string;
+  rules?: string[];
+  nearbyPlaces?: import('@/lib/types').NearbyPlace[];
+  roomFeatures?: string[];
+  roomCategories?: string[];
 }
 
 const KEY = 'flatmatefind_posted_listings';
@@ -50,6 +57,16 @@ export function usePostedListings() {
     });
   }
 
+  function markTaken(id: string) {
+    setPosted((prev) => {
+      const next = prev.map((l) =>
+        l.id === id ? { ...l, status: 'taken' as const } : l
+      );
+      localStorage.setItem(KEY, JSON.stringify(next));
+      return next;
+    });
+  }
+
   function remove(id: string) {
     setPosted((prev) => {
       const next = prev.filter((l) => l.id !== id);
@@ -58,5 +75,5 @@ export function usePostedListings() {
     });
   }
 
-  return { posted, add, toggleStatus, remove, loaded };
+  return { posted, add, toggleStatus, markTaken, remove, loaded };
 }

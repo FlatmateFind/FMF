@@ -11,6 +11,7 @@ const footerLinks = {
       { label: 'Renter Guide', href: '/guide' },
       { label: 'Safety Tips', href: '/safety' },
       { label: 'FAQ', href: '/faq' },
+      { label: '📘 Facebook Communities', href: '/community' },
     ],
   },
   subletters: {
@@ -40,6 +41,7 @@ const footerLinks = {
     links: [
       { label: 'About FlatmateFind', href: '/about' },
       { label: 'Contact Us', href: '/contact' },
+      { label: 'FB Communities', href: '/community' },
       { label: 'Privacy Policy', href: '/privacy' },
       { label: 'Terms of Service', href: '/terms' },
       { label: 'Cookie Policy', href: '/privacy#cookies' },

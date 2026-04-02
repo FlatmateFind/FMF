@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import {
   Heart, Star, Home, PlusCircle, MapPin, Bed, Bath,
   Calendar, Pause, Play, Trash2, MessageCircle, ChevronRight,
-  Users, LayoutDashboard, Search, Building2, Sparkles, DollarSign,
+  Users, LayoutDashboard, Search, Building2, Sparkles, DollarSign, CheckCircle,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useFavorites } from '@/hooks/useFavorites';
@@ -175,7 +175,7 @@ function RenterDashboard() {
 function SubletterDashboard() {
   const { user } = useAuth();
   const { shortlisted } = useShortlist();
-  const { posted, toggleStatus, remove, loaded: postLoaded } = usePostedListings();
+  const { posted, toggleStatus, markTaken, remove, loaded: postLoaded } = usePostedListings();
   const shortlistedListings = listings.filter((l) => shortlisted.includes(l.id));
 
   return (
@@ -229,6 +229,7 @@ function SubletterDashboard() {
                 key={listing.id}
                 listing={listing}
                 onToggle={() => toggleStatus(listing.id)}
+                onMarkTaken={() => markTaken(listing.id)}
                 onRemove={() => remove(listing.id)}
               />
             ))}
@@ -303,18 +304,24 @@ function LoadingSpinner() {
   );
 }
 
-function PostedListingRow({ listing, onToggle, onRemove }: {
+function PostedListingRow({ listing, onToggle, onMarkTaken, onRemove }: {
   listing: import('@/hooks/usePostedListings').PostedListing;
   onToggle: () => void;
+  onMarkTaken: () => void;
   onRemove: () => void;
 }) {
+  const isTaken = listing.status === 'taken';
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-4">
+    <div className={`bg-white border rounded-xl p-4 flex items-center gap-4 ${isTaken ? 'border-red-200 opacity-75' : 'border-slate-200'}`}>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1">
           <span className="font-semibold text-slate-900 truncate">{listing.title}</span>
-          <span className={`px-2 py-0.5 rounded-full text-xs font-semibold shrink-0 ${listing.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-500'}`}>
-            {listing.status === 'active' ? 'Active' : 'Paused'}
+          <span className={`px-2 py-0.5 rounded-full text-xs font-semibold shrink-0 ${
+            listing.status === 'active' ? 'bg-green-100 text-green-700' :
+            listing.status === 'taken' ? 'bg-red-100 text-red-700' :
+            'bg-slate-100 text-slate-500'
+          }`}>
+            {listing.status === 'active' ? 'Active' : listing.status === 'taken' ? 'Taken' : 'Paused'}
           </span>
         </div>
         <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500">
@@ -329,9 +336,16 @@ function PostedListingRow({ listing, onToggle, onRemove }: {
         </div>
       </div>
       <div className="flex items-center gap-2 shrink-0">
-        <button onClick={onToggle} title={listing.status === 'active' ? 'Pause' : 'Activate'} className="p-2 rounded-lg border border-slate-200 text-slate-500 hover:border-teal-300 hover:text-teal-600 transition-colors">
-          {listing.status === 'active' ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-        </button>
+        {!isTaken && (
+          <>
+            <button onClick={onToggle} title={listing.status === 'active' ? 'Pause' : 'Activate'} className="p-2 rounded-lg border border-slate-200 text-slate-500 hover:border-teal-300 hover:text-teal-600 transition-colors">
+              {listing.status === 'active' ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+            </button>
+            <button onClick={onMarkTaken} title="Mark as taken" className="p-2 rounded-lg border border-slate-200 text-slate-500 hover:border-red-300 hover:text-red-500 transition-colors">
+              <CheckCircle className="w-4 h-4" />
+            </button>
+          </>
+        )}
         <button onClick={onRemove} title="Remove" className="p-2 rounded-lg border border-slate-200 text-slate-500 hover:border-red-300 hover:text-red-500 transition-colors">
           <Trash2 className="w-4 h-4" />
         </button>

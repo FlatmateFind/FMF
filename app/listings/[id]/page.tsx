@@ -8,9 +8,12 @@ import {
 } from 'lucide-react';
 import clsx from 'clsx';
 import { getListingById, getSimilarListings } from '@/lib/filterListings';
-import { INCLUSIONS_LIST } from '@/lib/types';
+import { INCLUSIONS_LIST, ROOM_FEATURES_LIST, NEARBY_PLACE_TYPES } from '@/lib/types';
 import ListingCard from '@/components/ListingCard';
 import ListingDetailActions from '@/components/ListingDetailActions';
+import ViewCounter from '@/components/ViewCounter';
+import NearbyJobs from '@/components/NearbyJobs';
+import AdSlot from '@/components/AdSlot';
 
 const FACILITY_ICONS: Record<string, React.ElementType> = {
   Parking: Car,
@@ -25,11 +28,17 @@ const FACILITY_ICONS: Record<string, React.ElementType> = {
 };
 
 const TYPE_COLORS: Record<string, string> = {
-  'private room': 'bg-teal-600 text-white',
+  'private room':    'bg-teal-600 text-white',
   'whole apartment': 'bg-blue-600 text-white',
-  'whole house': 'bg-emerald-600 text-white',
-  'studio': 'bg-violet-600 text-white',
-  'shared room': 'bg-orange-500 text-white',
+  'whole house':     'bg-emerald-600 text-white',
+  'studio':          'bg-violet-600 text-white',
+  'shared room':     'bg-orange-500 text-white',
+  'master room':     'bg-indigo-600 text-white',
+  'second room':     'bg-cyan-600 text-white',
+  'study room':      'bg-amber-600 text-white',
+  'sunny room':      'bg-yellow-500 text-white',
+  'living room':     'bg-lime-600 text-white',
+  'self-contained':  'bg-rose-600 text-white',
 };
 
 export default function ListingDetailPage({ params }: { params: { id: string } }) {
@@ -47,6 +56,28 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Unavailable banner */}
+      {(listing.status === 'taken' || listing.status === 'expired') && (
+        <div className={clsx(
+          'flex items-center gap-3 px-4 py-3 rounded-xl mb-6 border',
+          listing.status === 'taken'
+            ? 'bg-red-50 border-red-200 text-red-800'
+            : 'bg-slate-100 border-slate-300 text-slate-700'
+        )}>
+          <span className="text-lg">{listing.status === 'taken' ? '🔒' : '⏰'}</span>
+          <div>
+            <p className="font-semibold">
+              {listing.status === 'taken' ? 'This room has been taken' : 'This listing has expired'}
+            </p>
+            <p className="text-sm opacity-80">
+              {listing.status === 'taken'
+                ? 'The property is no longer available. Browse similar listings below.'
+                : 'This listing is no longer active. Check out similar rooms nearby.'}
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Breadcrumb */}
       <nav className="flex items-center gap-2 text-sm text-slate-500 mb-6">
         <Link href="/" className="hover:text-teal-600 transition-colors">Home</Link>
@@ -74,10 +105,15 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
           {/* Title + badges */}
           <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
             <div>
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex flex-wrap items-center gap-2 mb-2">
                 <span className={clsx('px-2.5 py-1 text-xs font-semibold rounded-full capitalize', TYPE_COLORS[listing.type] ?? 'bg-slate-600 text-white')}>
                   {listing.type}
                 </span>
+                {listing.roomCategories?.map((cat) => (
+                  <span key={cat} className="px-2.5 py-1 bg-slate-100 text-slate-700 text-xs font-semibold rounded-full border border-slate-200">
+                    {cat}
+                  </span>
+                ))}
                 {listing.featured && (
                   <span className="px-2.5 py-1 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full">Featured</span>
                 )}
@@ -87,7 +123,10 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
                 <MapPin className="w-4 h-4 shrink-0" />
                 {listing.location.address}, {listing.location.suburb} {listing.location.postcode}, {listing.location.city}
               </p>
-              <p className="text-xs text-slate-400 mt-1">Posted {postedDate}</p>
+              <div className="flex items-center gap-3 mt-1">
+                <p className="text-xs text-slate-400">Posted {postedDate}</p>
+                <ViewCounter listingId={listing.id} />
+              </div>
             </div>
             <div className="text-right">
               <div className="text-3xl font-bold text-teal-600">
@@ -189,6 +228,62 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
             </div>
           )}
 
+          {/* Room Features */}
+          {listing.roomFeatures && listing.roomFeatures.length > 0 && (
+            <div className="mb-8">
+              <h2 className="text-lg font-semibold text-slate-900 mb-4">Room Features</h2>
+              <div className="flex flex-wrap gap-2">
+                {listing.roomFeatures.map((feat) => (
+                  <span key={feat} className={`px-3 py-1.5 rounded-full text-sm font-medium border ${
+                    ROOM_FEATURES_LIST.includes(feat)
+                      ? 'bg-teal-50 text-teal-700 border-teal-200'
+                      : 'bg-slate-50 text-slate-700 border-slate-200'
+                  }`}>
+                    {feat}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Nearby Places */}
+          {listing.nearbyPlaces && listing.nearbyPlaces.length > 0 && (
+            <div className="mb-8">
+              <h2 className="text-lg font-semibold text-slate-900 mb-4">What&apos;s Nearby</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {listing.nearbyPlaces.map((place) => {
+                  const meta = NEARBY_PLACE_TYPES.find((p) => p.type === place.type);
+                  return (
+                    <div key={place.type} className="flex items-center gap-3 bg-white border border-slate-200 rounded-xl px-4 py-2.5">
+                      <span className="text-xl shrink-0">{meta?.emoji ?? '📍'}</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-slate-800 truncate">{place.type}</p>
+                      </div>
+                      <span className="shrink-0 text-xs font-semibold text-teal-700 bg-teal-50 border border-teal-100 px-2.5 py-1 rounded-full">
+                        {place.distance}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* House Rules */}
+          {listing.rules && listing.rules.length > 0 && (
+            <div className="mb-8">
+              <h2 className="text-lg font-semibold text-slate-900 mb-4">House Rules</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {listing.rules.map((rule) => (
+                  <div key={rule} className="flex items-center gap-2.5 text-sm text-slate-700">
+                    <span className="w-5 h-5 rounded-full bg-red-50 border border-red-100 flex items-center justify-center shrink-0 text-[11px]">🚫</span>
+                    {rule}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Description */}
           <div className="mb-8">
             <h2 className="text-lg font-semibold text-slate-900 mb-3">About this listing</h2>
@@ -229,13 +324,26 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
                 <div className="text-xs text-slate-500 uppercase tracking-wide font-semibold mb-1">Available</div>
                 <div className="text-slate-800 font-medium">{availableDate}</div>
               </div>
+              {listing.stayType && (
+                <div>
+                  <div className="text-xs text-slate-500 uppercase tracking-wide font-semibold mb-1">Stay Type</div>
+                  <span className={clsx('inline-block px-2.5 py-1 rounded-full text-xs font-semibold', {
+                    'bg-blue-100 text-blue-800': listing.stayType === 'short term',
+                    'bg-emerald-100 text-emerald-800': listing.stayType === 'long term',
+                    'bg-violet-100 text-violet-800': listing.stayType === 'both',
+                  })}>
+                    {listing.stayType === 'short term' ? '⚡ Short term' : listing.stayType === 'long term' ? '🏠 Long term' : '✦ Both'}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         {/* ── Right column — client component ─────────────────────────── */}
-        <div className="mt-8 lg:mt-0">
+        <div className="mt-8 lg:mt-0 space-y-5">
           <ListingDetailActions listing={listing} availableDate={availableDate} />
+          <AdSlot size="rectangle" />
         </div>
       </div>
 
@@ -253,6 +361,13 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
           </div>
         </div>
       )}
+
+      {/* Jobs in this area */}
+      <NearbyJobs
+        suburb={listing.location.suburb}
+        city={listing.location.city}
+        state={listing.location.state}
+      />
 
       <div className="mt-10">
         <Link href="/listings" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-teal-600 transition-colors">
