@@ -14,6 +14,8 @@ import ListingDetailActions from '@/components/ListingDetailActions';
 import ViewCounter from '@/components/ViewCounter';
 import NearbyJobs from '@/components/NearbyJobs';
 import AdSlot from '@/components/AdSlot';
+import ListingReactions from '@/components/ListingReactions';
+import ListingComments from '@/components/ListingComments';
 
 const FACILITY_ICONS: Record<string, React.ElementType> = {
   Parking: Car,
@@ -134,6 +136,11 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
               </div>
               <div className="text-sm text-slate-500">per {listing.rent.period}</div>
             </div>
+          </div>
+
+          {/* Reactions */}
+          <div className="mb-6">
+            <ListingReactions listingId={listing.id} />
           </div>
 
           {/* Details grid — two rows */}
@@ -346,6 +353,9 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
           <AdSlot size="rectangle" />
         </div>
       </div>
+
+      {/* Comments */}
+      <ListingComments listingId={listing.id} />
 
       {/* Similar listings */}
       {similar.length > 0 && (
