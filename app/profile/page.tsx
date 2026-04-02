@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, FormEvent, ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Camera, Save, Trash2, CheckCircle, MapPin, DollarSign,
-  Calendar, Home, User, Sparkles,
+  Calendar, Home, User, Sparkles, Zap, Home as HomeIcon, ArrowLeftRight,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useRenterProfile } from '@/hooks/useRenterProfile';
@@ -398,7 +398,12 @@ export default function ProfilePage() {
                       : 'bg-white text-slate-600 border-slate-200 hover:border-teal-400'
                   }`}
                 >
-                  {opt === 'short term' ? '⚡ Short term' : opt === 'long term' ? '🏠 Long term' : '✦ Any'}
+                  {opt === 'short term'
+                    ? <><Zap className="w-3.5 h-3.5 inline mr-1" />Short term</>
+                    : opt === 'long term'
+                    ? <><HomeIcon className="w-3.5 h-3.5 inline mr-1" />Long term</>
+                    : <><ArrowLeftRight className="w-3.5 h-3.5 inline mr-1" />Any</>
+                  }
                 </button>
               ))}
             </div>

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { X, Send, Star, StarOff, MessageCircle } from 'lucide-react';
+import { X, Send, Star, StarOff, MessageCircle, User, Search } from 'lucide-react';
 import { useChat } from '@/hooks/useChat';
 import { useShortlist } from '@/hooks/useShortlist';
 import { Listing } from '@/lib/types';
@@ -70,7 +70,10 @@ export default function ChatModal({ listing, onClose }: ChatModalProps) {
             }`}
             title="Switch between renter and host view"
           >
-            {isHostView ? '👤 Host view' : '🔍 Renter view'}
+            {isHostView
+              ? <><User className="w-3.5 h-3.5 inline mr-1" />Host view</>
+              : <><Search className="w-3.5 h-3.5 inline mr-1" />Renter view</>
+            }
           </button>
 
           <button onClick={onClose} className="p-1.5 rounded-lg hover:bg-slate-100 transition-colors">

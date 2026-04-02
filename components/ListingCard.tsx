@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Bed, Bath, Users, BadgeCheck, Heart, GitCompareArrows, Eye, Flame } from 'lucide-react';
+import { Bed, Bath, Users, BadgeCheck, Heart, GitCompareArrows, Eye, Flame, Zap, Home as HomeIcon, ArrowLeftRight } from 'lucide-react';
 import { Listing } from '@/lib/types';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useCompare } from '@/hooks/useCompare';
@@ -89,7 +89,12 @@ export default function ListingCard({ listing }: ListingCardProps) {
               'bg-emerald-600 text-white': listing.stayType === 'long term',
               'bg-violet-600 text-white': listing.stayType === 'both',
             })}>
-              {listing.stayType === 'short term' ? '⚡ Short term' : listing.stayType === 'long term' ? '🏠 Long term' : '✦ Both'}
+              {listing.stayType === 'short term'
+                ? <><Zap className="w-3 h-3 inline mr-1" />Short term</>
+                : listing.stayType === 'long term'
+                ? <><HomeIcon className="w-3 h-3 inline mr-1" />Long term</>
+                : <><ArrowLeftRight className="w-3 h-3 inline mr-1" />Both</>
+              }
             </span>
           )}
           {listing.featured && (

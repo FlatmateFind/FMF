@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { MapPin, DollarSign, Calendar, Home, User } from 'lucide-react';
+import { MapPin, DollarSign, Calendar, Home, User, Zap, Home as HomeIcon, PawPrint, CigaretteOff, Cigarette } from 'lucide-react';
 import { RenterProfile } from '@/lib/types';
 
 function Avatar({ profile, size = 'md' }: { profile: RenterProfile; size?: 'sm' | 'md' | 'lg' }) {
@@ -95,7 +95,10 @@ export default function RenterCard({ profile }: { profile: RenterProfile }) {
               ? 'bg-blue-50 text-blue-700 border-blue-100'
               : 'bg-emerald-50 text-emerald-700 border-emerald-100'
           }`}>
-            {profile.preferredStayType === 'short term' ? '⚡ Short term' : '🏠 Long term'}
+            {profile.preferredStayType === 'short term'
+              ? <><Zap className="w-3 h-3 inline mr-1" />Short term</>
+              : <><HomeIcon className="w-3 h-3 inline mr-1" />Long term</>
+            }
           </span>
         )}
         {profile.minimumStay && (
@@ -104,10 +107,10 @@ export default function RenterCard({ profile }: { profile: RenterProfile }) {
           </span>
         )}
         <span className={`px-2 py-0.5 text-[11px] font-medium rounded-full border ${profile.petsOk ? 'bg-green-50 text-green-700 border-green-100' : 'bg-slate-50 text-slate-400 border-slate-200'}`}>
-          {profile.petsOk ? '🐾 Pets ok' : 'No pets'}
+          {profile.petsOk ? <><PawPrint className="w-3 h-3 inline mr-1" />Pets ok</> : 'No pets'}
         </span>
         <span className={`px-2 py-0.5 text-[11px] font-medium rounded-full border ${profile.smokingOk ? 'bg-amber-50 text-amber-700 border-amber-100' : 'bg-slate-50 text-slate-400 border-slate-200'}`}>
-          {profile.smokingOk ? '🚬 Smoking ok' : 'Non-smoker'}
+          {profile.smokingOk ? <><Cigarette className="w-3 h-3 inline mr-1" />Smoking ok</> : <><CigaretteOff className="w-3 h-3 inline mr-1" />Non-smoker</>}
         </span>
         {profile.furnishedPreference !== 'any' && (
           <span className="px-2 py-0.5 bg-slate-50 text-slate-600 text-[11px] font-medium rounded-full border border-slate-200 capitalize">

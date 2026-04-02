@@ -7,6 +7,7 @@ import {
   Flower2, Lock, ChevronRight, Calendar, Clock,
   ShoppingCart, Train, Bus, Tram, GraduationCap, School, Hospital,
   Trees, ShoppingBag, Pill, Coffee, Plane, Umbrella, MapPinned,
+  Zap, Home as HomeIcon, ArrowLeftRight,
 } from 'lucide-react';
 import clsx from 'clsx';
 import { getListingById, getSimilarListings } from '@/lib/filterListings';
@@ -84,7 +85,10 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
             ? 'bg-red-50 border-red-200 text-red-800'
             : 'bg-slate-100 border-slate-300 text-slate-700'
         )}>
-          <span className="text-lg">{listing.status === 'taken' ? '🔒' : '⏰'}</span>
+          {listing.status === 'taken'
+            ? <Lock className="w-5 h-5 shrink-0" />
+            : <Clock className="w-5 h-5 shrink-0" />
+          }
           <div>
             <p className="font-semibold">
               {listing.status === 'taken' ? 'This room has been taken' : 'This listing has expired'}
@@ -298,7 +302,7 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {listing.rules.map((rule) => (
                   <div key={rule} className="flex items-center gap-2.5 text-sm text-slate-700">
-                    <span className="w-5 h-5 rounded-full bg-red-50 border border-red-100 flex items-center justify-center shrink-0 text-[11px]">🚫</span>
+                    <span className="w-5 h-5 rounded-full bg-red-50 border border-red-100 flex items-center justify-center shrink-0"><X className="w-3 h-3 text-red-400" /></span>
                     {rule}
                   </div>
                 ))}
@@ -354,7 +358,12 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
                     'bg-emerald-100 text-emerald-800': listing.stayType === 'long term',
                     'bg-violet-100 text-violet-800': listing.stayType === 'both',
                   })}>
-                    {listing.stayType === 'short term' ? '⚡ Short term' : listing.stayType === 'long term' ? '🏠 Long term' : '✦ Both'}
+                    {listing.stayType === 'short term'
+                      ? <><Zap className="w-3 h-3 inline mr-1" />Short term</>
+                      : listing.stayType === 'long term'
+                      ? <><HomeIcon className="w-3 h-3 inline mr-1" />Long term</>
+                      : <><ArrowLeftRight className="w-3 h-3 inline mr-1" />Both</>
+                    }
                   </span>
                 </div>
               )}

@@ -1,6 +1,6 @@
 'use client';
 import { useState, FormEvent } from 'react';
-import { CheckCircle, AlertTriangle } from 'lucide-react';
+import { CheckCircle, AlertTriangle, Zap, Home as HomeIcon, ArrowLeftRight } from 'lucide-react';
 import Link from 'next/link';
 import { CITIES, PROPERTY_TYPES, ROOM_CATEGORIES_LIST, INCLUSIONS_LIST, FACILITIES_LIST, ROOM_FEATURES_LIST, ROOM_TERMS_LIST, HOUSE_RULES_LIST, NATIONALITIES, NEARBY_PLACE_TYPES, NearbyPlace } from '@/lib/types';
 import { usePostedListings } from '@/hooks/usePostedListings';
@@ -496,7 +496,12 @@ export default function PostListingPage() {
                         : 'bg-white text-slate-600 border-slate-200 hover:border-teal-400'
                     }`}
                   >
-                    {opt === 'short term' ? '⚡ Short term' : opt === 'long term' ? '🏠 Long term' : '✦ Both'}
+                    {opt === 'short term'
+                      ? <><Zap className="w-3.5 h-3.5 inline mr-1" />Short term</>
+                      : opt === 'long term'
+                      ? <><HomeIcon className="w-3.5 h-3.5 inline mr-1" />Long term</>
+                      : <><ArrowLeftRight className="w-3.5 h-3.5 inline mr-1" />Both</>
+                    }
                   </button>
                 ))}
               </div>
