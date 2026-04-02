@@ -7,7 +7,6 @@ const footerLinks = {
     links: [
       { label: 'Browse Listings', href: '/listings' },
       { label: 'Create Profile', href: '/profile' },
-      { label: 'How it Works', href: '/how-it-works#renters' },
     ],
   },
   subletters: {
@@ -15,7 +14,6 @@ const footerLinks = {
     links: [
       { label: 'Post a Listing', href: '/post' },
       { label: 'Find Renters', href: '/renters' },
-      { label: 'How it Works', href: '/how-it-works#subletters' },
     ],
   },
   company: {
@@ -24,6 +22,7 @@ const footerLinks = {
       { label: 'About FlatmateFind', href: '/about' },
       { label: 'Contact Us', href: '/about#contact' },
       { label: 'Communities', href: '/community' },
+      { label: 'Guide', href: '/how-it-works' },
     ],
   },
 };
