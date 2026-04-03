@@ -3,6 +3,7 @@ import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import BackToTop from '@/components/BackToTop';
+import CompareBar from '@/components/CompareBar';
 import EmailVerificationBanner from '@/components/EmailVerificationBanner';
 import { AuthProvider } from '@/context/AuthContext';
 
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <EmailVerificationBanner />
           <main className="flex-1">{children}</main>
           <Footer />
+          <CompareBar />
           <BackToTop />
         </AuthProvider>
       </body>
