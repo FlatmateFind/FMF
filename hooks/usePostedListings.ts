@@ -25,6 +25,7 @@ export interface PostedListing {
   nearbyPlaces?: import('@/lib/types').NearbyPlace[];
   roomFeatures?: string[];
   roomCategories?: string[];
+  languages?: string[];
 }
 
 const KEY = 'flatmatefind_posted_listings';
