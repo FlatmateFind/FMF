@@ -27,7 +27,9 @@ function timeAgo(iso: string): string {
 export default function JobCard({ job }: { job: JobPost }) {
   const { user } = useAuth();
   const [showEmail, setShowEmail] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const isClosed = job.status === 'closed';
+  const isLong = job.description.length > 160;
 
   return (
     <div className={clsx(
@@ -76,7 +78,19 @@ export default function JobCard({ job }: { job: JobPost }) {
       </div>
 
       {/* Description */}
-      <p className="text-xs text-slate-600 leading-relaxed line-clamp-2 mb-3">{job.description}</p>
+      <div className="bg-slate-50 rounded-lg px-3 py-2.5 mb-3">
+        <p className={clsx('text-sm text-slate-700 leading-relaxed', !expanded && isLong && 'line-clamp-3')}>
+          {job.description}
+        </p>
+        {isLong && (
+          <button
+            onClick={() => setExpanded((v) => !v)}
+            className="text-xs text-teal-600 font-medium mt-1 hover:text-teal-800 transition-colors"
+          >
+            {expanded ? 'Show less' : 'Read more'}
+          </button>
+        )}
+      </div>
 
       {/* Nearby rooms */}
       {!isClosed && <NearbyListings suburb={job.suburb} state={job.state} />}
