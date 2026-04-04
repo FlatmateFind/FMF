@@ -180,6 +180,9 @@ export interface RenterProfile {
   houseGenderPreference: 'male' | 'female' | 'any';
   petsOk: boolean;
   smokingOk: boolean;
+  phone?: string;
+  showPhone?: boolean;   // true = visible to everyone; false/undefined = sign-in required
+  showEmail?: boolean;   // true = visible to everyone; false/undefined = sign-in required
   createdAt: string;
   updatedAt: string;
 }
@@ -190,6 +193,7 @@ export interface RenterProfileFilters {
   availableBy?: string;   // ISO date — renters whose moveInDate <= this
   roomType?: string;
   nationality?: string;
+  sort?: 'newest' | 'oldest';
 }
 
 export const MIN_STAY_OPTIONS = ['1 month', '2 months', '3 months', '6 months', '12 months', 'Flexible'];

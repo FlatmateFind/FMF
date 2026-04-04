@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { MapPin, DollarSign, Calendar, Home, User, Zap, Home as HomeIcon, PawPrint, CigaretteOff, Cigarette } from 'lucide-react';
+import { MapPin, DollarSign, Calendar, Home, User, Zap, Home as HomeIcon, PawPrint, CigaretteOff, Cigarette, MessageCircle } from 'lucide-react';
 import { RenterProfile } from '@/lib/types';
 
 function Avatar({ profile, size = 'md' }: { profile: RenterProfile; size?: 'sm' | 'md' | 'lg' }) {
@@ -120,12 +120,21 @@ export default function RenterCard({ profile }: { profile: RenterProfile }) {
       </div>
 
       {/* CTA */}
-      <Link
-        href={`/listings?state=${profile.preferredStates[0] ?? ''}`}
-        className="w-full text-center py-2.5 bg-teal-600 text-white text-sm font-semibold rounded-xl hover:bg-teal-700 transition-colors"
-      >
-        View matching listings
-      </Link>
+      <div className="flex gap-2 mt-auto pt-1">
+        <Link
+          href={`/renters/${profile.userId}`}
+          className="flex-1 text-center py-2.5 bg-teal-600 text-white text-sm font-semibold rounded-xl hover:bg-teal-700 transition-colors"
+        >
+          View Profile
+        </Link>
+        <Link
+          href={`/renters/${profile.userId}#chat`}
+          className="flex items-center justify-center gap-1.5 px-4 py-2.5 border border-teal-600 text-teal-700 text-sm font-semibold rounded-xl hover:bg-teal-50 transition-colors"
+        >
+          <MessageCircle className="w-4 h-4" />
+          Chat
+        </Link>
+      </div>
     </div>
   );
 }

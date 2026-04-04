@@ -20,6 +20,7 @@ function RentersPageInner() {
     availableBy: params.get('availableBy') || undefined,
     roomType:    params.get('roomType') || undefined,
     nationality: params.get('nationality') || undefined,
+    sort: (params.get('sort') as 'newest' | 'oldest') || undefined,
   }), [params]);
 
   const { profiles: rawProfiles, allProfiles, loaded } = useRenterProfiles(filters);
@@ -41,6 +42,7 @@ function RentersPageInner() {
     if (newFilters.availableBy) next.set('availableBy', newFilters.availableBy);
     if (newFilters.roomType)    next.set('roomType', newFilters.roomType);
     if (newFilters.nationality) next.set('nationality', newFilters.nationality);
+    if (newFilters.sort) next.set('sort', newFilters.sort);
     router.push(`/renters?${next.toString()}`);
   }, [router]);
 
@@ -53,6 +55,26 @@ function RentersPageInner() {
 
   const FilterContent = () => (
     <div className="space-y-6">
+      {/* Sort */}
+      <div>
+        <label className="block text-xs font-semibold text-slate-500 uppercase tracking-widest mb-2">Sort By</label>
+        <div className="flex gap-1.5">
+          {([['newest', 'Newest joined'], ['oldest', 'Oldest joined']] as const).map(([val, label]) => (
+            <button
+              key={val}
+              onClick={() => update('sort', val)}
+              className={`flex-1 py-2 text-xs font-medium rounded-lg border transition-all ${
+                (filters.sort || 'newest') === val
+                  ? 'bg-teal-600 text-white border-teal-600'
+                  : 'bg-white text-slate-600 border-slate-200 hover:border-teal-400'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* State */}
       <div>
         <label className="block text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">Looking in State</label>
@@ -189,9 +211,17 @@ function RentersPageInner() {
             </span>
           )}
         </button>
-        <p className="text-sm text-slate-500 ml-auto">
-          {loaded ? `${profiles.length} renter${profiles.length !== 1 ? 's' : ''}` : '...'}
-        </p>
+        <span className="text-sm text-slate-500 whitespace-nowrap">
+          {loaded ? `${profiles.length} renter${profiles.length !== 1 ? 's' : ''}` : '…'}
+        </span>
+        <select
+          value={filters.sort || 'newest'}
+          onChange={(e) => update('sort', e.target.value as 'newest' | 'oldest')}
+          className="ml-auto text-sm border border-slate-200 rounded-lg px-3 py-2 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-400 cursor-pointer"
+        >
+          <option value="newest">Newest joined</option>
+          <option value="oldest">Oldest joined</option>
+        </select>
       </div>
 
       {/* Mobile sidebar drawer */}

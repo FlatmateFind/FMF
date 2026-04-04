@@ -4,7 +4,7 @@ export function filterRenterProfiles(
   profiles: RenterProfile[],
   filters: RenterProfileFilters
 ): RenterProfile[] {
-  return profiles.filter((p) => {
+  const filtered = profiles.filter((p) => {
     // State: include if renter has no preference OR their list includes this state
     if (filters.state) {
       if (p.preferredStates.length > 0 && !p.preferredStates.includes(filters.state)) return false;
@@ -33,4 +33,14 @@ export function filterRenterProfiles(
 
     return true;
   });
+
+  // Sort
+  if (filters?.sort === 'oldest') {
+    filtered.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+  } else {
+    // default: newest first
+    filtered.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  }
+
+  return filtered;
 }

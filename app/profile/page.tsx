@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, FormEvent, ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Camera, Save, Trash2, CheckCircle, MapPin, DollarSign,
-  Calendar, Home, User, Sparkles, Zap, Home as HomeIcon, ArrowLeftRight,
+  Calendar, Home, User, Sparkles, Zap, Home as HomeIcon, ArrowLeftRight, Phone,
 } from 'lucide-react';
 import AuthPromptModal from '@/components/AuthPromptModal';
 import { useAuth } from '@/context/AuthContext';
@@ -69,6 +69,9 @@ export default function ProfilePage() {
   const [houseGenderPreference, setHouseGenderPreference] = useState<'male' | 'female' | 'any'>('any');
   const [petsOk, setPetsOk] = useState(false);
   const [smokingOk, setSmokingOk] = useState(false);
+  const [phone, setPhone] = useState('');
+  const [showPhone, setShowPhone] = useState(false);
+  const [showEmail, setShowEmail] = useState(false);
 
   // Redirect only if wrong role (subletter shouldn't use renter profile)
   useEffect(() => {
@@ -96,6 +99,9 @@ export default function ProfilePage() {
     setHouseGenderPreference(profile.houseGenderPreference);
     setPetsOk(profile.petsOk);
     setSmokingOk(profile.smokingOk);
+    setPhone(profile.phone ?? '');
+    setShowPhone(profile.showPhone ?? false);
+    setShowEmail(profile.showEmail ?? false);
   }, [loaded, profile]);
 
   async function handlePhoto(e: ChangeEvent<HTMLInputElement>) {
@@ -145,6 +151,9 @@ export default function ProfilePage() {
       houseGenderPreference,
       petsOk,
       smokingOk,
+      phone: phone || undefined,
+      showPhone,
+      showEmail,
     });
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
@@ -549,6 +558,55 @@ export default function ProfilePage() {
               />
               <span className="text-sm text-slate-700 font-medium">Smoking OK</span>
             </label>
+          </div>
+        </section>
+
+        {/* ── Contact & Visibility ──────────────────────────────────────────── */}
+        <section className="bg-white border border-slate-200 rounded-2xl p-6">
+          <h2 className="font-bold text-slate-900 mb-1 flex items-center gap-2">
+            <Phone className="w-4 h-4 text-teal-600" /> Contact & Visibility
+          </h2>
+          <p className="text-sm text-slate-400 mb-5">Choose what contact info is shown on your profile. By default, hosts must sign in to see it.</p>
+
+          <div className="mb-5">
+            <label className="block text-sm font-medium text-slate-700 mb-1.5">Phone number (optional)</label>
+            <input
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="e.g. 0412 345 678"
+              className="w-full text-sm border border-slate-200 rounded-lg py-2.5 px-3 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none"
+            />
+          </div>
+
+          <div className="space-y-3">
+            <label className="flex items-start gap-3 cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-teal-300 transition-colors">
+              <input
+                type="checkbox"
+                checked={showPhone}
+                onChange={(e) => setShowPhone(e.target.checked)}
+                className="mt-0.5 w-4 h-4 rounded text-teal-600 border-slate-300 focus:ring-teal-500"
+              />
+              <div>
+                <p className="text-sm font-medium text-slate-700">Show phone number publicly</p>
+                <p className="text-xs text-slate-400">Anyone can see your phone without signing in</p>
+              </div>
+            </label>
+            <label className="flex items-start gap-3 cursor-pointer p-3 rounded-xl border border-slate-200 hover:border-teal-300 transition-colors">
+              <input
+                type="checkbox"
+                checked={showEmail}
+                onChange={(e) => setShowEmail(e.target.checked)}
+                className="mt-0.5 w-4 h-4 rounded text-teal-600 border-slate-300 focus:ring-teal-500"
+              />
+              <div>
+                <p className="text-sm font-medium text-slate-700">Show email address publicly</p>
+                <p className="text-xs text-slate-400">Anyone can see your email without signing in</p>
+              </div>
+            </label>
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-500">
+              💬 <strong>Chat feature:</strong> Hosts who are signed in can always message you through the platform, regardless of these settings.
+            </div>
           </div>
         </section>
 
