@@ -612,23 +612,24 @@ export default function PostListingPage() {
           <p className="text-xs text-slate-500 mb-4">
             Enter walking/driving times or distances to help renters understand the location. Leave blank to skip any place type.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {/* 6-col shared grid: [icon][label][input] | [icon][label][input] — aligned across both columns */}
+          <div className="grid grid-cols-1 sm:grid-cols-[28px_minmax(0,1fr)_minmax(0,1.4fr)_28px_minmax(0,1fr)_minmax(0,1.4fr)] gap-x-2 gap-y-2.5 items-center">
             {NEARBY_PLACE_TYPES.map(({ type }) => {
               const Icon = NEARBY_ICONS[type] ?? MapPinned;
               return (
-              <div key={type} className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-teal-50 flex items-center justify-center shrink-0">
-                  <Icon className="w-4 h-4 text-teal-600" />
+                <div key={type} className="flex items-center gap-2 sm:contents">
+                  <div className="w-7 h-7 rounded-lg bg-teal-50 flex items-center justify-center shrink-0">
+                    <Icon className="w-4 h-4 text-teal-600" />
+                  </div>
+                  <span className="text-sm text-slate-700 w-36 shrink-0 sm:w-auto sm:truncate">{type}</span>
+                  <input
+                    type="text"
+                    value={nearbyDistances[type] ?? ''}
+                    onChange={(e) => setNearbyDistances((prev) => ({ ...prev, [type]: e.target.value }))}
+                    placeholder="e.g. 5 min walk"
+                    className="flex-1 sm:w-full text-sm border border-slate-200 rounded-lg py-1.5 px-2.5 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none"
+                  />
                 </div>
-                <span className="text-sm text-slate-700 w-36 shrink-0">{type}</span>
-                <input
-                  type="text"
-                  value={nearbyDistances[type] ?? ''}
-                  onChange={(e) => setNearbyDistances((prev) => ({ ...prev, [type]: e.target.value }))}
-                  placeholder="e.g. 5 min walk"
-                  className="flex-1 text-sm border border-slate-200 rounded-lg py-1.5 px-2.5 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none"
-                />
-              </div>
               );
             })}
           </div>
