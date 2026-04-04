@@ -13,11 +13,11 @@ import { useFavorites } from '@/hooks/useFavorites';
 const QUICK_LINKS = {
   renters: [
     { label: 'Browse Listings',  href: '/listings', icon: Search,     color: 'bg-teal-100 text-teal-700',   desc: 'Rooms & apartments near you' },
-    { label: 'Create My Profile', href: '/profile',  icon: Sparkles,   color: 'bg-violet-100 text-violet-700', desc: 'Get found by subletters' },
+    { label: 'Create Profile',    href: '/profile',  icon: Sparkles,   color: 'bg-violet-100 text-violet-700', desc: 'Get found by subletters' },
   ],
   subletters: [
     { label: 'Browse Profiles',  href: '/renters',  icon: Users,      color: 'bg-blue-100 text-blue-700',   desc: 'Find your next tenant' },
-    { label: 'Post a Listing',   href: '/post',     icon: PlusCircle, color: 'bg-amber-100 text-amber-700', desc: 'List your room for free' },
+    { label: 'Create Listing',   href: '/post',     icon: PlusCircle, color: 'bg-amber-100 text-amber-700', desc: 'List your room for free' },
   ],
 };
 
@@ -69,17 +69,6 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1">
-            {/* Browse */}
-            <Link
-              href="/listings"
-              className={`flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-lg transition-colors ${
-                pathname.startsWith('/listings') ? 'text-teal-600 bg-teal-50' : 'text-slate-600 hover:text-teal-600 hover:bg-slate-50'
-              }`}
-            >
-              <Search className="w-4 h-4" />
-              Browse
-            </Link>
-
             {/* Jobs */}
             <Link
               href="/jobs"
@@ -324,15 +313,6 @@ export default function Header() {
           <nav className="max-w-7xl mx-auto px-4 py-4 space-y-4">
 
             {/* Quick links */}
-            <Link
-              href="/listings"
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
-                pathname.startsWith('/listings') ? 'text-teal-600 bg-teal-50' : 'text-slate-700 hover:bg-slate-50'
-              }`}
-            >
-              <Search className="w-4 h-4" />
-              Browse Listings
-            </Link>
             <Link
               href="/jobs"
               className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
