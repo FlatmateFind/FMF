@@ -180,6 +180,7 @@ export interface RenterProfile {
   houseGenderPreference: 'male' | 'female' | 'any';
   petsOk: boolean;
   smokingOk: boolean;
+  status?: 'active' | 'inactive';
   phone?: string;
   showPhone?: boolean;   // true = visible to everyone; false/undefined = sign-in required
   showEmail?: boolean;   // true = visible to everyone; false/undefined = sign-in required

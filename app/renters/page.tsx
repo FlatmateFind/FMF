@@ -26,9 +26,11 @@ function RentersPageInner() {
   const { profiles: rawProfiles, allProfiles, loaded } = useRenterProfiles(filters);
 
   const profiles = useMemo(() => {
-    if (!query.trim()) return rawProfiles;
+    // Filter out deactivated profiles
+    let results = rawProfiles.filter((p) => p.status !== 'inactive');
+    if (!query.trim()) return results;
     const q = query.toLowerCase();
-    return rawProfiles.filter((p) =>
+    return results.filter((p) =>
       p.name.toLowerCase().includes(q) ||
       (p.nationality ?? '').toLowerCase().includes(q) ||
       (p.aboutMe ?? '').toLowerCase().includes(q)

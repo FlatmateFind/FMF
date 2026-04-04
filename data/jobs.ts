@@ -12,8 +12,9 @@ export interface JobPost {
   contactEmail: string;
   postedByName: string;
   postedByRole: 'renter' | 'subletter';
+  postedByUserId?: string;
   postedAt: string;
-  status: 'active' | 'closed';
+  status: 'active' | 'paused' | 'filled' | 'closed';
   languages?: string[];
 }
 

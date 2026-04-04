@@ -100,6 +100,7 @@ export default function PostJobPage() {
       languages: languages.length ? languages : undefined,
       postedByName: user.name,
       postedByRole: user.role,
+      postedByUserId: user.id,
       postedAt: new Date().toISOString(),
       status: 'active',
     });

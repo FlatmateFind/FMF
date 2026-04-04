@@ -62,5 +62,15 @@ export function useRenterProfile() {
     setProfile(null);
   }, [user]);
 
-  return { profile, loaded, save, clear };
+  const deactivate = useCallback(() => {
+    if (!user) return;
+    const all = readAll();
+    const idx = all.findIndex((p) => p.userId === user.id);
+    if (idx < 0) return;
+    all[idx] = { ...all[idx], status: all[idx].status === 'inactive' ? 'active' : 'inactive', updatedAt: new Date().toISOString() };
+    writeAll(all);
+    setProfile(all[idx]);
+  }, [user]);
+
+  return { profile, loaded, save, clear, deactivate };
 }
