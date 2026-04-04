@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Briefcase, PlusCircle, ArrowUpDown } from 'lucide-react';
+import { Briefcase, PlusCircle, Search, SlidersHorizontal, X, ArrowUpDown } from 'lucide-react';
 import { SEED_JOBS, JobPost, JobType } from '@/data/jobs';
 import { LANGUAGES, AUSTRALIAN_STATES } from '@/lib/types';
 import { useAuth } from '@/context/AuthContext';
@@ -10,13 +10,33 @@ import AdSlot from '@/components/AdSlot';
 
 const ALL_TYPES: JobType[] = ['Full-time', 'Part-time', 'Casual', 'Contract', 'Remote', 'Internship'];
 
+const TYPE_COLORS: Record<JobType, string> = {
+  'Full-time':  'bg-blue-50 border-blue-200 text-blue-700 hover:border-blue-400',
+  'Part-time':  'bg-teal-50 border-teal-200 text-teal-700 hover:border-teal-400',
+  'Casual':     'bg-amber-50 border-amber-200 text-amber-700 hover:border-amber-400',
+  'Contract':   'bg-purple-50 border-purple-200 text-purple-700 hover:border-purple-400',
+  'Remote':     'bg-green-50 border-green-200 text-green-700 hover:border-green-400',
+  'Internship': 'bg-pink-50 border-pink-200 text-pink-700 hover:border-pink-400',
+};
+
+const TYPE_ACTIVE: Record<JobType, string> = {
+  'Full-time':  'bg-blue-600 border-blue-600 text-white',
+  'Part-time':  'bg-teal-600 border-teal-600 text-white',
+  'Casual':     'bg-amber-500 border-amber-500 text-white',
+  'Contract':   'bg-purple-600 border-purple-600 text-white',
+  'Remote':     'bg-green-600 border-green-600 text-white',
+  'Internship': 'bg-pink-500 border-pink-500 text-white',
+};
+
 export default function JobsPage() {
   const { user } = useAuth();
   const [allJobs, setAllJobs] = useState<JobPost[]>(SEED_JOBS);
-  const [filter, setFilter] = useState<JobType | 'All'>('All');
+  const [typeFilter, setTypeFilter] = useState<JobType[]>([]);
   const [langFilter, setLangFilter] = useState('');
   const [stateFilter, setStateFilter] = useState('');
   const [sort, setSort] = useState<'newest' | 'oldest'>('newest');
+  const [query, setQuery] = useState('');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     try {
@@ -28,19 +48,115 @@ export default function JobsPage() {
     } catch { /* ignore */ }
   }, []);
 
+  const toggleType = (t: JobType) =>
+    setTypeFilter((prev) => prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]);
+
   const filtered = allJobs
-    .filter((j) => filter === 'All' || j.type === filter)
+    .filter((j) => typeFilter.length === 0 || typeFilter.includes(j.type))
     .filter((j) => !langFilter || (j.languages && j.languages.includes(langFilter)))
     .filter((j) => !stateFilter || j.state === stateFilter)
+    .filter((j) => !query || j.title.toLowerCase().includes(query.toLowerCase()) || (j.company ?? '').toLowerCase().includes(query.toLowerCase()))
     .sort((a, b) => sort === 'newest'
       ? new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime()
       : new Date(a.postedAt).getTime() - new Date(b.postedAt).getTime()
     );
 
+  const hasFilters = typeFilter.length > 0 || langFilter || stateFilter;
+
+  const clearAll = () => { setTypeFilter([]); setLangFilter(''); setStateFilter(''); };
+
+  const FilterSidebar = () => (
+    <div className="space-y-6">
+      {/* Job type */}
+      <div>
+        <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">Job Type</p>
+        <div className="flex flex-col gap-2">
+          {ALL_TYPES.map((t) => {
+            const active = typeFilter.includes(t);
+            return (
+              <button
+                key={t}
+                onClick={() => toggleType(t)}
+                className={`px-3 py-2 rounded-lg text-xs font-semibold border transition-all text-left ${
+                  active ? TYPE_ACTIVE[t] : TYPE_COLORS[t]
+                }`}
+              >
+                {t}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* State */}
+      <div>
+        <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">State</p>
+        <select
+          value={stateFilter}
+          onChange={(e) => setStateFilter(e.target.value)}
+          className="w-full text-sm border border-slate-200 rounded-lg py-2 pl-3 pr-8 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-slate-700"
+        >
+          <option value="">All states</option>
+          {AUSTRALIAN_STATES.map((s) => (
+            <option key={s.abbr} value={s.abbr}>{s.abbr} — {s.name}</option>
+          ))}
+        </select>
+      </div>
+
+      {/* Language */}
+      <div>
+        <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">Language</p>
+        <select
+          value={langFilter}
+          onChange={(e) => setLangFilter(e.target.value)}
+          className="w-full text-sm border border-slate-200 rounded-lg py-2 pl-3 pr-8 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-slate-700"
+        >
+          <option value="">All languages</option>
+          {LANGUAGES.map((l) => <option key={l} value={l}>{l}</option>)}
+        </select>
+      </div>
+
+      {/* Sort */}
+      <div>
+        <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">Sort By</p>
+        <div className="flex flex-col gap-2">
+          {(['newest', 'oldest'] as const).map((s) => (
+            <button
+              key={s}
+              onClick={() => setSort(s)}
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium border transition-all ${
+                sort === s
+                  ? 'bg-teal-600 border-teal-600 text-white'
+                  : 'bg-white border-slate-200 text-slate-600 hover:border-teal-300 hover:text-teal-600'
+              }`}
+            >
+              <ArrowUpDown className="w-3.5 h-3.5" />
+              {s === 'newest' ? 'Newest first' : 'Oldest first'}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Clear */}
+      {hasFilters && (
+        <button
+          onClick={clearAll}
+          className="w-full flex items-center justify-center gap-1.5 text-xs text-red-500 hover:text-red-700 border border-red-200 hover:border-red-400 rounded-lg py-2 transition-colors"
+        >
+          <X className="w-3.5 h-3.5" />
+          Clear all filters
+        </button>
+      )}
+
+      {/* Ad slot */}
+      <AdSlot size="rectangle" slotId="jobs-sidebar" />
+    </div>
+  );
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Page header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <Briefcase className="w-6 h-6 text-teal-600" />
@@ -57,132 +173,102 @@ export default function JobsPage() {
         </Link>
       </div>
 
-      <div className="lg:grid lg:grid-cols-3 lg:gap-8">
-        {/* ── Left: job list ─────────────────────────────────────────────── */}
-        <div className="lg:col-span-2">
-          {/* Job type pills */}
-          <div className="flex items-center gap-1.5 flex-wrap mb-3">
-            {(['All', ...ALL_TYPES] as const).map((t) => (
-              <button
-                key={t}
-                onClick={() => setFilter(t)}
-                className={`px-3 py-1 rounded-full text-xs font-medium border transition-all ${
-                  filter === t
-                    ? 'bg-teal-600 text-white border-teal-600'
-                    : 'bg-white text-slate-600 border-slate-200 hover:border-teal-400 hover:text-teal-600'
-                }`}
-              >
-                {t}
-              </button>
-            ))}
-          </div>
+      {/* Search bar */}
+      <div className="relative mb-6">
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search job title or company..."
+          className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-xl bg-white text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 shadow-sm"
+        />
+        {query && (
+          <button onClick={() => setQuery('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+            <X className="w-4 h-4" />
+          </button>
+        )}
+      </div>
 
-          {/* Secondary filters row */}
-          <div className="flex flex-wrap items-center gap-2 mb-5">
-            <select
-              value={stateFilter}
-              onChange={(e) => setStateFilter(e.target.value)}
-              className="text-xs border border-slate-200 rounded-lg py-1.5 pl-3 pr-8 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-slate-600"
-            >
-              <option value="">All states</option>
-              {AUSTRALIAN_STATES.map((s) => (
-                <option key={s.abbr} value={s.abbr}>{s.abbr} — {s.name}</option>
-              ))}
-            </select>
-            <select
-              value={langFilter}
-              onChange={(e) => setLangFilter(e.target.value)}
-              className="text-xs border border-slate-200 rounded-lg py-1.5 pl-3 pr-8 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-slate-600"
-            >
-              <option value="">All languages</option>
-              {LANGUAGES.map((l) => <option key={l} value={l}>{l}</option>)}
-            </select>
-            <div className="flex items-center gap-1 ml-auto">
-              <ArrowUpDown className="w-3.5 h-3.5 text-slate-400" />
-              <select
-                value={sort}
-                onChange={(e) => setSort(e.target.value as 'newest' | 'oldest')}
-                className="text-xs border border-slate-200 rounded-lg py-1.5 pl-3 pr-8 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-slate-600"
-              >
-                <option value="newest">Newest first</option>
-                <option value="oldest">Oldest first</option>
-              </select>
-            </div>
-            {(stateFilter || langFilter) && (
-              <button
-                onClick={() => { setStateFilter(''); setLangFilter(''); }}
-                className="text-xs text-slate-400 hover:text-red-500 transition-colors"
-              >
-                Clear filters
-              </button>
-            )}
-          </div>
+      {/* Mobile filter toggle */}
+      <div className="flex items-center gap-2 mb-4 lg:hidden">
+        <button
+          onClick={() => setSidebarOpen((v) => !v)}
+          className="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-sm font-medium text-slate-600 hover:border-teal-400 hover:text-teal-600 transition-colors bg-white"
+        >
+          <SlidersHorizontal className="w-4 h-4" />
+          Filters
+          {hasFilters && (
+            <span className="w-4 h-4 bg-teal-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+              {typeFilter.length + (langFilter ? 1 : 0) + (stateFilter ? 1 : 0)}
+            </span>
+          )}
+        </button>
+        <p className="text-sm text-slate-500 ml-auto">{filtered.length} job{filtered.length !== 1 ? 's' : ''}</p>
+      </div>
 
-          {/* Job list — scrollable on large screens */}
-          <div className="space-y-3 lg:max-h-[680px] lg:overflow-y-auto lg:pr-1">
-            {filtered.length === 0 ? (
-              <div className="text-center py-16 text-slate-400 text-sm">No jobs match this filter.</div>
-            ) : (
-              filtered.map((job) => <JobCard key={job.id} job={job} />)
-            )}
+      {/* Mobile sidebar drawer */}
+      {sidebarOpen && (
+        <div className="lg:hidden bg-white border border-slate-200 rounded-2xl p-5 mb-6 shadow-md">
+          <div className="flex items-center justify-between mb-4">
+            <span className="font-semibold text-slate-800">Filters</span>
+            <button onClick={() => setSidebarOpen(false)} className="text-slate-400 hover:text-slate-600">
+              <X className="w-4 h-4" />
+            </button>
           </div>
-
-          <p className="text-xs text-slate-400 mt-3">
-            Showing {filtered.length} job{filtered.length !== 1 ? 's' : ''}
-          </p>
+          <FilterSidebar />
         </div>
+      )}
 
-        {/* ── Right: sidebar ─────────────────────────────────────────────── */}
-        <div className="mt-8 lg:mt-0 space-y-4">
-          {/* Post a job CTA */}
-          <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-            <Briefcase className="w-8 h-8 text-teal-600 mb-3" />
-            <h3 className="font-bold text-slate-900 text-lg mb-1">Hiring someone?</h3>
-            <p className="text-slate-500 text-sm mb-4 leading-relaxed">
-              Post your job for free and reach renters and subletters actively looking for work nearby.
-            </p>
-            <Link
-              href="/jobs/post"
-              className="block text-center w-full py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-lg text-sm transition-colors"
-            >
-              Post a Job — Free
-            </Link>
+      {/* Main layout */}
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Desktop sidebar */}
+        <aside className="hidden lg:block w-64 shrink-0">
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 sticky top-24">
+            <div className="flex items-center justify-between mb-5">
+              <span className="font-semibold text-slate-800 text-sm">Filters</span>
+              {hasFilters && (
+                <button onClick={clearAll} className="text-xs text-red-500 hover:text-red-700 transition-colors">
+                  Clear all
+                </button>
+              )}
+            </div>
+            <FilterSidebar />
           </div>
+        </aside>
 
-          {/* How it works */}
-          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5">
-            <h4 className="font-semibold text-sm text-slate-700 mb-3">How it works</h4>
-            <ul className="space-y-2.5 text-xs text-slate-500">
-              <li className="flex items-start gap-2">
-                <span className="w-4 h-4 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center font-bold shrink-0 text-[10px]">1</span>
-                Sign in with your FlatmateFind account
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="w-4 h-4 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center font-bold shrink-0 text-[10px]">2</span>
-                Fill in the job details — takes under 2 minutes
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="w-4 h-4 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center font-bold shrink-0 text-[10px]">3</span>
-                Applicants contact you directly by email
-              </li>
-            </ul>
-            <p className="text-xs text-slate-400 mt-3 border-t border-slate-200 pt-3">
-              Max 2 active posts per account. All listings are reviewed for spam.
-            </p>
-          </div>
-
-          {/* Sign-in nudge for guests */}
-          {!user && (
-            <div className="bg-teal-50 border border-teal-200 rounded-2xl p-4 text-center">
-              <p className="text-sm text-teal-700 mb-2">Sign in to apply to jobs or post your own.</p>
-              <Link href="/auth/signin?from=/jobs" className="text-xs font-semibold text-teal-600 hover:text-teal-800 underline">
-                Sign in / Register →
+        {/* Job cards */}
+        <div className="flex-1 min-w-0">
+          <div className="hidden lg:flex items-center justify-between mb-4">
+            <p className="text-sm text-slate-500">{filtered.length} job{filtered.length !== 1 ? 's' : ''} found</p>
+            {!user && (
+              <Link href="/auth/signin?from=/jobs" className="text-xs text-teal-600 hover:text-teal-800 font-medium">
+                Sign in to apply →
               </Link>
+            )}
+          </div>
+
+          {filtered.length === 0 ? (
+            <div className="text-center py-20 text-slate-400">
+              <Briefcase className="w-10 h-10 mx-auto mb-3 opacity-30" />
+              <p className="text-sm">No jobs match your filters.</p>
+              <button onClick={clearAll} className="mt-3 text-xs text-teal-600 hover:underline">Clear filters</button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+              {filtered.map((job, i) => (
+                <>
+                  <JobCard key={job.id} job={job} />
+                  {/* Ad slot every 6 cards */}
+                  {i === 5 && (
+                    <div key="ad-inline" className="xl:col-span-2">
+                      <AdSlot size="leaderboard" slotId="home-leaderboard" />
+                    </div>
+                  )}
+                </>
+              ))}
             </div>
           )}
-
-          {/* Ad slot */}
-          <AdSlot size="rectangle" slotId="jobs-sidebar" />
         </div>
       </div>
     </div>
