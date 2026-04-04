@@ -3,10 +3,12 @@ export type ListingType =
   | 'master room' | 'second room' | 'study room' | 'sunny room' | 'living room' | 'self-contained';
 
 export const LANGUAGES = [
-  'English', 'Mandarin', 'Cantonese', 'Hindi', 'Korean', 'Japanese',
-  'Vietnamese', 'Thai', 'Tagalog', 'Arabic', 'Spanish', 'French',
-  'Portuguese', 'Nepali', 'Tamil', 'Punjabi', 'Indonesian', 'Malay',
-  'Bengali', 'Urdu', 'Sinhalese',
+  'English',
+  'Mandarin', 'Cantonese',
+  'Hindi', 'Punjabi', 'Tamil', 'Bengali', 'Urdu', 'Sinhalese', 'Nepali',
+  'Tagalog', 'Vietnamese', 'Korean', 'Japanese', 'Thai', 'Indonesian', 'Malay',
+  'Arabic',
+  'Italian', 'Greek', 'German', 'French', 'Spanish', 'Portuguese',
 ];
 
 export interface Listing {
@@ -149,12 +151,21 @@ export const INCLUSIONS_LIST = ['Electricity', 'Water', 'Gas', 'Internet', 'Netf
 
 export const FACILITIES_LIST = ['Parking', 'Gym', 'Pool', 'Air conditioning', 'Dishwasher', 'Washing machine', 'Balcony', 'Garden', 'Storage', 'Security'];
 
+// Major immigrant nationalities in Australia (ABS top communities)
 export const NATIONALITIES = [
-  'Afghan', 'American', 'Australian', 'Bangladeshi', 'British', 'Brazilian',
-  'Canadian', 'Chinese', 'Filipino', 'French', 'German', 'Indian', 'Indonesian',
-  'Irish', 'Italian', 'Japanese', 'Korean', 'Malaysian', 'Nepalese', 'New Zealander',
-  'Pakistani', 'Singaporean', 'South African', 'Spanish', 'Sri Lankan',
-  'Taiwanese', 'Thai', 'Vietnamese',
+  // Anglosphere
+  'Australian', 'British', 'New Zealander', 'Irish', 'South African', 'American', 'Canadian',
+  // East & South-East Asia
+  'Chinese', 'Hong Konger', 'Taiwanese', 'Korean', 'Japanese', 'Filipino', 'Vietnamese',
+  'Malaysian', 'Singaporean', 'Indonesian', 'Thai', 'Burmese',
+  // South Asia
+  'Indian', 'Sri Lankan', 'Nepalese', 'Bangladeshi', 'Pakistani',
+  // Middle East & Central Asia
+  'Afghan',
+  // Europe
+  'Italian', 'Greek', 'German', 'French', 'Spanish',
+  // Latin America
+  'Brazilian',
 ];
 
 export type RoomType = ListingType;

@@ -100,6 +100,8 @@ export default function PostListingPage() {
   const [customFacilities, setCustomFacilities] = useState<string[]>([]);
   const [customRoomFeatures, setCustomRoomFeatures] = useState<string[]>([]);
   const [rules, setRules] = useState<string[]>([]);
+  const [customRules, setCustomRules] = useState<string[]>([]);
+  const [customNationalities, setCustomNationalities] = useState<string[]>([]);
   const [nearbyDistances, setNearbyDistances] = useState<Record<string, string>>({});
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { add } = usePostedListings();
@@ -188,7 +190,7 @@ export default function PostListingPage() {
       status: 'active',
       contactName: form.contactName,
       stayType: form.stayType || undefined,
-      rules: rules.length ? rules : undefined,
+      rules: [...rules, ...customRules].length ? [...rules, ...customRules] : undefined,
       nearbyPlaces: Object.entries(nearbyDistances)
         .filter(([, d]) => d.trim())
         .map(([type, distance]) => ({ type, distance: distance.trim() })),
@@ -499,6 +501,12 @@ export default function PostListingPage() {
               </div>
             </div>
           ))}
+          <CustomTagInput
+            items={customRules}
+            onChange={setCustomRules}
+            existingSelected={rules}
+            placeholder="e.g. No shoes in common areas, Quiet after 11pm…"
+          />
         </Section>
 
         {/* 9. Tenant Preferences */}
@@ -514,6 +522,12 @@ export default function PostListingPage() {
                   </label>
                 ))}
               </div>
+              <CustomTagInput
+                items={customNationalities}
+                onChange={setCustomNationalities}
+                existingSelected={form.preferredNationalities}
+                placeholder="e.g. Tibetan, Uyghur, Punjabi…"
+              />
             </div>
             <div>
               <Label>Languages Spoken by Host</Label>
