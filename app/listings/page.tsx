@@ -375,6 +375,9 @@ function ListingsPageInner() {
             </span>
           )}
         </button>
+        <span className="text-sm text-slate-500 whitespace-nowrap">
+          {loading ? '…' : `${total} listing${total !== 1 ? 's' : ''}`}
+        </span>
         <select
           value={filters.sort || 'newest'}
           onChange={(e) => update('sort', e.target.value as SortOption)}
