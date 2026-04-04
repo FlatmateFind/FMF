@@ -54,7 +54,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-sm text-slate-400 leading-relaxed mb-5">
-              Australia&apos;s free flatmate and share-house board. Find your perfect room or list your place — no fees, no fuss.
+              Find your room. Find your people. Free, always.
             </p>
             <div className="flex flex-wrap gap-2 text-xs text-slate-500">
               <span className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-800 rounded-full"><Globe className="w-3 h-3 text-teal-400" /> Australia-wide</span>
