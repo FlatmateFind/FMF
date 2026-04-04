@@ -1,10 +1,25 @@
 'use client';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Home, Heart, LayoutDashboard, LogOut, User, ChevronDown, Users, Sparkles, Briefcase, Search, LogIn, UserPlus, Menu, X } from 'lucide-react';
+import {
+  Home, Heart, LayoutDashboard, LogOut, User, ChevronDown,
+  Users, Sparkles, Briefcase, Search, LogIn, UserPlus,
+  Menu, X, PlusCircle, Zap,
+} from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useFavorites } from '@/hooks/useFavorites';
+
+const QUICK_LINKS = {
+  renters: [
+    { label: 'Browse Listings',  href: '/listings', icon: Search,     color: 'bg-teal-100 text-teal-700',   desc: 'Rooms & apartments near you' },
+    { label: 'Create My Profile', href: '/profile',  icon: Sparkles,   color: 'bg-violet-100 text-violet-700', desc: 'Get found by subletters' },
+  ],
+  subletters: [
+    { label: 'Browse Profiles',  href: '/renters',  icon: Users,      color: 'bg-blue-100 text-blue-700',   desc: 'Find your next tenant' },
+    { label: 'Post a Listing',   href: '/post',     icon: PlusCircle, color: 'bg-amber-100 text-amber-700', desc: 'List your room for free' },
+  ],
+};
 
 export default function Header() {
   const pathname = usePathname();
@@ -13,23 +28,22 @@ export default function Header() {
   const { favorites } = useFavorites();
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [quickOpen, setQuickOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const quickRef = useRef<HTMLDivElement>(null);
 
-  // Close user dropdown on outside click
+  // Close dropdowns on outside click
   useEffect(() => {
     function handle(e: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setMenuOpen(false);
-      }
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenuOpen(false);
+      if (quickRef.current && !quickRef.current.contains(e.target as Node)) setQuickOpen(false);
     }
     document.addEventListener('mousedown', handle);
     return () => document.removeEventListener('mousedown', handle);
   }, []);
 
   // Close mobile menu on route change
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
+  useEffect(() => { setMobileOpen(false); setQuickOpen(false); }, [pathname]);
 
   function handleSignOut() {
     signOut();
@@ -42,6 +56,7 @@ export default function Header() {
     <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
+
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <div className="bg-teal-600 p-1.5 rounded-lg">
@@ -76,6 +91,70 @@ export default function Header() {
               Jobs
             </Link>
 
+            {/* Get Started dropdown */}
+            <div className="relative" ref={quickRef}>
+              <button
+                onClick={() => setQuickOpen((v) => !v)}
+                className={`flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-lg transition-colors ${
+                  quickOpen ? 'text-teal-600 bg-teal-50' : 'text-slate-600 hover:text-teal-600 hover:bg-slate-50'
+                }`}
+              >
+                <Zap className="w-4 h-4" />
+                Get Started
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${quickOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {quickOpen && (
+                <div className="absolute left-0 top-full mt-2 w-[420px] bg-white border border-slate-200 rounded-2xl shadow-xl p-4 z-50">
+                  <div className="grid grid-cols-2 gap-3">
+                    {/* For Renters */}
+                    <div>
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">For Renters</p>
+                      <div className="space-y-1.5">
+                        {QUICK_LINKS.renters.map(({ label, href, icon: Icon, color, desc }) => (
+                          <Link
+                            key={href}
+                            href={href}
+                            onClick={() => setQuickOpen(false)}
+                            className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors group"
+                          >
+                            <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
+                              <Icon className="w-4 h-4" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-semibold text-slate-800 group-hover:text-teal-700">{label}</p>
+                              <p className="text-[11px] text-slate-400">{desc}</p>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                    {/* Divider */}
+                    <div className="border-l border-slate-100 pl-3">
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">For Subletters</p>
+                      <div className="space-y-1.5">
+                        {QUICK_LINKS.subletters.map(({ label, href, icon: Icon, color, desc }) => (
+                          <Link
+                            key={href}
+                            href={href}
+                            onClick={() => setQuickOpen(false)}
+                            className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors group"
+                          >
+                            <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
+                              <Icon className="w-4 h-4" />
+                            </div>
+                            <div>
+                              <p className="text-sm font-semibold text-slate-800 group-hover:text-teal-700">{label}</p>
+                              <p className="text-[11px] text-slate-400">{desc}</p>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Auth / user menu */}
             {!loading && (
@@ -242,7 +321,9 @@ export default function Header() {
       {/* Mobile dropdown menu */}
       {mobileOpen && (
         <div className="md:hidden border-t border-slate-100 bg-white">
-          <nav className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-1">
+          <nav className="max-w-7xl mx-auto px-4 py-4 space-y-4">
+
+            {/* Quick links */}
             <Link
               href="/listings"
               className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
@@ -261,6 +342,51 @@ export default function Header() {
               <Briefcase className="w-4 h-4" />
               Jobs
             </Link>
+
+            {/* For Renters section */}
+            <div>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-4 mb-2">For Renters</p>
+              <div className="grid grid-cols-2 gap-2">
+                {QUICK_LINKS.renters.map(({ label, href, icon: Icon, color, desc }) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    className="flex flex-col items-start gap-2 p-3 rounded-xl border border-slate-100 hover:border-slate-200 bg-slate-50 hover:bg-white transition-colors"
+                  >
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${color}`}>
+                      <Icon className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-slate-800">{label}</p>
+                      <p className="text-[10px] text-slate-400 leading-tight">{desc}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* For Subletters section */}
+            <div>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-4 mb-2">For Subletters</p>
+              <div className="grid grid-cols-2 gap-2">
+                {QUICK_LINKS.subletters.map(({ label, href, icon: Icon, color, desc }) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    className="flex flex-col items-start gap-2 p-3 rounded-xl border border-slate-100 hover:border-slate-200 bg-slate-50 hover:bg-white transition-colors"
+                  >
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${color}`}>
+                      <Icon className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-slate-800">{label}</p>
+                      <p className="text-[10px] text-slate-400 leading-tight">{desc}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
           </nav>
         </div>
       )}
