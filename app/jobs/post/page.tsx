@@ -7,7 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import AuthPromptModal from '@/components/AuthPromptModal';
 import { useJobListings } from '@/hooks/useJobListings';
 import { checkSpam } from '@/lib/spamGuard';
-import { AUSTRALIAN_STATES, LANGUAGES } from '@/lib/types';
+import { AUSTRALIAN_STATES, POST_LANGUAGES } from '@/lib/types';
 import { JobType } from '@/data/jobs';
 
 const JOB_TYPES: JobType[] = ['Full-time', 'Part-time', 'Casual', 'Contract', 'Remote', 'Internship'];
@@ -34,7 +34,7 @@ export default function PostJobPage() {
   const [salary, setSalary] = useState('');
   const [description, setDescription] = useState('');
   const [contactEmail, setContactEmail] = useState('');
-  const [languages, setLanguages] = useState<string[]>([]);
+  const [postLanguage, setPostLanguage] = useState('English');
 
   // No redirect — unauthenticated users can fill the form, gated on submit
 
@@ -97,7 +97,7 @@ export default function PostJobPage() {
       salary: salary.trim() || undefined,
       description: description.trim(),
       contactEmail: contactEmail.trim(),
-      languages: languages.length ? languages : undefined,
+      postLanguage: postLanguage !== 'English' ? postLanguage : undefined,
       postedByName: user.name,
       postedByRole: user.role,
       postedByUserId: user.id,
@@ -241,21 +241,24 @@ export default function PostJobPage() {
           <p className="text-xs text-slate-400 mt-1">Only shown to signed-in users who click &ldquo;Apply&rdquo;.</p>
         </div>
 
-        {/* Languages */}
+        {/* Post language */}
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Languages</label>
-          <p className="text-xs text-slate-400 mb-2">Select languages spoken at this workplace (helps bilingual renters find you)</p>
-          <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5">
-            {LANGUAGES.map((lang) => (
-              <label key={lang} className="flex items-center gap-2 cursor-pointer group">
-                <input
-                  type="checkbox"
-                  checked={languages.includes(lang)}
-                  onChange={() => setLanguages((prev) => prev.includes(lang) ? prev.filter((l) => l !== lang) : [...prev, lang])}
-                  className="w-3.5 h-3.5 rounded text-teal-600 border-slate-300 focus:ring-teal-500"
-                />
-                <span className="text-xs text-slate-700 group-hover:text-teal-600 transition-colors">{lang}</span>
-              </label>
+          <label className="block text-sm font-medium text-slate-700 mb-1">Post language</label>
+          <p className="text-xs text-slate-400 mb-2.5">What language is this job post written in? Job seekers can filter by this.</p>
+          <div className="flex flex-wrap gap-2">
+            {POST_LANGUAGES.map(({ label, native }) => (
+              <button
+                key={label}
+                type="button"
+                onClick={() => setPostLanguage(label)}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                  postLanguage === label
+                    ? 'bg-teal-600 border-teal-600 text-white'
+                    : 'bg-white border-slate-200 text-slate-600 hover:border-teal-300 hover:text-teal-600'
+                }`}
+              >
+                {label === native ? label : `${label} · ${native}`}
+              </button>
             ))}
           </div>
         </div>

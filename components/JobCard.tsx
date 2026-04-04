@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { MapPin, DollarSign, Clock, Mail, Building2, ChevronDown, ChevronUp } from 'lucide-react';
+import { MapPin, DollarSign, Clock, Mail, Building2, ChevronDown, ChevronUp, Languages } from 'lucide-react';
+import { POST_LANGUAGES } from '@/lib/types';
 import { JobPost, JobType } from '@/data/jobs';
 import { useAuth } from '@/context/AuthContext';
 import NearbyListings from '@/components/NearbyListings';
@@ -41,6 +42,9 @@ export default function JobCard({ job }: { job: JobPost }) {
   const isClosed = job.status === 'closed';
   const isLong = job.description.length > 160;
   const accent = TYPE_ACCENT[job.type] ?? { bar: 'bg-slate-400', hover: 'hover:border-slate-200 hover:shadow-slate-50', btn: 'border-slate-400 text-slate-600 hover:bg-slate-50' };
+  const langEntry = job.postLanguage && job.postLanguage !== 'English'
+    ? POST_LANGUAGES.find((l) => l.label === job.postLanguage)
+    : null;
 
   return (
     <div className={clsx(
@@ -86,6 +90,12 @@ export default function JobCard({ job }: { job: JobPost }) {
             <span className="flex items-center gap-1 font-medium text-slate-700">
               <DollarSign className="w-3 h-3 shrink-0" />
               {job.salary}
+            </span>
+          )}
+          {langEntry && (
+            <span className="flex items-center gap-1 px-2 py-0.5 bg-violet-50 text-violet-700 border border-violet-100 rounded-full font-medium">
+              <Languages className="w-3 h-3 shrink-0" />
+              {langEntry.native}
             </span>
           )}
           <span className="flex items-center gap-1 ml-auto">

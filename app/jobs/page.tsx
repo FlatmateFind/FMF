@@ -1,9 +1,9 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Briefcase, PlusCircle, Search, SlidersHorizontal, X, ArrowUpDown } from 'lucide-react';
+import { Briefcase, PlusCircle, Search, SlidersHorizontal, X, ArrowUpDown, Languages } from 'lucide-react';
 import { SEED_JOBS, JobPost, JobType } from '@/data/jobs';
-import { LANGUAGES, AUSTRALIAN_STATES } from '@/lib/types';
+import { POST_LANGUAGES, AUSTRALIAN_STATES } from '@/lib/types';
 import { useAuth } from '@/context/AuthContext';
 import JobCard from '@/components/JobCard';
 import AdSlot from '@/components/AdSlot';
@@ -32,7 +32,7 @@ export default function JobsPage() {
   const { user } = useAuth();
   const [allJobs, setAllJobs] = useState<JobPost[]>(SEED_JOBS);
   const [typeFilter, setTypeFilter] = useState<JobType[]>([]);
-  const [langFilter, setLangFilter] = useState('');
+  const [langFilter, setLangFilter] = useState(''); // empty = all languages
   const [stateFilter, setStateFilter] = useState('');
   const [sort, setSort] = useState<'newest' | 'oldest'>('newest');
   const [query, setQuery] = useState('');
@@ -53,7 +53,7 @@ export default function JobsPage() {
 
   const filtered = allJobs
     .filter((j) => typeFilter.length === 0 || typeFilter.includes(j.type))
-    .filter((j) => !langFilter || (j.languages && j.languages.includes(langFilter)))
+    .filter((j) => !langFilter || (j.postLanguage ?? 'English') === langFilter)
     .filter((j) => !stateFilter || j.state === stateFilter)
     .filter((j) => !query || j.title.toLowerCase().includes(query.toLowerCase()) || (j.company ?? '').toLowerCase().includes(query.toLowerCase()))
     .sort((a, b) => sort === 'newest'
@@ -103,17 +103,28 @@ export default function JobsPage() {
         </select>
       </div>
 
-      {/* Language */}
+      {/* Post language */}
       <div>
-        <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">Language</p>
-        <select
-          value={langFilter}
-          onChange={(e) => setLangFilter(e.target.value)}
-          className="w-full text-sm border border-slate-200 rounded-lg py-2 pl-3 pr-8 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-slate-700"
-        >
-          <option value="">All languages</option>
-          {LANGUAGES.map((l) => <option key={l} value={l}>{l}</option>)}
-        </select>
+        <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-1">Post Language</p>
+        <p className="text-[11px] text-slate-400 mb-3">Show posts written in a specific language</p>
+        <div className="flex flex-wrap gap-1.5">
+          {POST_LANGUAGES.map(({ label, native }) => {
+            const active = langFilter === label;
+            return (
+              <button
+                key={label}
+                onClick={() => setLangFilter(active ? '' : label)}
+                className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium border transition-all ${
+                  active
+                    ? 'bg-violet-600 border-violet-600 text-white'
+                    : 'bg-white border-slate-200 text-slate-600 hover:border-violet-300 hover:text-violet-700'
+                }`}
+              >
+                {label === native ? label : <><span>{label}</span><span className="opacity-60">·</span><span>{native}</span></>}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Sort */}

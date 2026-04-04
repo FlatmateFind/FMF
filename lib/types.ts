@@ -11,6 +11,23 @@ export const LANGUAGES = [
   'Italian', 'Greek', 'German', 'French', 'Spanish', 'Portuguese',
 ];
 
+// Languages available for "post language" selection and filter chips
+export const POST_LANGUAGES: { label: string; native: string }[] = [
+  { label: 'English',    native: 'English'    },
+  { label: 'Chinese',    native: '中文'        },
+  { label: 'Cantonese',  native: '廣東話'      },
+  { label: 'Japanese',   native: '日本語'      },
+  { label: 'Korean',     native: '한국어'      },
+  { label: 'Vietnamese', native: 'Tiếng Việt' },
+  { label: 'Hindi',      native: 'हिन्दी'     },
+  { label: 'Arabic',     native: 'العربية'    },
+  { label: 'Tagalog',    native: 'Tagalog'    },
+  { label: 'Indonesian', native: 'Bahasa'     },
+  { label: 'Spanish',    native: 'Español'    },
+  { label: 'Portuguese', native: 'Português'  },
+  { label: 'Nepali',     native: 'नेपाली'     },
+];
+
 export interface Listing {
   id: string;
   title: string;
@@ -37,7 +54,8 @@ export interface Listing {
   facilities: string[];
   roomFeatures?: string[];
   roomCategories?: string[];
-  languages?: string[];
+  postLanguage?: string;        // language this post is written in (default: 'English')
+  languages?: string[];         // legacy / host languages spoken (kept for data compat)
   preferredNationality: string[];
   preferredGender: 'male' | 'female' | 'any';
   petsAllowed: boolean;

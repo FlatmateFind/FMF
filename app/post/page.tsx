@@ -21,7 +21,7 @@ const NEARBY_ICONS: Record<string, LucideIcon> = {
   'Beach':              Umbrella,
 };
 import Link from 'next/link';
-import { CITIES, PROPERTY_TYPES, ROOM_CATEGORIES_LIST, INCLUSIONS_LIST, FACILITIES_LIST, ROOM_FEATURES_LIST, ROOM_TERMS_LIST, HOUSE_RULES_LIST, NATIONALITIES, LANGUAGES, NEARBY_PLACE_TYPES, NearbyPlace } from '@/lib/types';
+import { CITIES, PROPERTY_TYPES, ROOM_CATEGORIES_LIST, INCLUSIONS_LIST, FACILITIES_LIST, ROOM_FEATURES_LIST, ROOM_TERMS_LIST, HOUSE_RULES_LIST, NATIONALITIES, POST_LANGUAGES, NEARBY_PLACE_TYPES, NearbyPlace } from '@/lib/types';
 import { usePostedListings } from '@/hooks/usePostedListings';
 import { checkSpam, isValidAUPostcode, checkRateLimit } from '@/lib/spamGuard';
 import CustomTagInput from '@/components/CustomTagInput';
@@ -45,7 +45,7 @@ interface FormData {
   roomFeatures: string[];
   roomCategories: string[];
   preferredNationalities: string[];
-  languages: string[];
+  postLanguage: string;
   preferredGender: string;
   petsAllowed: boolean;
   smokingAllowed: boolean;
@@ -63,7 +63,7 @@ const initialForm: FormData = {
   city: '', suburb: '', postcode: '', address: '',
   rentAmount: '', currency: 'AUD', period: 'week',
   currentOccupants: '', totalCapacity: '',
-  inclusions: [], facilities: [], roomFeatures: [], roomCategories: [], preferredNationalities: [], languages: [],
+  inclusions: [], facilities: [], roomFeatures: [], roomCategories: [], preferredNationalities: [], postLanguage: 'English',
   preferredGender: 'any', petsAllowed: false, smokingAllowed: false,
   stayType: '', minimumStay: '', availableFrom: '', description: '',
   contactName: '', contactEmail: '', contactPhone: '',
@@ -111,7 +111,7 @@ export default function PostListingPage() {
     setErrors((prev) => ({ ...prev, [key]: undefined }));
   }
 
-  function toggleList(key: 'inclusions' | 'facilities' | 'roomFeatures' | 'roomCategories' | 'preferredNationalities' | 'languages', value: string) {
+  function toggleList(key: 'inclusions' | 'facilities' | 'roomFeatures' | 'roomCategories' | 'preferredNationalities', value: string) {
     const arr = form[key] as string[];
     set(key, arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value]);
   }
@@ -198,7 +198,7 @@ export default function PostListingPage() {
       facilities: [...form.facilities, ...customFacilities],
       roomFeatures: [...form.roomFeatures, ...customRoomFeatures],
       roomCategories: form.roomCategories,
-      languages: form.languages.length ? form.languages : undefined,
+      postLanguage: form.postLanguage !== 'English' ? form.postLanguage : undefined,
     });
     setSubmitted(true);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -530,14 +530,22 @@ export default function PostListingPage() {
               />
             </div>
             <div>
-              <Label>Languages Spoken by Host</Label>
-              <p className="text-xs text-slate-400 mb-2">Helps renters find listings where they can communicate comfortably</p>
-              <div className="grid grid-cols-3 sm:grid-cols-4 gap-1.5 mt-2">
-                {LANGUAGES.map((lang) => (
-                  <label key={lang} className="flex items-center gap-2 cursor-pointer group">
-                    <input type="checkbox" checked={form.languages.includes(lang)} onChange={() => toggleList('languages', lang)} className="w-3.5 h-3.5 rounded text-teal-600 border-slate-300 focus:ring-teal-500" />
-                    <span className="text-xs text-slate-700 group-hover:text-teal-600 transition-colors">{lang}</span>
-                  </label>
+              <Label>Post language</Label>
+              <p className="text-xs text-slate-400 mb-2.5">What language is this listing written in? Renters can filter posts by this.</p>
+              <div className="flex flex-wrap gap-2">
+                {POST_LANGUAGES.map(({ label, native }) => (
+                  <button
+                    key={label}
+                    type="button"
+                    onClick={() => set('postLanguage', label)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                      form.postLanguage === label
+                        ? 'bg-teal-600 border-teal-600 text-white'
+                        : 'bg-white border-slate-200 text-slate-600 hover:border-teal-300 hover:text-teal-600'
+                    }`}
+                  >
+                    {label === native ? label : `${label} · ${native}`}
+                  </button>
                 ))}
               </div>
             </div>

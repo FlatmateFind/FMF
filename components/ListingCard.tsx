@@ -2,8 +2,8 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Bed, Bath, Users, BadgeCheck, Heart, GitCompareArrows, Eye, Flame, Zap, Home as HomeIcon, ArrowLeftRight } from 'lucide-react';
-import { Listing } from '@/lib/types';
+import { Bed, Bath, Users, BadgeCheck, Heart, GitCompareArrows, Eye, Flame, Zap, Home as HomeIcon, ArrowLeftRight, Languages } from 'lucide-react';
+import { Listing, POST_LANGUAGES } from '@/lib/types';
 import { useFavorites } from '@/hooks/useFavorites';
 import { useCompare } from '@/hooks/useCompare';
 import { useAuth } from '@/context/AuthContext';
@@ -30,6 +30,9 @@ export default function ListingCard({ listing }: ListingCardProps) {
   const favorited = isFavorited(listing.id);
   const compared = isCompared(listing.id);
   const periodLabel = listing.rent.period === 'week' ? 'pw' : 'pm';
+  const langEntry = listing.postLanguage && listing.postLanguage !== 'English'
+    ? POST_LANGUAGES.find((l) => l.label === listing.postLanguage)
+    : null;
   const [showAuthPrompt, setShowAuthPrompt] = useState(false);
   const [views, setViews] = useState(0);
   useEffect(() => { setViews(getViews(listing.id)); }, [listing.id]);
@@ -183,6 +186,12 @@ export default function ListingCard({ listing }: ListingCardProps) {
             <span className="text-xs text-slate-600">{listing.postedBy.name}</span>
             {listing.postedBy.verified && (
               <BadgeCheck className="w-3.5 h-3.5 text-teal-500" />
+            )}
+            {langEntry && (
+              <span className="flex items-center gap-1 px-1.5 py-0.5 bg-violet-50 text-violet-700 border border-violet-100 rounded-full text-[10px] font-medium">
+                <Languages className="w-3 h-3 shrink-0" />
+                {langEntry.native}
+              </span>
             )}
           </div>
           <div className="flex items-center gap-2">

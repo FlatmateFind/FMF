@@ -20,7 +20,8 @@ export function filterListings(filters: SearchFilters): Listing[] {
     }
     if (filters.petsAllowed === true && !listing.petsAllowed) return false;
     if (filters.language) {
-      if (!listing.languages || !listing.languages.includes(filters.language)) return false;
+      const lang = listing.postLanguage ?? 'English';
+      if (lang !== filters.language) return false;
     }
     // Available by: listing must be available on or before the requested date
     if (filters.availableBy && listing.availableFrom > filters.availableBy) return false;
