@@ -1,5 +1,10 @@
+'use client';
+import { useState } from 'react';
 import Link from 'next/link';
-import { Users, Search, Share2, ChevronRight, ExternalLink, Home, Megaphone } from 'lucide-react';
+import {
+  Users, Search, Share2, ChevronRight, ExternalLink, Home,
+  Megaphone, MapPin, Lightbulb, Copy, CheckCheck, Facebook,
+} from 'lucide-react';
 
 interface FBGroup {
   name: string;
@@ -18,7 +23,7 @@ const GROUP_CATEGORY_COLORS: Record<FBGroup['category'], string> = {
 };
 
 const groups: Record<string, FBGroup[]> = {
-  'New South Wales 🏙️': [
+  'New South Wales': [
     {
       name: 'Sydney Rooms for Rent & Share Houses',
       members: '95,000+',
@@ -62,7 +67,7 @@ const groups: Record<string, FBGroup[]> = {
       description: 'Strictly short-term and sublet posts. Great for travellers and people between leases.',
     },
   ],
-  'Victoria 🌆': [
+  'Victoria': [
     {
       name: 'Melbourne Rooms for Rent & Share Houses',
       members: '80,000+',
@@ -106,7 +111,7 @@ const groups: Record<string, FBGroup[]> = {
       description: 'Short-term rooms and sublets, holiday lets and furnished options around Melbourne.',
     },
   ],
-  'Queensland ☀️': [
+  'Queensland': [
     {
       name: 'Brisbane Rooms & Share Houses for Rent',
       members: '45,000+',
@@ -143,7 +148,7 @@ const groups: Record<string, FBGroup[]> = {
       description: 'Australia-wide but huge QLD presence. Hostels, farm work accommodation and short-stays.',
     },
   ],
-  'Western Australia 🌊': [
+  'Western Australia': [
     {
       name: 'Perth Rooms for Rent & Share Houses',
       members: '40,000+',
@@ -173,7 +178,7 @@ const groups: Record<string, FBGroup[]> = {
       description: 'Close-knit community housing posts — rooms, boarding arrangements and family homes.',
     },
   ],
-  'South Australia 🍷': [
+  'South Australia': [
     {
       name: 'Adelaide Rooms for Rent & Share Houses',
       members: '25,000+',
@@ -189,7 +194,7 @@ const groups: Record<string, FBGroup[]> = {
       description: 'UniSA, Flinders and Adelaide Uni students. Home-stay and share house posts.',
     },
   ],
-  'ACT & NT 🦘': [
+  'ACT & Northern Territory': [
     {
       name: 'Canberra Rooms & Share Houses',
       members: '15,000+',
@@ -207,19 +212,30 @@ const groups: Record<string, FBGroup[]> = {
   ],
 };
 
-const shareText = `🏠 Looking for a room or flatmate in Australia?
+const shareText = `Looking for a room or flatmate in Australia?
 
-Check out FlatmateFind — a free Australian share-house board with rooms, studios & share houses across every state.
+Check out FlatmateFind — a free Australian share-house board with rooms, studios and share houses across every state.
 
-✅ Filter by suburb, budget, inclusions & nationality preference
-✅ Post your room for free
-✅ Find renters with detailed profiles
+- Filter by suburb, budget, inclusions and nationality preference
+- Post your room for free
+- Find renters with detailed profiles
 
-👉 flatmatefind.com
+flatmatefind.com
 
 #AustraliaRooms #ShareHouse #Flatmates #Sydney #Melbourne #Brisbane`;
 
 export default function CommunityPage() {
+  const [copied, setCopied] = useState(false);
+
+  function handleCopy() {
+    navigator.clipboard.writeText(shareText).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    });
+  }
+
+  const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent('https://flatmatefind.com')}&quote=${encodeURIComponent(shareText)}`;
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
@@ -260,7 +276,9 @@ export default function CommunityPage() {
 
       {/* Tip banner */}
       <div className="bg-amber-50 border border-amber-200 rounded-2xl px-6 py-4 mb-10 flex items-start gap-3">
-        <span className="text-2xl shrink-0">💡</span>
+        <div className="shrink-0 mt-0.5 p-1.5 bg-amber-100 rounded-lg">
+          <Lightbulb className="w-4 h-4 text-amber-600" />
+        </div>
         <div>
           <p className="font-semibold text-amber-900 text-sm mb-1">How to use this page</p>
           <p className="text-amber-800 text-sm leading-relaxed">
@@ -275,6 +293,7 @@ export default function CommunityPage() {
         {Object.entries(groups).map(([state, stateGroups]) => (
           <section key={state}>
             <h2 className="text-xl font-bold text-slate-900 mb-5 flex items-center gap-2">
+              <MapPin className="w-5 h-5 text-blue-500 shrink-0" />
               {state}
               <span className="text-sm font-normal text-slate-400">{stateGroups.length} groups</span>
             </h2>
@@ -321,22 +340,42 @@ export default function CommunityPage() {
         <p className="text-teal-100 mb-6 leading-relaxed max-w-2xl">
           If you found FlatmateFind useful, sharing it in these Facebook groups helps other renters and subletters discover a better way to find rooms — and it keeps our listings growing. Copy the text below and paste it into any group.
         </p>
-        <div className="bg-white/10 border border-white/20 rounded-xl p-4 mb-5 relative">
+
+        {/* Share text box */}
+        <div className="bg-white/10 border border-white/20 rounded-xl p-4 mb-5">
           <pre className="text-sm text-teal-50 whitespace-pre-wrap font-sans leading-relaxed">{shareText}</pre>
         </div>
+
+        {/* Action buttons */}
         <div className="flex flex-wrap gap-3">
+          <button
+            onClick={handleCopy}
+            className={`inline-flex items-center gap-2 px-5 py-2.5 font-semibold rounded-xl text-sm transition-all ${
+              copied
+                ? 'bg-green-500 text-white'
+                : 'bg-white text-teal-700 hover:bg-teal-50'
+            }`}
+          >
+            {copied ? <CheckCheck className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+            {copied ? 'Copied!' : 'Copy to clipboard'}
+          </button>
+
+          <a
+            href={fbShareUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1877F2] hover:bg-[#166fe5] text-white font-semibold rounded-xl text-sm transition-colors"
+          >
+            <Facebook className="w-4 h-4" />
+            Share on Facebook
+          </a>
+
           <Link
             href="/post"
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-teal-700 font-semibold rounded-xl text-sm hover:bg-teal-50 transition-colors"
-          >
-            <Home className="w-4 h-4" />
-            Post your listing first
-          </Link>
-          <Link
-            href="/listings"
             className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/20 hover:bg-white/30 text-white font-semibold rounded-xl text-sm transition-colors"
           >
-            Browse listings
+            <Home className="w-4 h-4" />
+            Post your listing
             <ChevronRight className="w-4 h-4" />
           </Link>
         </div>
@@ -345,7 +384,8 @@ export default function CommunityPage() {
       {/* Bottom note */}
       <p className="text-center text-xs text-slate-400 leading-relaxed max-w-xl mx-auto">
         FlatmateFind is not affiliated with Facebook or Meta. Group names and member counts are for reference only and may change.
-        Always follow each group&apos;s rules when posting. <Link href="/safety" className="text-teal-600 hover:underline">Safety tips →</Link>
+        Always follow each group&apos;s rules when posting.{' '}
+        <Link href="/safety-tips" className="text-teal-600 hover:underline">Safety tips</Link>
       </p>
     </div>
   );
