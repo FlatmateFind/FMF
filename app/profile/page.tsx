@@ -437,8 +437,8 @@ export default function ProfilePage() {
           {/* Move-in & min stay */}
           <div className="grid grid-cols-2 gap-4 mb-5">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                <Calendar className="w-3.5 h-3.5 inline text-teal-500" />
+              <label className="flex items-center gap-1.5 text-sm font-medium text-slate-700 mb-1.5">
+                <Calendar className="w-3.5 h-3.5 text-teal-500 shrink-0" />
                 Move-in date <span className="text-red-500">*</span>
               </label>
               <input
