@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, DollarSign, ShieldCheck, Users, MessageCircle, Zap, Globe, SlidersHorizontal, Briefcase, Heart } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Users, MessageCircle, Globe, SlidersHorizontal, Briefcase, Heart, GitCompareArrows, ArrowUpDown, Star, Flag } from 'lucide-react';
 import SearchBar from '@/components/SearchBar';
 import ListingCard from '@/components/ListingCard';
 import AdSlot from '@/components/AdSlot';
@@ -23,58 +23,58 @@ const STATE_META: Record<string, { highlight: string }> = {
 
 const WHY_BENEFITS = [
   {
-    icon: DollarSign,
-    color: 'bg-emerald-50 text-emerald-600',
-    title: '100% Free — No Hidden Fees',
-    description: 'Browse, apply, and message landlords at zero cost. No subscription, no booking fee, no "premium unlock". Unlike other platforms that charge renters to see contact details.',
-  },
-  {
     icon: SlidersHorizontal,
     color: 'bg-blue-50 text-blue-600',
-    title: 'Filters That Actually Matter',
-    description: 'Filter by nationality preference, gender, pets, bills included, stay type (short vs long term), and availability date — not just price and location.',
+    title: 'Filter by Language & Nationality',
+    description: 'Find a home where you actually feel welcome. Filter listings by the host\'s language and nationality preference — so you can connect with people who share your background or speak your language.',
   },
   {
-    icon: Users,
-    color: 'bg-violet-50 text-violet-600',
-    title: 'Built for Share-House Living',
-    description: 'Find rooms in existing share houses where the vibe matters as much as the rent. See who already lives there, their lifestyle, and whether you are a match.',
-  },
-  {
-    icon: MessageCircle,
-    color: 'bg-teal-50 text-teal-600',
-    title: 'Direct Contact With the Host',
-    description: 'Message the current tenant or owner directly — no middleman, no delayed responses through a portal. Fast, personal, and honest communication from day one.',
-  },
-  {
-    icon: Zap,
-    color: 'bg-amber-50 text-amber-600',
-    title: 'Short-Term & Sublet Friendly',
-    description: 'Moving to Australia for a few weeks, between leases, or on a working holiday? FlatmateFind is one of the few boards that actively supports short-term and subletting arrangements.',
-  },
-  {
-    icon: Globe,
-    color: 'bg-sky-50 text-sky-600',
-    title: 'A Community That Speaks Your Language',
-    description: 'Listings welcome people from all backgrounds. Browse Facebook groups by state and connect with fellow renters from your community before you even sign a lease.',
-  },
-  {
-    icon: Briefcase,
-    color: 'bg-orange-50 text-orange-600',
-    title: 'Jobs Board Included',
-    description: "Need work as well as a room? The built-in jobs board connects renters with casual, part-time and full-time roles in their area — a complete settlement toolkit in one place.",
-  },
-  {
-    icon: ShieldCheck,
-    color: 'bg-rose-50 text-rose-600',
-    title: 'Safer Listings, Less Spam',
-    description: 'Built-in rate limiting, spam detection and a community report button keep the board clean. You see genuine listings — not scam posts or duplicates clogging up your search.',
+    icon: ArrowUpDown,
+    color: 'bg-indigo-50 text-indigo-600',
+    title: 'Sort by Availability & Price',
+    description: 'Moving on a specific date? Sort listings by availability so you only see rooms ready when you need them. Or sort by price to find the best value without endless scrolling.',
   },
   {
     icon: Heart,
     color: 'bg-pink-50 text-pink-600',
-    title: 'Save, Compare & Shortlist',
-    description: 'Heart your favourite rooms, compare up to three listings side by side, and build a shortlist of promising renters — all without creating a paid account.',
+    title: 'Save Listings',
+    description: 'Heart any room you like and come back to it later. Your saved listings are always one tap away — no account required to start building your shortlist.',
+  },
+  {
+    icon: GitCompareArrows,
+    color: 'bg-teal-50 text-teal-600',
+    title: 'Compare Listings Side by Side',
+    description: 'Can\'t decide between two rooms? Add them to the compare bar and view price, bedrooms, inclusions, and location side by side. Make confident decisions, not guesses.',
+  },
+  {
+    icon: Users,
+    color: 'bg-violet-50 text-violet-600',
+    title: 'Shortlist Renters',
+    description: 'Subletters can browse renter profiles and shortlist candidates who match their household. Find someone with the right lifestyle, budget, and move-in date before they\'re gone.',
+  },
+  {
+    icon: Briefcase,
+    color: 'bg-orange-50 text-orange-600',
+    title: 'Jobs Nearby',
+    description: 'Need work as well as a room? Our built-in jobs board lists casual, part-time, and full-time roles near you. Room and income — sorted in one place.',
+  },
+  {
+    icon: MessageCircle,
+    color: 'bg-emerald-50 text-emerald-600',
+    title: 'Direct Contact, No Middleman',
+    description: 'Message hosts directly — no portal delays, no gatekeeping. Get a real response from the person who actually lives there, fast.',
+  },
+  {
+    icon: ShieldCheck,
+    color: 'bg-rose-50 text-rose-600',
+    title: 'Safer Listings',
+    description: 'Verified hosts, built-in rate limiting, and a one-click report button keep scams off the board. Every listing is monitored so you can search with confidence.',
+  },
+  {
+    icon: Globe,
+    color: 'bg-sky-50 text-sky-600',
+    title: 'One Community — Not Twenty',
+    description: 'Stop juggling 20 different Facebook groups. FlatmateFind brings rooms, renters, jobs, and community all into one place — the only tab you need open.',
   },
 ];
 
@@ -181,9 +181,9 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
           <span className="inline-block text-xs font-semibold tracking-widest text-teal-600 uppercase mb-3">Why FlatmateFind</span>
-          <h2 className="text-3xl font-extrabold text-slate-900 mb-3">The smarter way to find a room in Australia</h2>
+          <h2 className="text-3xl font-extrabold text-slate-900 mb-3">Everything you need to find your perfect room</h2>
           <p className="text-slate-500 text-base max-w-2xl mx-auto">
-            Designed from the ground up for renters and subletters — not just landlords. Here is what sets us apart.
+            Built around the features that actually matter — not just a list of rooms, but the tools to find the right one.
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

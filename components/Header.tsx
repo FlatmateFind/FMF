@@ -54,6 +54,17 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1">
+            {/* Rooms & Flatmates */}
+            <Link
+              href="/listings"
+              className={`flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-lg transition-colors ${
+                pathname.startsWith('/listings') ? 'text-teal-600 bg-teal-50' : 'text-slate-600 hover:text-teal-600 hover:bg-slate-50'
+              }`}
+            >
+              <Home className="w-4 h-4" />
+              Rooms &amp; Flatmates
+            </Link>
+
             {/* Browse */}
             <Link
               href="/listings"
@@ -65,18 +76,15 @@ export default function Header() {
               Browse
             </Link>
 
-            {/* Jobs with New badge */}
+            {/* Jobs */}
             <Link
               href="/jobs"
-              className={`relative flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-lg transition-colors ${
+              className={`flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-lg transition-colors ${
                 pathname.startsWith('/jobs') ? 'text-teal-600 bg-teal-50' : 'text-slate-600 hover:text-teal-600 hover:bg-slate-50'
               }`}
             >
               <Briefcase className="w-4 h-4" />
               Jobs
-              <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full leading-none">
-                NEW
-              </span>
             </Link>
 
 
@@ -263,7 +271,6 @@ export default function Header() {
             >
               <Briefcase className="w-4 h-4" />
               Jobs
-              <span className="ml-1 bg-rose-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full leading-none">NEW</span>
             </Link>
           </nav>
         </div>
