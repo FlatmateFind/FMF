@@ -14,7 +14,7 @@ const footerLinks = {
     title: 'For Subletters',
     links: [
       { label: 'Create Listings', href: '/post' },
-      { label: 'Find Profile', href: '/renters' },
+      { label: 'Browse Profiles', href: '/renters' },
     ],
   },
   useful: {
