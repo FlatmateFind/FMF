@@ -53,7 +53,7 @@ export default function PrivacyPage() {
 
         <section>
           <h2 className="text-lg font-bold text-slate-900 mb-3">8. Contact</h2>
-          <p>Privacy enquiries: <a href="mailto:privacy@flatmatefind.com.au" className="text-teal-600 hover:underline">privacy@flatmatefind.com.au</a></p>
+          <p>Privacy enquiries: <a href="mailto:privacy@flatmatefind.com" className="text-teal-600 hover:underline">privacy@flatmatefind.com</a></p>
         </section>
       </div>
     </div>

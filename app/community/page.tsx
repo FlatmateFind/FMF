@@ -215,7 +215,7 @@ Check out FlatmateFind — a free Australian share-house board with rooms, studi
 ✅ Post your room for free
 ✅ Find renters with detailed profiles
 
-👉 flatmatefind.com.au
+👉 flatmatefind.com
 
 #AustraliaRooms #ShareHouse #Flatmates #Sydney #Melbourne #Brisbane`;
 

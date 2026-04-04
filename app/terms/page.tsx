@@ -59,7 +59,7 @@ export default function TermsPage() {
 
         <section>
           <h2 className="text-lg font-bold text-slate-900 mb-3">9. Contact</h2>
-          <p>Legal enquiries: <a href="mailto:legal@flatmatefind.com.au" className="text-teal-600 hover:underline">legal@flatmatefind.com.au</a></p>
+          <p>Legal enquiries: <a href="mailto:legal@flatmatefind.com" className="text-teal-600 hover:underline">legal@flatmatefind.com</a></p>
         </section>
       </div>
     </div>

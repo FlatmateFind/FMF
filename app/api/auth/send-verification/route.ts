@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
 
   const resend = new Resend(process.env.RESEND_API_KEY);
   const { error } = await resend.emails.send({
-    from: 'FlatmateFind <noreply@flatmatefind.com.au>',
+    from: 'FlatmateFind <noreply@flatmatefind.com>',
     to: email,
     subject: 'Verify your FlatmateFind email',
     html: `
