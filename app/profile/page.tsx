@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, FormEvent, ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Camera, Save, Trash2, CheckCircle, MapPin, DollarSign,
-  Calendar, Home, User, Sparkles, Zap, Home as HomeIcon, ArrowLeftRight, Phone,
+  Calendar, Home, User, Sparkles, Zap, Home as HomeIcon, ArrowLeftRight, Phone, MessageCircle,
 } from 'lucide-react';
 import AuthPromptModal from '@/components/AuthPromptModal';
 import { useAuth } from '@/context/AuthContext';
@@ -604,8 +604,9 @@ export default function ProfilePage() {
                 <p className="text-xs text-slate-400">Anyone can see your email without signing in</p>
               </div>
             </label>
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-500">
-              💬 <strong>Chat feature:</strong> Hosts who are signed in can always message you through the platform, regardless of these settings.
+            <div className="flex items-start gap-2.5 p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-500">
+              <MessageCircle className="w-3.5 h-3.5 text-teal-500 shrink-0 mt-0.5" />
+              <span><strong className="text-slate-700">Chat feature:</strong> Hosts who are signed in can always message you through the platform, regardless of these settings.</span>
             </div>
           </div>
         </section>
