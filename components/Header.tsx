@@ -54,17 +54,6 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1">
-            {/* Rooms & Flatmates */}
-            <Link
-              href="/listings"
-              className={`flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-lg transition-colors ${
-                pathname.startsWith('/listings') ? 'text-teal-600 bg-teal-50' : 'text-slate-600 hover:text-teal-600 hover:bg-slate-50'
-              }`}
-            >
-              <Home className="w-4 h-4" />
-              Rooms &amp; Flatmates
-            </Link>
-
             {/* Browse */}
             <Link
               href="/listings"
