@@ -72,12 +72,13 @@ export default function Header() {
             {/* Jobs */}
             <Link
               href="/jobs"
-              className={`flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-lg transition-colors ${
+              className={`relative flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-lg transition-colors ${
                 pathname.startsWith('/jobs') ? 'text-teal-600 bg-teal-50' : 'text-slate-600 hover:text-teal-600 hover:bg-slate-50'
               }`}
             >
               <Briefcase className="w-4 h-4" />
               Jobs
+              <span className="absolute -top-0.5 -right-0.5 text-[9px] font-bold bg-teal-600 text-white px-1 py-0.5 rounded-full leading-none">NEW</span>
             </Link>
 
             {/* Get Started dropdown */}
@@ -321,6 +322,7 @@ export default function Header() {
             >
               <Briefcase className="w-4 h-4" />
               Jobs
+              <span className="text-[9px] font-bold bg-teal-600 text-white px-1.5 py-0.5 rounded-full leading-none ml-1">NEW</span>
             </Link>
 
             {/* For Renters section */}
