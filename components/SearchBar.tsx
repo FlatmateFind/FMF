@@ -34,8 +34,15 @@ export default function SearchBar({
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search suburb, city..."
+          className={`flex-1 bg-transparent border-none outline-none text-slate-800 placeholder-slate-400 px-3 sm:hidden ${isLarge ? 'text-base' : 'text-sm'}`}
+        />
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder}
-          className={`flex-1 bg-transparent border-none outline-none text-slate-800 placeholder-slate-400 px-3 ${isLarge ? 'text-base' : 'text-sm'}`}
+          className={`flex-1 bg-transparent border-none outline-none text-slate-800 placeholder-slate-400 px-3 hidden sm:block ${isLarge ? 'text-base' : 'text-sm'}`}
         />
         <button
           type="submit"
