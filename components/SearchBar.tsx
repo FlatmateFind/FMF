@@ -39,9 +39,10 @@ export default function SearchBar({
         />
         <button
           type="submit"
-          className={`shrink-0 m-1.5 flex items-center gap-2 font-semibold text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition-colors ${isLarge ? 'px-5 py-2.5 text-sm' : 'px-4 py-2 text-xs'}`}
+          className={`shrink-0 m-1.5 flex items-center gap-2 font-semibold text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition-colors ${isLarge ? 'px-4 py-2.5 text-sm' : 'px-3 py-2 text-xs'}`}
         >
-          Search
+          <Search className="w-4 h-4 sm:hidden" />
+          <span className="hidden sm:inline">Search</span>
         </button>
       </div>
     </form>
