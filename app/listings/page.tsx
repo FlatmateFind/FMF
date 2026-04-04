@@ -361,7 +361,7 @@ function ListingsPageInner() {
         )}
       </div>
 
-      {/* Mobile filter toggle + count */}
+      {/* Mobile filter toggle + sort */}
       <div className="flex items-center gap-2 mb-4 lg:hidden">
         <button
           onClick={() => setSidebarOpen((v) => !v)}
@@ -375,9 +375,15 @@ function ListingsPageInner() {
             </span>
           )}
         </button>
-        <p className="text-sm text-slate-500 ml-auto">
-          {loading ? '…' : `${total} listing${total !== 1 ? 's' : ''}`}
-        </p>
+        <select
+          value={filters.sort || 'newest'}
+          onChange={(e) => update('sort', e.target.value as SortOption)}
+          className="ml-auto text-sm border border-slate-200 rounded-lg px-3 py-2 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-400 cursor-pointer"
+        >
+          {SORT_OPTIONS.map((o) => (
+            <option key={o.value} value={o.value}>{o.label}</option>
+          ))}
+        </select>
       </div>
 
       {/* Mobile filter drawer */}
@@ -418,13 +424,13 @@ function ListingsPageInner() {
 
         {/* Listings */}
         <div className="flex-1 min-w-0">
-          {/* Results bar + sort */}
-          <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
-            <p className="text-sm text-slate-500 hidden lg:block">
+          {/* Results bar + sort (desktop only) */}
+          <div className="hidden lg:flex flex-wrap items-center justify-between gap-3 mb-5">
+            <p className="text-sm text-slate-500">
               <span className="font-semibold text-slate-800">{loading ? '…' : total}</span>{' '}
               listing{total !== 1 ? 's' : ''} found
             </p>
-            <div className="flex items-center gap-2 ml-auto">
+            <div className="flex items-center gap-2">
               <ArrowUpDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
               <select
                 value={filters.sort || 'newest'}
