@@ -91,9 +91,9 @@ export default function Footer() {
           <p className="text-xs text-slate-500">
             &copy; {year} FlatmateFind &middot; All listings subject to availability &middot; For informational purposes only
           </p>
-          <div className="flex items-center gap-5">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
             {bottomLinks.map((l) => (
-              <Link key={l.label} href={l.href} className="text-xs text-slate-500 hover:text-teal-400 transition-colors">
+              <Link key={l.label} href={l.href} className="text-[10px] sm:text-xs text-slate-500 hover:text-teal-400 transition-colors whitespace-nowrap">
                 {l.label}
               </Link>
             ))}

@@ -3,7 +3,7 @@ import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   Home, Loader2, Search, SlidersHorizontal, X,
-  ArrowUpDown, PlusCircle, Calendar, SearchX,
+  PlusCircle, Calendar, SearchX,
 } from 'lucide-react';
 import ListingCard from '@/components/ListingCard';
 import AdSlot from '@/components/AdSlot';
@@ -434,7 +434,6 @@ function ListingsPageInner() {
               listing{total !== 1 ? 's' : ''} found
             </p>
             <div className="flex items-center gap-2">
-              <ArrowUpDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
               <select
                 value={filters.sort || 'newest'}
                 onChange={(e) => update('sort', e.target.value as SortOption)}
