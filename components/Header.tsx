@@ -4,7 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import {
   Home, Heart, LayoutDashboard, LogOut, User, ChevronDown,
   Users, Sparkles, Briefcase, Search, LogIn, UserPlus,
-  Menu, X, PlusCircle, Zap,
+  Menu, X, PlusCircle, Zap, ArrowLeftRight,
 } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
@@ -16,8 +16,9 @@ const QUICK_LINKS = {
     { label: 'Create Profile',    href: '/profile',  icon: Sparkles,   color: 'bg-violet-100 text-violet-700', desc: 'Get found by subletters' },
   ],
   subletters: [
-    { label: 'Browse Profiles',  href: '/renters',  icon: Users,      color: 'bg-blue-100 text-blue-700',   desc: 'Find your next tenant' },
-    { label: 'Create Listing',   href: '/post',     icon: PlusCircle, color: 'bg-amber-100 text-amber-700', desc: 'List your room for free' },
+    { label: 'Browse Profiles',  href: '/renters',   icon: Users,          color: 'bg-blue-100 text-blue-700',   desc: 'Find your next tenant' },
+    { label: 'Create Listing',   href: '/post',      icon: PlusCircle,     color: 'bg-amber-100 text-amber-700', desc: 'List your room for free' },
+    { label: 'Unit Takeover',    href: '/takeover',  icon: ArrowLeftRight, color: 'bg-orange-100 text-orange-600', desc: 'Pass your lease to someone new' },
   ],
 };
 
