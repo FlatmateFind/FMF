@@ -4,7 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import {
   Home, Heart, LayoutDashboard, LogOut, User, ChevronDown,
   Users, Sparkles, Briefcase, Search, LogIn, UserPlus,
-  Menu, X, PlusCircle, Zap, ArrowLeftRight,
+  Menu, X, PlusCircle, Zap, ArrowLeftRight, Calculator,
 } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
@@ -80,6 +80,17 @@ export default function Header() {
               <Briefcase className="w-4 h-4" />
               Jobs
               <span className="absolute -top-0.5 -right-0.5 text-[9px] font-bold bg-teal-600 text-white px-1 py-0.5 rounded-full leading-none">NEW</span>
+            </Link>
+
+            {/* Tools */}
+            <Link
+              href="/tools"
+              className={`flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-lg transition-colors ${
+                pathname.startsWith('/tools') ? 'text-indigo-600 bg-indigo-50' : 'text-slate-600 hover:text-indigo-600 hover:bg-slate-50'
+              }`}
+            >
+              <Calculator className="w-4 h-4" />
+              Tools
             </Link>
 
             {/* Get Started dropdown */}
@@ -324,6 +335,16 @@ export default function Header() {
               <Briefcase className="w-4 h-4" />
               Jobs
               <span className="text-[9px] font-bold bg-teal-600 text-white px-1.5 py-0.5 rounded-full leading-none ml-1">NEW</span>
+            </Link>
+
+            <Link
+              href="/tools"
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
+                pathname.startsWith('/tools') ? 'text-indigo-600 bg-indigo-50' : 'text-slate-700 hover:bg-slate-50'
+              }`}
+            >
+              <Calculator className="w-4 h-4" />
+              Tools
             </Link>
 
             {/* For Renters section */}

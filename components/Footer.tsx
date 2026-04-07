@@ -26,6 +26,12 @@ const footerLinks = {
       { label: 'FAQ', href: '/faq' },
     ],
   },
+  tools: {
+    title: 'Tools',
+    links: [
+      { label: 'Tax Refund Calculator', href: '/tools/tax-calculator' },
+    ],
+  },
 };
 
 const bottomLinks = [
@@ -43,7 +49,7 @@ export default function Footer() {
     <footer className="bg-slate-900 text-slate-300 mt-16">
       {/* Main footer grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand column */}
           <div className="lg:col-span-1">
             <Link href="/" className="inline-flex items-center gap-2 mb-4">
