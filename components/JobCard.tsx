@@ -123,10 +123,10 @@ export default function JobCard({ job }: { job: JobPost }) {
         {/* Nearby rooms */}
         {!isClosed && <NearbyListings suburb={job.suburb} state={job.state} />}
 
-        {/* Share + Apply row */}
+        {/* Share row */}
         <div className="flex items-center gap-2 mb-2">
-          <ShareButton url={`https://flatmatefind.vercel.app/jobs`} title={`${job.title}${job.company ? ` @ ${job.company}` : ''} — ${job.suburb}, ${job.state}`} variant="icon" />
-          <span className="text-[10px] text-slate-400">Share on Facebook</span>
+          <ShareButton url={`https://flatmatefind.vercel.app/jobs`} title={`${job.title}${job.company ? ` @ ${job.company}` : ''} — ${job.suburb}, ${job.state}`} />
+          <span className="text-[10px] text-slate-400">Share this listing</span>
         </div>
 
         {/* Apply */}

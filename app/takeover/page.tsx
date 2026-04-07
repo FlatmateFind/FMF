@@ -408,7 +408,7 @@ function TakeoverCard({ listing, user }: { listing: TakeoverListing; user: unkno
 
         {/* Share row */}
         <div className="flex items-center gap-2 mb-2">
-          <ShareButton url="https://flatmatefind.vercel.app/takeover" title={`Unit Takeover — ${listing.bedrooms === 0 ? 'Studio' : `${listing.bedrooms}-Bed`} ${listing.propertyType} in ${listing.suburb}, ${listing.state} $${listing.rent}/wk`} variant="icon" />
+          <ShareButton url="https://flatmatefind.vercel.app/takeover" title={`Unit Takeover — ${listing.bedrooms === 0 ? 'Studio' : `${listing.bedrooms}-Bed`} ${listing.propertyType} in ${listing.suburb}, ${listing.state} $${listing.rent}/wk`} />
           <span className="text-[10px] text-slate-400">Share on Facebook</span>
         </div>
 
