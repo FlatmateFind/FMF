@@ -719,20 +719,20 @@ function CustomNearbyRow({ onAdd }: { onAdd: (type: string, distance: string) =>
     }
   }
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex flex-wrap items-center gap-2">
       <input
         type="text"
         value={type}
         onChange={(e) => setType(e.target.value)}
         placeholder="Place name (e.g. Bunnings)"
-        className="flex-1 text-sm border border-slate-200 rounded-lg py-1.5 px-2.5 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none"
+        className="flex-1 min-w-0 text-sm border border-slate-200 rounded-lg py-1.5 px-2.5 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none"
       />
       <input
         type="text"
         value={distance}
         onChange={(e) => setDistance(e.target.value)}
         placeholder="Distance"
-        className="w-32 text-sm border border-slate-200 rounded-lg py-1.5 px-2.5 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none"
+        className="w-24 text-sm border border-slate-200 rounded-lg py-1.5 px-2.5 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none"
       />
       <button
         type="button"

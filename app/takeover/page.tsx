@@ -12,6 +12,7 @@ import { AUSTRALIAN_STATES } from '@/lib/types';
 import { useAuth } from '@/context/AuthContext';
 import { usePostedTakeovers } from '@/hooks/usePostedTakeovers';
 import AdSlot from '@/components/AdSlot';
+import ShareButton from '@/components/ShareButton';
 
 const PROPERTY_TYPES: { value: TakeoverPropertyType; label: string }[] = [
   { value: 'apartment', label: 'Apartment' },
@@ -404,6 +405,12 @@ function TakeoverCard({ listing, user }: { listing: TakeoverListing; user: unkno
             )}
           </div>
         )}
+
+        {/* Share row */}
+        <div className="flex items-center gap-2 mb-2">
+          <ShareButton url="https://flatmatefind.vercel.app/takeover" title={`Unit Takeover — ${listing.bedrooms === 0 ? 'Studio' : `${listing.bedrooms}-Bed`} ${listing.propertyType} in ${listing.suburb}, ${listing.state} $${listing.rent}/wk`} variant="icon" />
+          <span className="text-[10px] text-slate-400">Share on Facebook</span>
+        </div>
 
         {/* Contact button */}
         {showEmail ? (

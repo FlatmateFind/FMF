@@ -7,7 +7,7 @@ const footerLinks = {
     links: [
       { label: 'Browse Listings', href: '/listings' },
       { label: 'Create Profile', href: '/profile' },
-      { label: 'Safety Tips', href: '/safety-tips' },
+      { label: 'Communities', href: '/community' },
     ],
   },
   subletters: {
@@ -21,7 +21,7 @@ const footerLinks = {
   useful: {
     title: 'Useful Links',
     links: [
-      { label: 'Communities', href: '/community' },
+      { label: 'Safety Tips', href: '/safety-tips' },
       { label: 'Guide', href: '/how-it-works' },
       { label: 'FAQ', href: '/faq' },
     ],

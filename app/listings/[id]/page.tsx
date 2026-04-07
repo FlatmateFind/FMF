@@ -14,6 +14,7 @@ import { getListingById, getSimilarListings } from '@/lib/filterListings';
 import { INCLUSIONS_LIST, ROOM_FEATURES_LIST } from '@/lib/types';
 import ListingCard from '@/components/ListingCard';
 import ListingDetailActions from '@/components/ListingDetailActions';
+import ShareButton from '@/components/ShareButton';
 import ViewCounter from '@/components/ViewCounter';
 import NearbyJobs from '@/components/NearbyJobs';
 import AdSlot from '@/components/AdSlot';
@@ -152,11 +153,17 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
                 <ViewCounter listingId={listing.id} />
               </div>
             </div>
-            <div className="text-right">
-              <div className="text-3xl font-bold text-teal-600">
-                AUD {listing.rent.amount.toLocaleString()}
+            <div className="text-right flex flex-col items-end gap-2">
+              <div>
+                <div className="text-3xl font-bold text-teal-600">
+                  AUD {listing.rent.amount.toLocaleString()}
+                </div>
+                <div className="text-sm text-slate-500">per {listing.rent.period}</div>
               </div>
-              <div className="text-sm text-slate-500">per {listing.rent.period}</div>
+              <ShareButton
+                url={`https://flatmatefind.vercel.app/listings/${listing.id}`}
+                title={`${listing.title} — $${listing.rent.amount}/${listing.rent.period} in ${listing.location.suburb}`}
+              />
             </div>
           </div>
 

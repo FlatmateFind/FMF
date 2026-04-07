@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { MapPin, DollarSign, Clock, Mail, Building2, ChevronDown, ChevronUp, Languages } from 'lucide-react';
 import { POST_LANGUAGES } from '@/lib/types';
+import ShareButton from '@/components/ShareButton';
 import { JobPost, JobType } from '@/data/jobs';
 import { useAuth } from '@/context/AuthContext';
 import NearbyListings from '@/components/NearbyListings';
@@ -121,6 +122,12 @@ export default function JobCard({ job }: { job: JobPost }) {
 
         {/* Nearby rooms */}
         {!isClosed && <NearbyListings suburb={job.suburb} state={job.state} />}
+
+        {/* Share + Apply row */}
+        <div className="flex items-center gap-2 mb-2">
+          <ShareButton url={`https://flatmatefind.vercel.app/jobs`} title={`${job.title}${job.company ? ` @ ${job.company}` : ''} — ${job.suburb}, ${job.state}`} variant="icon" />
+          <span className="text-[10px] text-slate-400">Share on Facebook</span>
+        </div>
 
         {/* Apply */}
         {isClosed ? (
