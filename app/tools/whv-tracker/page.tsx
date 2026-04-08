@@ -301,9 +301,9 @@ export default function WHVTrackerPage() {
 
   return (
     <main className="min-h-screen bg-slate-50">
-      {/* Header */}
-      <div className="bg-gradient-to-br from-emerald-600 to-teal-800 text-white">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 space-y-5">
+        {/* Boxed hero */}
+        <div className="rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-800 text-white px-6 py-8">
           <Link href="/tools" className="flex items-center gap-1.5 text-emerald-300 hover:text-white text-xs mb-4 transition-colors">
             <ChevronLeft className="w-3.5 h-3.5" /> Back to Tools
           </Link>
@@ -319,9 +319,6 @@ export default function WHVTrackerPage() {
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 space-y-5">
 
         {/* ── Visa year selector ─────────────────────────────────────────── */}
         <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">

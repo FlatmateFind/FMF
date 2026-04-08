@@ -108,17 +108,15 @@ export default function HoursTrackerPage() {
 
   return (
     <main className="min-h-screen bg-slate-50">
-      <div className="bg-gradient-to-br from-blue-600 to-indigo-800 text-white">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 space-y-5">
+        {/* Boxed hero */}
+        <div className="rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-800 text-white px-6 py-8">
           <Link href="/tools" className="flex items-center gap-1.5 text-blue-300 hover:text-white text-xs mb-4 transition-colors">
             <ChevronLeft className="w-3.5 h-3.5" /> Back to Tools
           </Link>
           <h1 className="text-2xl sm:text-3xl font-bold mb-1">Visa Work Hours Tracker</h1>
           <p className="text-blue-200 text-sm">Track your work hours by fortnight. Set your own limit based on your visa conditions.</p>
         </div>
-      </div>
-
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 space-y-5">
 
         {/* Limit setting */}
         <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">

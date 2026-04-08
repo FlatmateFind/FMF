@@ -80,17 +80,15 @@ export default function ABNvsTFNPage() {
 
   return (
     <main className="min-h-screen bg-slate-50">
-      <div className="bg-gradient-to-br from-slate-700 to-slate-900 text-white">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 space-y-5">
+        {/* Boxed hero */}
+        <div className="rounded-2xl bg-gradient-to-br from-slate-700 to-slate-900 text-white px-6 py-8">
           <Link href="/tools" className="flex items-center gap-1.5 text-slate-400 hover:text-white text-xs mb-4 transition-colors">
             <ChevronLeft className="w-3.5 h-3.5" /> Back to Tools
           </Link>
           <h1 className="text-2xl sm:text-3xl font-bold mb-1">ABN vs TFN Calculator</h1>
           <p className="text-slate-400 text-sm">Compare take-home pay as an ABN contractor vs a TFN/PAYG employee in Australia.</p>
         </div>
-      </div>
-
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 space-y-5">
 
         {/* Income input */}
         <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">

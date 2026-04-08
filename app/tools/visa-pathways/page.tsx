@@ -999,9 +999,9 @@ export default function VisaPathwaysPage() {
 
   return (
     <main className="min-h-screen bg-slate-50">
-      {/* Header */}
-      <div className="bg-gradient-to-br from-blue-700 to-blue-900 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+        {/* Boxed hero */}
+        <div className="rounded-2xl bg-gradient-to-br from-blue-700 to-blue-900 text-white px-6 py-8">
           <Link href="/tools" className="flex items-center gap-1.5 text-blue-300 hover:text-white text-xs mb-4 transition-colors">
             <ChevronLeft className="w-3.5 h-3.5" /> Back to Tools
           </Link>
@@ -1011,15 +1011,12 @@ export default function VisaPathwaysPage() {
             </div>
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold mb-1">Visa Pathways</h1>
-              <p className="text-indigo-200 text-sm max-w-xl">
+              <p className="text-blue-200 text-sm max-w-xl">
                 Find the best way to stay in Australia longer, get employer sponsorship, or achieve permanent residency — based on your current visa and goals.
               </p>
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8">
 
         {/* ── Filter panel ──────────────────────────────────────────────────── */}
         <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">

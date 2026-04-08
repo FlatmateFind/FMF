@@ -261,10 +261,10 @@ export default function TaxCalculatorPage() {
   const isRefund = result && result.refund >= 0;
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-indigo-50/60 to-white">
-      {/* Hero */}
-      <div className="bg-gradient-to-br from-indigo-600 to-indigo-800 text-white">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
+    <main className="min-h-screen bg-slate-50">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 space-y-5">
+        {/* Boxed hero */}
+        <div className="rounded-2xl bg-gradient-to-br from-indigo-600 to-indigo-800 text-white px-6 py-8">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center">
               <Calculator className="w-5 h-5" />
@@ -276,9 +276,6 @@ export default function TaxCalculatorPage() {
             Estimate your tax refund or balance for all visa types — Working Holiday, Student, Skilled, and more.
           </p>
         </div>
-      </div>
-
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 space-y-5">
 
         {/* Disclaimer */}
         <div className="flex items-start gap-2.5 p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800">
