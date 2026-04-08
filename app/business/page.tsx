@@ -193,7 +193,7 @@ export default function BusinessPage() {
             )}
 
             <div className="mt-6">
-              <AdSlot id="business-bottom" className="rounded-2xl overflow-hidden" />
+              <AdSlot size="leaderboard" slotId="business-bottom" className="rounded-2xl overflow-hidden" />
             </div>
           </div>
         </div>

@@ -194,7 +194,7 @@ export default function EventsPage() {
             )}
 
             <div className="mt-6">
-              <AdSlot id="events-bottom" className="rounded-2xl overflow-hidden" />
+              <AdSlot size="leaderboard" slotId="events-bottom" className="rounded-2xl overflow-hidden" />
             </div>
           </div>
         </div>

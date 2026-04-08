@@ -194,7 +194,7 @@ export default function MarketPage() {
             )}
 
             <div className="mt-6">
-              <AdSlot id="market-bottom" className="rounded-2xl overflow-hidden" />
+              <AdSlot size="leaderboard" slotId="market-bottom" className="rounded-2xl overflow-hidden" />
             </div>
           </div>
         </div>
