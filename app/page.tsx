@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight, ShieldCheck, Users, MessageCircle, Globe, SlidersHorizontal, Briefcase, Heart, GitCompareArrows, ArrowUpDown, Star, Flag } from 'lucide-react';
+import HeroText from '@/components/HeroText';
 import SearchBar from '@/components/SearchBar';
 import ListingCard from '@/components/ListingCard';
 import AdSlot from '@/components/AdSlot';
@@ -85,12 +86,7 @@ export default function HomePage() {
       <section className="bg-gradient-to-br from-teal-700 via-teal-600 to-teal-500 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-2xl sm:text-5xl font-extrabold tracking-tight mb-4 whitespace-nowrap">
-              Your Next Room is Here
-            </h1>
-            <p className="text-sm sm:text-xl text-teal-100 mb-10 max-w-2xl mx-auto whitespace-nowrap">
-              Free to browse. No fees. Message hosts directly.
-            </p>
+            <HeroText />
             <div className="max-w-2xl mx-auto">
               <SearchBar size="lg" placeholder="Search by suburb, city, or keyword..." />
             </div>
