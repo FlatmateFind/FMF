@@ -210,7 +210,7 @@ function MarketCard({ item }: { item: MarketListing }) {
   return (
     <div className="bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col">
       {/* Accent bar — always amber to match page header */}
-      <div className="h-1 bg-gradient-to-r from-amber-400 to-amber-600" />
+      <div className="h-1 bg-amber-500" />
 
       <div className="p-4 flex-1 flex flex-col">
         {/* Kind badge — amber for Product, indigo for Service */}
