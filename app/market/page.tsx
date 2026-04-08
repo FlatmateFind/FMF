@@ -124,7 +124,7 @@ export default function MarketPage() {
                 <select value={stateFilter} onChange={(e) => setStateFilter(e.target.value)}
                   className="w-full text-xs border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-300 bg-white">
                   <option value="">All states</option>
-                  {AUSTRALIAN_STATES.map((s) => <option key={s} value={s}>{s}</option>)}
+                  {AUSTRALIAN_STATES.map((s) => <option key={s.abbr} value={s.abbr}>{s.abbr} — {s.name}</option>)}
                 </select>
               </div>
 

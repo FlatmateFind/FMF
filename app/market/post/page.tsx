@@ -183,7 +183,7 @@ export default function PostMarketPage() {
                 <Field label="State" error={errors.state} required>
                   <select value={form.state} onChange={(e) => set('state', e.target.value)} className={inputCls(errors.state)}>
                     <option value="">Select state</option>
-                    {AUSTRALIAN_STATES.map((s) => <option key={s} value={s}>{s}</option>)}
+                    {AUSTRALIAN_STATES.map((s) => <option key={s.abbr} value={s.abbr}>{s.abbr} — {s.name}</option>)}
                   </select>
                 </Field>
                 <Field label="Suburb" error={errors.suburb} required>
