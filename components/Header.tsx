@@ -5,14 +5,18 @@ import {
   Home, Heart, LayoutDashboard, LogOut, User, ChevronDown,
   Users, Sparkles, Briefcase, Search, LogIn, UserPlus,
   Menu, X, PlusCircle, Zap, ArrowLeftRight, Calculator,
-  Building2, ShoppingBag, CalendarDays,
+  Building2, ShoppingBag, CalendarDays, CalendarCheck, Clock,
 } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useFavorites } from '@/hooks/useFavorites';
 
 const TOOLS_LINKS = [
-  { label: 'Tax Refund Calculator', href: '/tools/tax-calculator', icon: Calculator, color: 'bg-indigo-100 text-indigo-600', desc: 'Estimate your AU tax refund' },
+  { label: 'Compatibility Quiz',    href: '/tools/compatibility-quiz', icon: Users,          color: 'bg-violet-100 text-violet-600',  desc: 'Discover your flatmate type' },
+  { label: 'Tax Calculator',        href: '/tools/tax-calculator',     icon: Calculator,     color: 'bg-indigo-100 text-indigo-600',  desc: 'Estimate your AU tax refund' },
+  { label: 'WHV Days Tracker',      href: '/tools/whv-tracker',        icon: CalendarCheck,  color: 'bg-emerald-100 text-emerald-600', desc: 'Track 88 / 179 regional days' },
+  { label: 'Work Hours Tracker',    href: '/tools/hours-tracker',      icon: Clock,          color: 'bg-blue-100 text-blue-600',      desc: 'Log fortnightly work hours' },
+  { label: 'ABN vs TFN',            href: '/tools/abn-tfn',            icon: Briefcase,      color: 'bg-slate-100 text-slate-600',    desc: 'Compare contractor vs employee' },
 ];
 
 const QUICK_LINKS = {
@@ -98,7 +102,7 @@ export default function Header() {
               </button>
 
               {toolsOpen && (
-                <div className="absolute right-0 top-full mt-2 w-64 bg-white border border-slate-200 rounded-2xl shadow-xl p-3 z-50">
+                <div className="absolute right-0 top-full mt-2 w-72 bg-white border border-slate-200 rounded-2xl shadow-xl p-3 z-50">
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">Tools</p>
                   <div className="space-y-1">
                     {TOOLS_LINKS.map(({ label, href, icon: Icon, color, desc }) => (
