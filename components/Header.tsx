@@ -24,7 +24,7 @@ const QUICK_LINKS = {
   renters: [
     { label: 'Browse Listings',  href: '/listings',     icon: Search,    color: 'bg-teal-100 text-teal-700',    desc: 'Rooms & apartments near you' },
     { label: 'Create Profile',   href: '/profile',      icon: Sparkles,  color: 'bg-violet-100 text-violet-700', desc: 'Get found by subletters' },
-    { label: 'Communities',      href: '/communities',  icon: Globe,     color: 'bg-cyan-100 text-cyan-700',    desc: 'Connect with renters near you' },
+    { label: 'Communities',      href: '/community',  icon: Globe,     color: 'bg-cyan-100 text-cyan-700',    desc: 'Connect with renters near you' },
   ],
   subletters: [
     { label: 'Browse Profiles',  href: '/renters',   icon: Users,          color: 'bg-blue-100 text-blue-700',   desc: 'Find your next tenant' },
