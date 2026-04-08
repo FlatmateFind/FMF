@@ -332,18 +332,18 @@ export default function CommunityPage() {
       </div>
 
       {/* Share FlatmateFind CTA */}
-      <section id="share" className="bg-gradient-to-br from-teal-600 to-teal-800 rounded-2xl p-8 text-white mb-12">
+      <section id="share" className="bg-gradient-to-br from-blue-600 to-indigo-800 rounded-2xl p-8 text-white mb-12">
         <div className="flex items-center gap-2 mb-4">
-          <Megaphone className="w-6 h-6 text-teal-200" />
+          <Megaphone className="w-6 h-6 text-blue-200" />
           <h2 className="text-2xl font-bold">Help your community find better housing</h2>
         </div>
-        <p className="text-teal-100 mb-6 leading-relaxed max-w-2xl">
+        <p className="text-blue-100 mb-6 leading-relaxed max-w-2xl">
           If you found FlatmateFind useful, sharing it in these Facebook groups helps other renters and subletters discover a better way to find rooms — and it keeps our listings growing. Copy the text below and paste it into any group.
         </p>
 
         {/* Share text box */}
         <div className="bg-white/10 border border-white/20 rounded-xl p-4 mb-5">
-          <pre className="text-sm text-teal-50 whitespace-pre-wrap font-sans leading-relaxed">{shareText}</pre>
+          <pre className="text-sm text-blue-50 whitespace-pre-wrap font-sans leading-relaxed">{shareText}</pre>
         </div>
 
         {/* Action buttons */}
@@ -353,7 +353,7 @@ export default function CommunityPage() {
             className={`inline-flex items-center gap-2 px-5 py-2.5 font-semibold rounded-xl text-sm transition-all ${
               copied
                 ? 'bg-green-500 text-white'
-                : 'bg-white text-teal-700 hover:bg-teal-50'
+                : 'bg-white text-blue-700 hover:bg-blue-50'
             }`}
           >
             {copied ? <CheckCheck className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
@@ -385,7 +385,7 @@ export default function CommunityPage() {
       <p className="text-center text-xs text-slate-400 leading-relaxed max-w-xl mx-auto">
         FlatmateFind is not affiliated with Facebook or Meta. Group names and member counts are for reference only and may change.
         Always follow each group&apos;s rules when posting.{' '}
-        <Link href="/safety-tips" className="text-teal-600 hover:underline">Safety tips</Link>
+        <Link href="/safety-tips" className="text-blue-600 hover:underline">Safety tips</Link>
       </p>
     </div>
   );
