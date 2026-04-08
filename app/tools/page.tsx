@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Calculator, ChevronRight, Users, CalendarCheck, Clock, Briefcase, Wrench } from 'lucide-react';
+import { Calculator, ChevronRight, Users, CalendarCheck, Clock, Briefcase, Wrench, Layers } from 'lucide-react';
 
 const TOOLS = [
   {
@@ -51,6 +51,16 @@ const TOOLS = [
     desc: 'Side-by-side take-home pay comparison as an ABN contractor vs a PAYG employee in Australia.',
     badge: null,
     badgeColor: '',
+  },
+  {
+    href: '/tools/visa-pathways',
+    icon: Layers,
+    color: 'bg-indigo-100 text-indigo-600',
+    accent: 'border-indigo-200',
+    title: 'Visa Pathways',
+    desc: 'Explore every visa option to stay longer, get sponsored, or achieve PR — personalised to your current visa and goals.',
+    badge: 'New',
+    badgeColor: 'bg-indigo-100 text-indigo-700',
   },
 ];
 

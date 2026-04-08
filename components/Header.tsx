@@ -5,7 +5,7 @@ import {
   Home, Heart, LayoutDashboard, LogOut, User, ChevronDown,
   Users, Sparkles, Briefcase, Search, LogIn, UserPlus,
   Menu, X, PlusCircle, Zap, ArrowLeftRight, Calculator,
-  Building2, ShoppingBag, CalendarDays, CalendarCheck, Clock,
+  Building2, ShoppingBag, CalendarDays, CalendarCheck, Clock, Layers,
 } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
@@ -17,6 +17,7 @@ const TOOLS_LINKS = [
   { label: 'WHV Days Tracker',      href: '/tools/whv-tracker',        icon: CalendarCheck,  color: 'bg-emerald-100 text-emerald-600', desc: 'Track 88 / 179 regional days' },
   { label: 'Work Hours Tracker',    href: '/tools/hours-tracker',      icon: Clock,          color: 'bg-blue-100 text-blue-600',      desc: 'Log fortnightly work hours' },
   { label: 'ABN vs TFN',            href: '/tools/abn-tfn',            icon: Briefcase,      color: 'bg-slate-100 text-slate-600',    desc: 'Compare contractor vs employee' },
+  { label: 'Visa Pathways',         href: '/tools/visa-pathways',      icon: Layers,         color: 'bg-indigo-100 text-indigo-600',  desc: 'Stay longer, sponsorship & PR' },
 ];
 
 const QUICK_LINKS = {
