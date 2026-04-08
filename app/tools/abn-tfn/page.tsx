@@ -1,7 +1,7 @@
 'use client';
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { ChevronLeft, Info, CheckCircle2, XCircle, Briefcase } from 'lucide-react';
+import { ChevronLeft, Info, CheckCircle2, XCircle, Briefcase, Lightbulb, AlertTriangle } from 'lucide-react';
 import clsx from 'clsx';
 
 // Resident tax (same as tax calculator)
@@ -206,7 +206,7 @@ export default function ABNvsTFNPage() {
 
             {/* Equivalence note */}
             <div className="bg-indigo-50 border border-indigo-100 rounded-2xl p-4 text-sm text-indigo-700">
-              <p className="font-semibold mb-1">💡 To match a {fmt(results.grossAnnual)} salary package...</p>
+              <p className="font-semibold mb-1 flex items-center gap-1.5"><Lightbulb className="w-4 h-4 shrink-0" /> To match a {fmt(results.grossAnnual)} salary package...</p>
               <p className="text-xs">
                 As an ABN contractor you should charge at least{' '}
                 <strong>{fmt(results.requiredABNRate)}/year</strong>{' '}
@@ -215,7 +215,7 @@ export default function ABNvsTFNPage() {
               </p>
               {results.gstApplies && (
                 <p className="text-xs mt-1.5 text-amber-700 font-medium">
-                  ⚠️ Your income exceeds ${GST_THRESHOLD.toLocaleString()} — you must register for GST and add 10% to invoices.
+                  <span className="flex items-center gap-1.5"><AlertTriangle className="w-3.5 h-3.5 shrink-0" /> Your income exceeds ${GST_THRESHOLD.toLocaleString()} — you must register for GST and add 10% to invoices.</span>
                 </p>
               )}
             </div>
