@@ -9,8 +9,8 @@ const TOOLS = [
     accent: 'border-violet-200',
     title: 'Flatmate Match',
     desc: 'Discover your flatmate personality type and who you\'d live best with. 10 questions, instant result.',
-    badge: 'Popular',
-    badgeColor: 'bg-violet-100 text-violet-700',
+    badge: null,
+    badgeColor: '',
   },
   {
     href: '/tools/tax-calculator',
@@ -19,8 +19,8 @@ const TOOLS = [
     accent: 'border-indigo-200',
     title: 'Tax Refund Calculator',
     desc: 'Estimate your Australian tax refund for all visa types — Working Holiday, Student, Skilled, and more.',
-    badge: 'Free',
-    badgeColor: 'bg-teal-100 text-teal-700',
+    badge: null,
+    badgeColor: '',
   },
   {
     href: '/tools/whv-tracker',
@@ -59,8 +59,8 @@ const TOOLS = [
     accent: 'border-indigo-200',
     title: 'Visa Pathways',
     desc: 'Explore every visa option to stay longer, get sponsored, or achieve PR — personalised to your current visa and goals.',
-    badge: 'New',
-    badgeColor: 'bg-indigo-100 text-indigo-700',
+    badge: null,
+    badgeColor: '',
   },
 ];
 
