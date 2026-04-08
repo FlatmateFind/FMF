@@ -162,7 +162,7 @@ export default function Header() {
               </button>
 
               {quickOpen && (
-                <div className="absolute left-0 top-full mt-2 w-[600px] bg-white border border-slate-200 rounded-2xl shadow-xl p-4 z-50">
+                <div className="absolute right-0 top-full mt-2 w-[600px] bg-white border border-slate-200 rounded-2xl shadow-xl p-4 z-50">
                   <div className="grid grid-cols-3 divide-x divide-slate-100">
                     {/* For Renters */}
                     <div className="pr-4">
