@@ -98,17 +98,17 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-slate-500">
-            &copy; {year} FlatmateFind &middot; All listings subject to availability &middot; For informational purposes only
-          </p>
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
+          <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
             {bottomLinks.map((l) => (
-              <Link key={l.label} href={l.href} className="text-[10px] sm:text-xs text-slate-500 hover:text-teal-400 transition-colors whitespace-nowrap">
+              <Link key={l.label} href={l.href} className="text-[10px] text-slate-500 hover:text-teal-400 transition-colors whitespace-nowrap">
                 {l.label}
               </Link>
             ))}
           </div>
+          <p className="text-[10px] text-slate-500 whitespace-nowrap">
+            &copy; {year} FlatmateFind &middot; All rights reserved
+          </p>
         </div>
       </div>
     </footer>
