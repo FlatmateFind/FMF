@@ -46,6 +46,9 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [quickOpen, setQuickOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
+  const [mobileQuickOpen, setMobileQuickOpen] = useState(false);
+  const [mobileFindOpen, setMobileFindOpen] = useState(false);
+  const [mobileToolsOpen, setMobileToolsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const quickRef = useRef<HTMLDivElement>(null);
   const toolsRef = useRef<HTMLDivElement>(null);
@@ -62,7 +65,10 @@ export default function Header() {
   }, []);
 
   // Close mobile menu on route change
-  useEffect(() => { setMobileOpen(false); setQuickOpen(false); setToolsOpen(false); }, [pathname]);
+  useEffect(() => {
+    setMobileOpen(false); setQuickOpen(false); setToolsOpen(false);
+    setMobileQuickOpen(false); setMobileFindOpen(false); setMobileToolsOpen(false);
+  }, [pathname]);
 
   function handleSignOut() {
     signOut();
@@ -362,80 +368,120 @@ export default function Header() {
       {/* Mobile dropdown menu */}
       {mobileOpen && (
         <div className="md:hidden border-t border-slate-100 bg-white">
-          <nav className="max-w-7xl mx-auto px-4 py-4 space-y-4">
+          <nav className="max-w-7xl mx-auto px-4 py-3 space-y-1">
 
-            {/* Quick links */}
-            {/* Find section */}
+            {/* ── Getting Started accordion ── */}
             <div>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-4 mb-2">Find</p>
-              <div className="grid grid-cols-2 gap-2">
-                {QUICK_LINKS.find.map(({ label, href, icon: Icon, color, desc }) => (
-                  <Link key={href} href={href}
-                    className="flex flex-col items-start gap-2 p-3 rounded-xl border border-slate-100 hover:border-slate-200 bg-slate-50 hover:bg-white transition-colors">
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${color}`}>
-                      <Icon className="w-4 h-4" />
+              <button
+                onClick={() => setMobileQuickOpen((v) => !v)}
+                className="flex items-center justify-between w-full px-3 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+              >
+                <span className="flex items-center gap-2.5">
+                  <Zap className="w-4 h-4 text-teal-500" />
+                  Getting Started
+                </span>
+                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${mobileQuickOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {mobileQuickOpen && (
+                <div className="mt-1 mb-2 space-y-3 pl-2">
+                  <div>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-1.5">For Renters</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {QUICK_LINKS.renters.map(({ label, href, icon: Icon, color, desc }) => (
+                        <Link key={href} href={href}
+                          className="flex flex-col items-start gap-2 p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-white hover:border-slate-200 transition-colors">
+                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${color}`}>
+                            <Icon className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <p className="text-xs font-semibold text-slate-800">{label}</p>
+                            <p className="text-[10px] text-slate-400 leading-tight">{desc}</p>
+                          </div>
+                        </Link>
+                      ))}
                     </div>
-                    <div>
-                      <p className="text-xs font-semibold text-slate-800">{label}</p>
-                      <p className="text-[10px] text-slate-400 leading-tight">{desc}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-1.5">For Subletters</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {QUICK_LINKS.subletters.map(({ label, href, icon: Icon, color, desc }) => (
+                        <Link key={href} href={href}
+                          className="flex flex-col items-start gap-2 p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-white hover:border-slate-200 transition-colors">
+                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${color}`}>
+                            <Icon className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <p className="text-xs font-semibold text-slate-800">{label}</p>
+                            <p className="text-[10px] text-slate-400 leading-tight">{desc}</p>
+                          </div>
+                        </Link>
+                      ))}
                     </div>
-                  </Link>
-                ))}
-              </div>
+                  </div>
+                </div>
+              )}
             </div>
 
-            <Link
-              href="/tools"
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
-                pathname.startsWith('/tools') ? 'text-indigo-600 bg-indigo-50' : 'text-slate-700 hover:bg-slate-50'
-              }`}
-            >
-              <Calculator className="w-4 h-4" />
-              Tools
-            </Link>
-
-            {/* For Renters section */}
+            {/* ── Find accordion ── */}
             <div>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-4 mb-2">For Renters</p>
-              <div className="grid grid-cols-2 gap-2">
-                {QUICK_LINKS.renters.map(({ label, href, icon: Icon, color, desc }) => (
-                  <Link
-                    key={href}
-                    href={href}
-                    className="flex flex-col items-start gap-2 p-3 rounded-xl border border-slate-100 hover:border-slate-200 bg-slate-50 hover:bg-white transition-colors"
-                  >
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${color}`}>
-                      <Icon className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold text-slate-800">{label}</p>
-                      <p className="text-[10px] text-slate-400 leading-tight">{desc}</p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+              <button
+                onClick={() => setMobileFindOpen((v) => !v)}
+                className="flex items-center justify-between w-full px-3 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+              >
+                <span className="flex items-center gap-2.5">
+                  <Search className="w-4 h-4 text-indigo-500" />
+                  Find
+                </span>
+                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${mobileFindOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {mobileFindOpen && (
+                <div className="mt-1 mb-2 pl-2">
+                  <div className="grid grid-cols-2 gap-2">
+                    {QUICK_LINKS.find.map(({ label, href, icon: Icon, color, desc }) => (
+                      <Link key={href} href={href}
+                        className="flex flex-col items-start gap-2 p-3 rounded-xl border border-slate-100 bg-slate-50 hover:bg-white hover:border-slate-200 transition-colors">
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${color}`}>
+                          <Icon className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-semibold text-slate-800">{label}</p>
+                          <p className="text-[10px] text-slate-400 leading-tight">{desc}</p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* For Subletters section */}
+            {/* ── Tools accordion ── */}
             <div>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-4 mb-2">For Subletters</p>
-              <div className="grid grid-cols-2 gap-2">
-                {QUICK_LINKS.subletters.map(({ label, href, icon: Icon, color, desc }) => (
-                  <Link
-                    key={href}
-                    href={href}
-                    className="flex flex-col items-start gap-2 p-3 rounded-xl border border-slate-100 hover:border-slate-200 bg-slate-50 hover:bg-white transition-colors"
-                  >
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${color}`}>
-                      <Icon className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-semibold text-slate-800">{label}</p>
-                      <p className="text-[10px] text-slate-400 leading-tight">{desc}</p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+              <button
+                onClick={() => setMobileToolsOpen((v) => !v)}
+                className="flex items-center justify-between w-full px-3 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+              >
+                <span className="flex items-center gap-2.5">
+                  <Calculator className="w-4 h-4 text-violet-500" />
+                  Tools
+                </span>
+                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${mobileToolsOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {mobileToolsOpen && (
+                <div className="mt-1 mb-2 pl-2 space-y-1">
+                  {TOOLS_LINKS.map(({ label, href, icon: Icon, color, desc }) => (
+                    <Link key={href} href={href}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-50 transition-colors group">
+                      <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-slate-800 group-hover:text-indigo-700">{label}</p>
+                        <p className="text-[10px] text-slate-400 leading-tight">{desc}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
 
           </nav>
