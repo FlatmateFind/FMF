@@ -2,14 +2,14 @@
 import { useState, useEffect } from 'react';
 
 const ITEMS = [
-  { word: 'Rooms',     sub: 'Free to browse. No fees. Message hosts directly.' },
-  { word: 'Flatmates', sub: 'Filter by lifestyle, language & move-in date.' },
+  { word: 'Rooms',     sub: 'Your next home is one search away.' },
+  { word: 'Flatmates', sub: 'Find someone who actually gets you.' },
   { word: 'Jobs',      sub: 'Casual, part-time & full-time roles near you.' },
   { word: 'Events',    sub: 'Markets, meetups & activities in your area.' },
   { word: 'Products',  sub: 'Local goods & services from your community.' },
   { word: 'Services',  sub: 'Tradies, tutors & local businesses near you.' },
   { word: 'Business',  sub: 'Cafés, shops & businesses for sale near you.' },
-  { word: 'More',      sub: 'Everything you need for life in Australia — in one place.' },
+  { word: 'More',      sub: 'One app. Every need. Australia-wide.' },
 ];
 
 export default function HeroText() {
@@ -42,7 +42,7 @@ export default function HeroText() {
         </span>
       </h1>
       <p
-        className={`text-sm sm:text-xl text-teal-100 mb-10 max-w-2xl mx-auto transition-opacity duration-300 ${
+        className={`text-base sm:text-xl text-teal-100 mb-10 max-w-2xl mx-auto whitespace-nowrap transition-opacity duration-300 ${
           visible ? 'opacity-100' : 'opacity-0'
         }`}
       >
