@@ -14,37 +14,32 @@ import { useFavorites } from '@/hooks/useFavorites';
 // ─── Per-page brand theme ────────────────────────────────────────────────────
 
 interface PageTheme {
-  logoBg: string;       // bg-* for the icon square
-  brandText: string;    // text-* for "Find" in the wordmark
-  activeNav: string;    // text-* + bg-* for active nav button
+  logoBg: string;      // bg-* for the icon square
+  brandText: string;   // text-* for "Find" in the wordmark
+  activeNav: string;   // text-* + bg-* for active nav button
+  signupBg: string;    // bg-* for the sign-up button
+  signupHover: string; // hover:bg-* for the sign-up button
 }
 
 const DEFAULT_THEME: PageTheme = {
   logoBg: 'bg-teal-600',
   brandText: 'text-teal-600',
   activeNav: 'text-teal-600 bg-teal-50',
+  signupBg: 'bg-teal-600',
+  signupHover: 'hover:bg-teal-700',
 };
 
+// Only Find and Tools pages get a custom theme — all other pages use teal
 const PAGE_THEMES: { prefix: string; theme: PageTheme }[] = [
-  { prefix: '/jobs',        theme: { logoBg: 'bg-blue-600',   brandText: 'text-blue-600',   activeNav: 'text-blue-600 bg-blue-50'   } },
-  { prefix: '/business',    theme: { logoBg: 'bg-purple-600', brandText: 'text-purple-600', activeNav: 'text-purple-600 bg-purple-50' } },
-  { prefix: '/events',      theme: { logoBg: 'bg-rose-600',   brandText: 'text-rose-600',   activeNav: 'text-rose-600 bg-rose-50'   } },
-  { prefix: '/market',      theme: { logoBg: 'bg-amber-500',  brandText: 'text-amber-500',  activeNav: 'text-amber-600 bg-amber-50' } },
-  { prefix: '/community',   theme: { logoBg: 'bg-cyan-600',   brandText: 'text-cyan-600',   activeNav: 'text-cyan-600 bg-cyan-50'   } },
-  { prefix: '/takeover',    theme: { logoBg: 'bg-orange-500', brandText: 'text-orange-500', activeNav: 'text-orange-600 bg-orange-50' } },
-  { prefix: '/renters',     theme: { logoBg: 'bg-indigo-600', brandText: 'text-indigo-600', activeNav: 'text-indigo-600 bg-indigo-50' } },
-  { prefix: '/tools',       theme: { logoBg: 'bg-violet-600', brandText: 'text-violet-600', activeNav: 'text-violet-600 bg-violet-50' } },
-  { prefix: '/favorites',   theme: { logoBg: 'bg-rose-500',   brandText: 'text-rose-500',   activeNav: 'text-rose-600 bg-rose-50'   } },
-  { prefix: '/dashboard',   theme: { logoBg: 'bg-slate-700',  brandText: 'text-slate-700',  activeNav: 'text-slate-700 bg-slate-100' } },
-  { prefix: '/listings',    theme: DEFAULT_THEME },
-  { prefix: '/post',        theme: { logoBg: 'bg-amber-500',  brandText: 'text-amber-500',  activeNav: 'text-amber-600 bg-amber-50' } },
-  { prefix: '/profile',     theme: { logoBg: 'bg-violet-600', brandText: 'text-violet-600', activeNav: 'text-violet-600 bg-violet-50' } },
-  { prefix: '/safety-tips', theme: { logoBg: 'bg-emerald-600',brandText: 'text-emerald-600',activeNav: 'text-emerald-600 bg-emerald-50' } },
-  { prefix: '/faq',         theme: { logoBg: 'bg-indigo-600', brandText: 'text-indigo-600', activeNav: 'text-indigo-600 bg-indigo-50' } },
+  { prefix: '/jobs',      theme: { logoBg: 'bg-blue-600',   brandText: 'text-blue-600',   activeNav: 'text-blue-600 bg-blue-50',     signupBg: 'bg-blue-600',   signupHover: 'hover:bg-blue-700'   } },
+  { prefix: '/business',  theme: { logoBg: 'bg-purple-600', brandText: 'text-purple-600', activeNav: 'text-purple-600 bg-purple-50', signupBg: 'bg-purple-600', signupHover: 'hover:bg-purple-700' } },
+  { prefix: '/events',    theme: { logoBg: 'bg-rose-600',   brandText: 'text-rose-600',   activeNav: 'text-rose-600 bg-rose-50',     signupBg: 'bg-rose-600',   signupHover: 'hover:bg-rose-700'   } },
+  { prefix: '/market',    theme: { logoBg: 'bg-amber-500',  brandText: 'text-amber-500',  activeNav: 'text-amber-600 bg-amber-50',   signupBg: 'bg-amber-500',  signupHover: 'hover:bg-amber-600'  } },
+  { prefix: '/community', theme: { logoBg: 'bg-cyan-600',   brandText: 'text-cyan-600',   activeNav: 'text-cyan-600 bg-cyan-50',     signupBg: 'bg-cyan-600',   signupHover: 'hover:bg-cyan-700'   } },
+  { prefix: '/tools',     theme: { logoBg: 'bg-violet-600', brandText: 'text-violet-600', activeNav: 'text-violet-600 bg-violet-50', signupBg: 'bg-violet-600', signupHover: 'hover:bg-violet-700' } },
 ];
 
 function usePageTheme(pathname: string): PageTheme {
-  // Match longest prefix first
   const sorted = [...PAGE_THEMES].sort((a, b) => b.prefix.length - a.prefix.length);
   const match = sorted.find((p) => pathname.startsWith(p.prefix));
   return match ? match.theme : DEFAULT_THEME;
@@ -312,10 +307,10 @@ export default function Header() {
                 </div>
               ) : (
                 <div className="flex items-center gap-1.5 ml-1">
-                  <Link href="/auth/signin" title="Sign In" className="flex items-center justify-center w-9 h-9 rounded-lg text-slate-600 hover:text-teal-600 hover:bg-slate-50 transition-colors">
+                  <Link href="/auth/signin" title="Sign In" className="flex items-center justify-center w-9 h-9 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors">
                     <LogIn className="w-5 h-5" />
                   </Link>
-                  <Link href="/auth/signup" title="Sign Up" className="flex items-center justify-center w-9 h-9 rounded-lg bg-teal-600 hover:bg-teal-700 text-white transition-colors">
+                  <Link href="/auth/signup" title="Sign Up" className={`flex items-center justify-center w-9 h-9 rounded-lg ${theme.signupBg} ${theme.signupHover} text-white transition-colors duration-300`}>
                     <UserPlus className="w-5 h-5" />
                   </Link>
                 </div>
@@ -387,10 +382,10 @@ export default function Header() {
                 </div>
               ) : (
                 <div className="flex items-center gap-1">
-                  <Link href="/auth/signin" title="Sign In" className="flex items-center justify-center w-8 h-8 rounded-lg text-slate-600 hover:text-teal-600 hover:bg-slate-50 transition-colors">
+                  <Link href="/auth/signin" title="Sign In" className="flex items-center justify-center w-8 h-8 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors">
                     <LogIn className="w-4 h-4" />
                   </Link>
-                  <Link href="/auth/signup" title="Sign Up" className="flex items-center justify-center w-8 h-8 rounded-lg bg-teal-600 hover:bg-teal-700 text-white transition-colors">
+                  <Link href="/auth/signup" title="Sign Up" className={`flex items-center justify-center w-8 h-8 rounded-lg ${theme.signupBg} ${theme.signupHover} text-white transition-colors duration-300`}>
                     <UserPlus className="w-4 h-4" />
                   </Link>
                 </div>
