@@ -240,19 +240,18 @@ export default function CommunityPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
       {/* Hero */}
-      <div className="rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white px-8 py-12 mb-12 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 80% 50%, white 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+      <div className="rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white px-6 py-8 sm:px-10 mb-8 relative overflow-hidden">
         <div className="relative max-w-2xl">
-          <div className="flex items-center gap-2 mb-4">
+          <div className="flex items-center gap-2 mb-3">
             <div className="bg-white/20 rounded-xl p-2">
-              <Users className="w-6 h-6 text-white" />
+              <Users className="w-5 h-5 text-white" />
             </div>
-            <span className="text-sm font-semibold text-blue-200 uppercase tracking-widest">Community Hub</span>
+            <span className="text-xs font-semibold text-blue-200 uppercase tracking-widest">Community Hub</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold mb-4 leading-tight">
-            Australian Housing<br />Facebook Communities
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2 leading-tight">
+            Australian Housing Facebook Communities
           </h1>
-          <p className="text-blue-100 text-lg mb-6 leading-relaxed">
+          <p className="text-blue-100 text-sm mb-5 leading-relaxed">
             A hand-picked directory of the most active Facebook groups for rooms, share houses and flatmates across Australia — organised by state and community.
           </p>
           <div className="flex flex-wrap gap-3">
