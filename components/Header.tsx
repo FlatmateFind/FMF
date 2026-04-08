@@ -118,6 +118,12 @@ export default function Header() {
     setMobileQuickOpen(false); setMobileFindOpen(false); setMobileToolsOpen(false);
   }, [pathname]);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
+
   function handleSignOut() {
     signOut();
     setMenuOpen(false);
@@ -415,7 +421,7 @@ export default function Header() {
 
       {/* Mobile dropdown menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-slate-100 bg-white">
+        <div className="md:hidden border-t border-slate-100 bg-white fixed inset-x-0 top-16 bottom-0 overflow-y-auto z-40">
           <nav className="max-w-7xl mx-auto px-4 py-3 space-y-1">
 
             {/* ── Getting Started accordion ── */}
@@ -478,7 +484,7 @@ export default function Header() {
               >
                 <span className="flex items-center gap-2.5">
                   <Search className="w-4 h-4 text-indigo-500" />
-                  Find
+                  Find More
                 </span>
                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${mobileFindOpen ? 'rotate-180' : ''}`} />
               </button>
@@ -510,7 +516,7 @@ export default function Header() {
               >
                 <span className="flex items-center gap-2.5">
                   <Calculator className="w-4 h-4 text-violet-500" />
-                  Tools
+                  Smart Tools
                 </span>
                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${mobileToolsOpen ? 'rotate-180' : ''}`} />
               </button>
