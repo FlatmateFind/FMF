@@ -114,7 +114,7 @@ const PATHWAYS: Pathway[] = [
     leadsTo: ['whv-3rd', 'student-500', 'skilled-482', 'skilled-491'],
     fromVisas: ['whv'],
     forGoals: ['stay', 'all'],
-    urgentNote: 'Apply before your current WHV expires — you can't apply from within Australia on a different visa.',
+    urgentNote: "Apply before your current WHV expires — you cannot apply from within Australia on a different visa.",
   },
   {
     id: 'whv-3rd',
