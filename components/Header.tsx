@@ -5,7 +5,7 @@ import {
   Home, Heart, LayoutDashboard, LogOut, User, ChevronDown,
   Users, Sparkles, Briefcase, Search, LogIn, UserPlus,
   Menu, X, PlusCircle, Zap, ArrowLeftRight, Calculator,
-  Building2, ShoppingBag, CalendarDays, Compass,
+  Building2, ShoppingBag, CalendarDays,
 } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
@@ -77,19 +77,6 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1">
-            {/* Find */}
-            <Link
-              href="/jobs"
-              className={`relative flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-lg transition-colors ${
-                ['/jobs', '/business', '/market', '/events'].some((p) => pathname.startsWith(p))
-                  ? 'text-teal-600 bg-teal-50'
-                  : 'text-slate-600 hover:text-teal-600 hover:bg-slate-50'
-              }`}
-            >
-              <Compass className="w-4 h-4" />
-              Find
-            </Link>
-
             {/* Tools */}
             <Link
               href="/tools"
@@ -115,7 +102,7 @@ export default function Header() {
               </button>
 
               {quickOpen && (
-                <div className="absolute left-0 top-full mt-2 w-[580px] bg-white border border-slate-200 rounded-2xl shadow-xl p-4 z-50">
+                <div className="absolute right-0 top-full mt-2 w-[580px] bg-white border border-slate-200 rounded-2xl shadow-xl p-4 z-50">
                   <div className="grid grid-cols-3 gap-3">
                     {/* For Renters */}
                     <div>
