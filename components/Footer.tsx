@@ -109,7 +109,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-sm text-slate-400 leading-relaxed mb-5">
-              Find your room. Find your people. Free, always.
+              One app. Every need. Australia-wide.
             </p>
             <div className="flex flex-wrap gap-2 text-xs text-slate-500">
               <span className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-800 rounded-full">
