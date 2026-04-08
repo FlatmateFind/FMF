@@ -165,24 +165,33 @@ export default function JobsPage() {
   );
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Page header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <Briefcase className="w-6 h-6 text-teal-600" />
-            <h1 className="text-2xl font-bold text-slate-900">Jobs Board</h1>
+    <div>
+      {/* Hero header */}
+      <div className="bg-gradient-to-br from-blue-600 to-indigo-800 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center">
+                  <Briefcase className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-xs font-semibold uppercase tracking-widest text-blue-200">Find Section</span>
+              </div>
+              <h1 className="text-3xl sm:text-4xl font-bold mb-1">Jobs Board</h1>
+              <p className="text-blue-200 text-sm">Full-time, part-time, casual &amp; Working Holiday roles across Australia.</p>
+            </div>
+            <Link
+              href="/jobs/post"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/20 hover:bg-white/30 border border-white/30 text-white font-semibold rounded-xl transition-colors text-sm shrink-0"
+            >
+              <PlusCircle className="w-4 h-4" />
+              Post a Job
+            </Link>
           </div>
-          <p className="text-slate-500 text-sm">Work opportunities across Australia</p>
         </div>
-        <Link
-          href="/jobs/post"
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-lg transition-colors text-sm shrink-0"
-        >
-          <PlusCircle className="w-4 h-4" />
-          Post a Job
-        </Link>
       </div>
+
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
       {/* Search bar */}
       <div className="relative mb-6">
@@ -282,6 +291,7 @@ export default function JobsPage() {
           )}
         </div>
       </div>
+    </div>
     </div>
   );
 }

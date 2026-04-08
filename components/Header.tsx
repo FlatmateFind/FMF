@@ -31,12 +31,21 @@ const DEFAULT_THEME: PageTheme = {
 
 // Only Find and Tools pages get a custom theme — all other pages use teal
 const PAGE_THEMES: { prefix: string; theme: PageTheme }[] = [
+  // ── Find section ──────────────────────────────────────────────────────────
   { prefix: '/jobs',      theme: { logoBg: 'bg-blue-600',   brandText: 'text-blue-600',   activeNav: 'text-blue-600 bg-blue-50',     signupBg: 'bg-blue-600',   signupHover: 'hover:bg-blue-700'   } },
   { prefix: '/business',  theme: { logoBg: 'bg-purple-600', brandText: 'text-purple-600', activeNav: 'text-purple-600 bg-purple-50', signupBg: 'bg-purple-600', signupHover: 'hover:bg-purple-700' } },
   { prefix: '/events',    theme: { logoBg: 'bg-rose-600',   brandText: 'text-rose-600',   activeNav: 'text-rose-600 bg-rose-50',     signupBg: 'bg-rose-600',   signupHover: 'hover:bg-rose-700'   } },
   { prefix: '/market',    theme: { logoBg: 'bg-amber-500',  brandText: 'text-amber-500',  activeNav: 'text-amber-600 bg-amber-50',   signupBg: 'bg-amber-500',  signupHover: 'hover:bg-amber-600'  } },
-  { prefix: '/community', theme: { logoBg: 'bg-cyan-600',   brandText: 'text-cyan-600',   activeNav: 'text-cyan-600 bg-cyan-50',     signupBg: 'bg-cyan-600',   signupHover: 'hover:bg-cyan-700'   } },
-  { prefix: '/tools',     theme: { logoBg: 'bg-violet-600', brandText: 'text-violet-600', activeNav: 'text-violet-600 bg-violet-50', signupBg: 'bg-violet-600', signupHover: 'hover:bg-violet-700' } },
+  { prefix: '/community', theme: { logoBg: 'bg-blue-600',   brandText: 'text-blue-600',   activeNav: 'text-blue-600 bg-blue-50',     signupBg: 'bg-blue-600',   signupHover: 'hover:bg-blue-700'   } },
+  { prefix: '/takeover',  theme: { logoBg: 'bg-orange-500', brandText: 'text-orange-500', activeNav: 'text-orange-600 bg-orange-50', signupBg: 'bg-orange-500', signupHover: 'hover:bg-orange-600' } },
+  // ── Tools — specific pages override the generic /tools entry ──────────────
+  { prefix: '/tools/compatibility-quiz', theme: { logoBg: 'bg-violet-600', brandText: 'text-violet-600', activeNav: 'text-violet-600 bg-violet-50', signupBg: 'bg-violet-600', signupHover: 'hover:bg-violet-700' } },
+  { prefix: '/tools/tax-calculator',     theme: { logoBg: 'bg-indigo-600', brandText: 'text-indigo-600', activeNav: 'text-indigo-600 bg-indigo-50', signupBg: 'bg-indigo-600', signupHover: 'hover:bg-indigo-700' } },
+  { prefix: '/tools/whv-tracker',        theme: { logoBg: 'bg-emerald-600',brandText: 'text-emerald-600',activeNav: 'text-emerald-600 bg-emerald-50',signupBg: 'bg-emerald-600',signupHover: 'hover:bg-emerald-700'} },
+  { prefix: '/tools/hours-tracker',      theme: { logoBg: 'bg-blue-600',   brandText: 'text-blue-600',   activeNav: 'text-blue-600 bg-blue-50',     signupBg: 'bg-blue-600',   signupHover: 'hover:bg-blue-700'   } },
+  { prefix: '/tools/abn-tfn',            theme: { logoBg: 'bg-slate-700',  brandText: 'text-slate-700',  activeNav: 'text-slate-700 bg-slate-100',  signupBg: 'bg-slate-700',  signupHover: 'hover:bg-slate-800'  } },
+  { prefix: '/tools/visa-pathways',      theme: { logoBg: 'bg-indigo-600', brandText: 'text-indigo-600', activeNav: 'text-indigo-600 bg-indigo-50', signupBg: 'bg-indigo-600', signupHover: 'hover:bg-indigo-700' } },
+  { prefix: '/tools',                    theme: { logoBg: 'bg-violet-600', brandText: 'text-violet-600', activeNav: 'text-violet-600 bg-violet-50', signupBg: 'bg-violet-600', signupHover: 'hover:bg-violet-700' } },
 ];
 
 function usePageTheme(pathname: string): PageTheme {
