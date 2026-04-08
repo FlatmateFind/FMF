@@ -11,6 +11,47 @@ import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useFavorites } from '@/hooks/useFavorites';
 
+// ─── Per-page brand theme ────────────────────────────────────────────────────
+
+interface PageTheme {
+  logoBg: string;       // bg-* for the icon square
+  brandText: string;    // text-* for "Find" in the wordmark
+  activeNav: string;    // text-* + bg-* for active nav button
+}
+
+const DEFAULT_THEME: PageTheme = {
+  logoBg: 'bg-teal-600',
+  brandText: 'text-teal-600',
+  activeNav: 'text-teal-600 bg-teal-50',
+};
+
+const PAGE_THEMES: { prefix: string; theme: PageTheme }[] = [
+  { prefix: '/jobs',        theme: { logoBg: 'bg-blue-600',   brandText: 'text-blue-600',   activeNav: 'text-blue-600 bg-blue-50'   } },
+  { prefix: '/business',    theme: { logoBg: 'bg-purple-600', brandText: 'text-purple-600', activeNav: 'text-purple-600 bg-purple-50' } },
+  { prefix: '/events',      theme: { logoBg: 'bg-rose-600',   brandText: 'text-rose-600',   activeNav: 'text-rose-600 bg-rose-50'   } },
+  { prefix: '/market',      theme: { logoBg: 'bg-amber-500',  brandText: 'text-amber-500',  activeNav: 'text-amber-600 bg-amber-50' } },
+  { prefix: '/community',   theme: { logoBg: 'bg-cyan-600',   brandText: 'text-cyan-600',   activeNav: 'text-cyan-600 bg-cyan-50'   } },
+  { prefix: '/takeover',    theme: { logoBg: 'bg-orange-500', brandText: 'text-orange-500', activeNav: 'text-orange-600 bg-orange-50' } },
+  { prefix: '/renters',     theme: { logoBg: 'bg-indigo-600', brandText: 'text-indigo-600', activeNav: 'text-indigo-600 bg-indigo-50' } },
+  { prefix: '/tools',       theme: { logoBg: 'bg-violet-600', brandText: 'text-violet-600', activeNav: 'text-violet-600 bg-violet-50' } },
+  { prefix: '/favorites',   theme: { logoBg: 'bg-rose-500',   brandText: 'text-rose-500',   activeNav: 'text-rose-600 bg-rose-50'   } },
+  { prefix: '/dashboard',   theme: { logoBg: 'bg-slate-700',  brandText: 'text-slate-700',  activeNav: 'text-slate-700 bg-slate-100' } },
+  { prefix: '/listings',    theme: DEFAULT_THEME },
+  { prefix: '/post',        theme: { logoBg: 'bg-amber-500',  brandText: 'text-amber-500',  activeNav: 'text-amber-600 bg-amber-50' } },
+  { prefix: '/profile',     theme: { logoBg: 'bg-violet-600', brandText: 'text-violet-600', activeNav: 'text-violet-600 bg-violet-50' } },
+  { prefix: '/safety-tips', theme: { logoBg: 'bg-emerald-600',brandText: 'text-emerald-600',activeNav: 'text-emerald-600 bg-emerald-50' } },
+  { prefix: '/faq',         theme: { logoBg: 'bg-indigo-600', brandText: 'text-indigo-600', activeNav: 'text-indigo-600 bg-indigo-50' } },
+];
+
+function usePageTheme(pathname: string): PageTheme {
+  // Match longest prefix first
+  const sorted = [...PAGE_THEMES].sort((a, b) => b.prefix.length - a.prefix.length);
+  const match = sorted.find((p) => pathname.startsWith(p.prefix));
+  return match ? match.theme : DEFAULT_THEME;
+}
+
+// ─── Nav links ───────────────────────────────────────────────────────────────
+
 const TOOLS_LINKS = [
   { label: 'Compatibility Quiz',    href: '/tools/compatibility-quiz', icon: Users,          color: 'bg-violet-100 text-violet-600',  desc: 'Discover your flatmate type' },
   { label: 'Tax Calculator',        href: '/tools/tax-calculator',     icon: Calculator,     color: 'bg-indigo-100 text-indigo-600',  desc: 'Estimate your AU tax refund' },
@@ -42,6 +83,7 @@ const QUICK_LINKS = {
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
+  const theme = usePageTheme(pathname);
   const { user, signOut, loading } = useAuth();
   const { favorites } = useFavorites();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -86,11 +128,11 @@ export default function Header() {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div className="bg-teal-600 p-1.5 rounded-lg">
+            <div className={`${theme.logoBg} p-1.5 rounded-lg transition-colors duration-300`}>
               <Home className="w-5 h-5 text-white" />
             </div>
             <span className="font-bold text-xl text-slate-800">
-              Flatmate<span className="text-teal-600">Find</span>
+              Flatmate<span className={`${theme.brandText} transition-colors duration-300`}>Find</span>
             </span>
           </Link>
 
@@ -101,7 +143,7 @@ export default function Header() {
               <button
                 onClick={() => { setToolsOpen((v) => !v); setQuickOpen(false); }}
                 className={`flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-lg transition-colors ${
-                  toolsOpen || pathname.startsWith('/tools') ? 'text-indigo-600 bg-indigo-50' : 'text-slate-600 hover:text-indigo-600 hover:bg-slate-50'
+                  toolsOpen || pathname.startsWith('/tools') ? theme.activeNav : 'text-slate-600 hover:bg-slate-50'
                 }`}
               >
                 <Calculator className="w-4 h-4" />
@@ -135,7 +177,7 @@ export default function Header() {
               <button
                 onClick={() => setQuickOpen((v) => !v)}
                 className={`flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-lg transition-colors ${
-                  quickOpen ? 'text-teal-600 bg-teal-50' : 'text-slate-600 hover:text-teal-600 hover:bg-slate-50'
+                  quickOpen ? theme.activeNav : 'text-slate-600 hover:bg-slate-50'
                 }`}
               >
                 <Zap className="w-4 h-4" />
