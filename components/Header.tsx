@@ -93,12 +93,14 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [quickOpen, setQuickOpen] = useState(false);
+  const [findOpen, setFindOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
   const [mobileQuickOpen, setMobileQuickOpen] = useState(false);
   const [mobileFindOpen, setMobileFindOpen] = useState(false);
   const [mobileToolsOpen, setMobileToolsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const quickRef = useRef<HTMLDivElement>(null);
+  const findRef = useRef<HTMLDivElement>(null);
   const toolsRef = useRef<HTMLDivElement>(null);
 
   // Close dropdowns on outside click
@@ -106,6 +108,7 @@ export default function Header() {
     function handle(e: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenuOpen(false);
       if (quickRef.current && !quickRef.current.contains(e.target as Node)) setQuickOpen(false);
+      if (findRef.current && !findRef.current.contains(e.target as Node)) setFindOpen(false);
       if (toolsRef.current && !toolsRef.current.contains(e.target as Node)) setToolsOpen(false);
     }
     document.addEventListener('mousedown', handle);
@@ -114,7 +117,7 @@ export default function Header() {
 
   // Close mobile menu on route change
   useEffect(() => {
-    setMobileOpen(false); setQuickOpen(false); setToolsOpen(false);
+    setMobileOpen(false); setQuickOpen(false); setFindOpen(false); setToolsOpen(false);
     setMobileQuickOpen(false); setMobileFindOpen(false); setMobileToolsOpen(false);
   }, [pathname]);
 
@@ -151,7 +154,7 @@ export default function Header() {
             {/* Get Started dropdown */}
             <div className="relative" ref={quickRef}>
               <button
-                onClick={() => setQuickOpen((v) => !v)}
+                onClick={() => { setQuickOpen((v) => !v); setFindOpen(false); }}
                 className={`flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-lg transition-colors ${
                   quickOpen ? theme.activeNav : 'text-slate-600 hover:bg-slate-50'
                 }`}
@@ -162,8 +165,8 @@ export default function Header() {
               </button>
 
               {quickOpen && (
-                <div className="absolute right-0 top-full mt-2 w-[600px] bg-white border border-slate-200 rounded-2xl shadow-xl p-4 z-50">
-                  <div className="grid grid-cols-3 divide-x divide-slate-100">
+                <div className="absolute right-0 top-full mt-2 w-96 bg-white border border-slate-200 rounded-2xl shadow-xl p-4 z-50">
+                  <div className="grid grid-cols-2 divide-x divide-slate-100">
                     {/* For Renters */}
                     <div className="pr-4">
                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">For Renters</p>
@@ -183,28 +186,10 @@ export default function Header() {
                       </div>
                     </div>
                     {/* For Subletters */}
-                    <div className="px-4">
+                    <div className="pl-4">
                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">For Subletters</p>
                       <div className="space-y-1.5">
                         {QUICK_LINKS.subletters.map(({ label, href, icon: Icon, color, desc }) => (
-                          <Link key={href} href={href} onClick={() => setQuickOpen(false)}
-                            className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group">
-                            <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
-                              <Icon className="w-3.5 h-3.5" />
-                            </div>
-                            <div>
-                              <p className="text-xs font-semibold text-slate-800 group-hover:text-teal-700">{label}</p>
-                              <p className="text-[10px] text-slate-400 leading-tight">{desc}</p>
-                            </div>
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                    {/* Find */}
-                    <div className="pl-4">
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">Find</p>
-                      <div className="space-y-1.5">
-                        {QUICK_LINKS.find.map(({ label, href, icon: Icon, color, desc }) => (
                           <Link key={href} href={href} onClick={() => setQuickOpen(false)}
                             className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group">
                             <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
@@ -223,10 +208,44 @@ export default function Header() {
               )}
             </div>
 
+            {/* Find More dropdown */}
+            <div className="relative" ref={findRef}>
+              <button
+                onClick={() => { setFindOpen((v) => !v); setQuickOpen(false); setToolsOpen(false); }}
+                className={`flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-lg transition-colors ${
+                  findOpen ? theme.activeNav : 'text-slate-600 hover:bg-slate-50'
+                }`}
+              >
+                <Search className="w-4 h-4" />
+                Find More
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${findOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {findOpen && (
+                <div className="absolute left-0 top-full mt-2 w-56 bg-white border border-slate-200 rounded-2xl shadow-xl p-3 z-50">
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">Find More</p>
+                  <div className="space-y-1.5">
+                    {QUICK_LINKS.find.map(({ label, href, icon: Icon, color, desc }) => (
+                      <Link key={href} href={href} onClick={() => setFindOpen(false)}
+                        className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group">
+                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
+                          <Icon className="w-3.5 h-3.5" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-semibold text-slate-800 group-hover:text-teal-700">{label}</p>
+                          <p className="text-[10px] text-slate-400 leading-tight">{desc}</p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Tools dropdown */}
             <div className="relative" ref={toolsRef}>
               <button
-                onClick={() => { setToolsOpen((v) => !v); setQuickOpen(false); }}
+                onClick={() => { setToolsOpen((v) => !v); setQuickOpen(false); setFindOpen(false); }}
                 className={`flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-lg transition-colors ${
                   toolsOpen || pathname.startsWith('/tools') ? theme.activeNav : 'text-slate-600 hover:bg-slate-50'
                 }`}
