@@ -209,14 +209,14 @@ function MarketCard({ item }: { item: MarketListing }) {
 
   return (
     <div className="bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col">
-      {/* Accent bar */}
-      <div className={`h-1 ${isService ? 'bg-gradient-to-r from-teal-400 to-teal-600' : 'bg-gradient-to-r from-amber-400 to-orange-500'}`} />
+      {/* Accent bar — always amber to match page header */}
+      <div className="h-1 bg-gradient-to-r from-amber-400 to-amber-600" />
 
       <div className="p-4 flex-1 flex flex-col">
-        {/* Kind badge */}
+        {/* Kind badge — amber for Product, indigo for Service */}
         <div className="flex items-start justify-between gap-2 mb-2">
           <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded-full border ${
-            isService ? 'bg-teal-50 text-teal-700 border-teal-200' : 'bg-amber-50 text-amber-700 border-amber-200'
+            isService ? 'bg-indigo-50 text-indigo-700 border-indigo-200' : 'bg-amber-50 text-amber-700 border-amber-200'
           }`}>
             {isService ? <Wrench className="w-2.5 h-2.5" /> : <Package className="w-2.5 h-2.5" />}
             {isService ? 'Service' : 'Product'}
