@@ -8,6 +8,8 @@ const ITEMS = [
   { word: 'Events',    sub: 'Markets, meetups & activities in your area.' },
   { word: 'Products',  sub: 'Local goods & services from your community.' },
   { word: 'Services',  sub: 'Tradies, tutors & local businesses near you.' },
+  { word: 'Business',  sub: 'Cafés, shops & businesses for sale near you.' },
+  { word: 'More',      sub: 'Everything you need for life in Australia — in one place.' },
 ];
 
 export default function HeroText() {
