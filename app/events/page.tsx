@@ -3,8 +3,10 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import {
   CalendarDays, PlusCircle, MapPin, Clock, Ticket, Users2,
-  ChevronDown,
+  ChevronDown, PartyPopper, UtensilsCrossed, Trophy, Palette,
+  Music2, ShoppingBag, Users, GraduationCap, Gamepad2, Tag,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { SEED_EVENTS, EventListing, EventCategory } from '@/data/events';
 import { POST_LANGUAGES, AUSTRALIAN_STATES } from '@/lib/types';
 import ShareButton from '@/components/ShareButton';
@@ -14,17 +16,17 @@ const CATEGORIES: EventCategory[] = [
   'Social', 'Food & Drink', 'Sports', 'Arts & Culture', 'Music', 'Markets', 'Community', 'Study & Career', 'Games & Fun', 'Other',
 ];
 
-const CAT_EMOJI: Record<EventCategory, string> = {
-  'Social': '🎉',
-  'Food & Drink': '🍜',
-  'Sports': '⚽',
-  'Arts & Culture': '🎨',
-  'Music': '🎵',
-  'Markets': '🛍️',
-  'Community': '🏘️',
-  'Study & Career': '📚',
-  'Games & Fun': '🎮',
-  'Other': '📌',
+const CAT_ICON: Record<EventCategory, LucideIcon> = {
+  'Social': PartyPopper,
+  'Food & Drink': UtensilsCrossed,
+  'Sports': Trophy,
+  'Arts & Culture': Palette,
+  'Music': Music2,
+  'Markets': ShoppingBag,
+  'Community': Users,
+  'Study & Career': GraduationCap,
+  'Games & Fun': Gamepad2,
+  'Other': Tag,
 };
 
 const CAT_COLOR: Record<string, string> = {
@@ -138,7 +140,7 @@ export default function EventsPage() {
                       className={`px-2 py-1 rounded-full text-[11px] font-medium border transition-all ${
                         catFilter === c ? 'bg-rose-500 border-rose-500 text-white' : 'bg-white border-slate-200 text-slate-600 hover:border-rose-300'
                       }`}>
-                      {CAT_EMOJI[c]} {c}
+                      {(() => { const Icon = CAT_ICON[c]; return <Icon className="w-3 h-3 inline-block mr-0.5 -mt-0.5" />; })()} {c}
                     </button>
                   ))}
                 </div>
@@ -225,7 +227,7 @@ function EventCard({ ev }: { ev: EventListing }) {
             </div>
           </div>
           <span className={`px-2 py-0.5 text-[10px] font-semibold rounded-full border shrink-0 ${catStyle}`}>
-            {CAT_EMOJI[ev.category]} {ev.category}
+            {(() => { const Icon = CAT_ICON[ev.category]; return <Icon className="w-3 h-3 inline-block mr-0.5 -mt-0.5" />; })()} {ev.category}
           </span>
         </div>
 
