@@ -31,7 +31,7 @@ export default function HeroText() {
 
   return (
     <>
-      <h1 className="text-2xl sm:text-5xl font-extrabold tracking-tight mb-4">
+      <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight mb-4">
         Find{' '}
         <span
           className={`inline-block transition-all duration-300 text-teal-200 ${
