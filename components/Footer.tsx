@@ -76,7 +76,7 @@ const FOOTER_THEMES: { prefix: string; theme: FooterTheme }[] = [
   { prefix: '/tools/whv-tracker',        theme: { logoBg: 'bg-emerald-600', brandText: 'text-emerald-400', iconColor: 'text-emerald-400', linkHover: 'hover:text-emerald-400' } },
   { prefix: '/tools/hours-tracker',      theme: { logoBg: 'bg-blue-600',    brandText: 'text-blue-400',    iconColor: 'text-blue-400',    linkHover: 'hover:text-blue-400'    } },
   { prefix: '/tools/abn-tfn',            theme: { logoBg: 'bg-slate-600',   brandText: 'text-slate-400',   iconColor: 'text-slate-400',   linkHover: 'hover:text-slate-300'   } },
-  { prefix: '/tools/visa-pathways',      theme: { logoBg: 'bg-indigo-600',  brandText: 'text-indigo-400',  iconColor: 'text-indigo-400',  linkHover: 'hover:text-indigo-400'  } },
+  { prefix: '/tools/visa-pathways',      theme: { logoBg: 'bg-blue-700',    brandText: 'text-blue-400',    iconColor: 'text-blue-400',    linkHover: 'hover:text-blue-400'    } },
   { prefix: '/tools',                    theme: { logoBg: 'bg-violet-600',  brandText: 'text-violet-400',  iconColor: 'text-violet-400',  linkHover: 'hover:text-violet-400'  } },
 ];
 

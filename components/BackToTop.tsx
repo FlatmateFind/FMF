@@ -15,7 +15,7 @@ const BTN_THEMES: { prefix: string; bg: string; hover: string }[] = [
   { prefix: '/tools/whv-tracker',        bg: 'bg-emerald-600', hover: 'hover:bg-emerald-700' },
   { prefix: '/tools/hours-tracker',      bg: 'bg-blue-600',    hover: 'hover:bg-blue-700'    },
   { prefix: '/tools/abn-tfn',            bg: 'bg-slate-700',   hover: 'hover:bg-slate-800'   },
-  { prefix: '/tools/visa-pathways',      bg: 'bg-indigo-600',  hover: 'hover:bg-indigo-700'  },
+  { prefix: '/tools/visa-pathways',      bg: 'bg-blue-700',    hover: 'hover:bg-blue-800'    },
   { prefix: '/tools',                    bg: 'bg-violet-600',  hover: 'hover:bg-violet-700'  },
 ];
 

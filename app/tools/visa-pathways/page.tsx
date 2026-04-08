@@ -1000,9 +1000,9 @@ export default function VisaPathwaysPage() {
   return (
     <main className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div className="bg-gradient-to-br from-indigo-600 to-blue-800 text-white">
+      <div className="bg-gradient-to-br from-blue-700 to-blue-900 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
-          <Link href="/tools" className="flex items-center gap-1.5 text-indigo-300 hover:text-white text-xs mb-4 transition-colors">
+          <Link href="/tools" className="flex items-center gap-1.5 text-blue-300 hover:text-white text-xs mb-4 transition-colors">
             <ChevronLeft className="w-3.5 h-3.5" /> Back to Tools
           </Link>
           <div className="flex items-start gap-4">

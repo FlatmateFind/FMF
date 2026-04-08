@@ -44,7 +44,7 @@ const PAGE_THEMES: { prefix: string; theme: PageTheme }[] = [
   { prefix: '/tools/whv-tracker',        theme: { logoBg: 'bg-emerald-600',brandText: 'text-emerald-600',activeNav: 'text-emerald-600 bg-emerald-50',signupBg: 'bg-emerald-600',signupHover: 'hover:bg-emerald-700'} },
   { prefix: '/tools/hours-tracker',      theme: { logoBg: 'bg-blue-600',   brandText: 'text-blue-600',   activeNav: 'text-blue-600 bg-blue-50',     signupBg: 'bg-blue-600',   signupHover: 'hover:bg-blue-700'   } },
   { prefix: '/tools/abn-tfn',            theme: { logoBg: 'bg-slate-700',  brandText: 'text-slate-700',  activeNav: 'text-slate-700 bg-slate-100',  signupBg: 'bg-slate-700',  signupHover: 'hover:bg-slate-800'  } },
-  { prefix: '/tools/visa-pathways',      theme: { logoBg: 'bg-indigo-600', brandText: 'text-indigo-600', activeNav: 'text-indigo-600 bg-indigo-50', signupBg: 'bg-indigo-600', signupHover: 'hover:bg-indigo-700' } },
+  { prefix: '/tools/visa-pathways',      theme: { logoBg: 'bg-blue-700',   brandText: 'text-blue-700',   activeNav: 'text-blue-700 bg-blue-50',   signupBg: 'bg-blue-700',   signupHover: 'hover:bg-blue-800'   } },
   { prefix: '/tools',                    theme: { logoBg: 'bg-violet-600', brandText: 'text-violet-600', activeNav: 'text-violet-600 bg-violet-50', signupBg: 'bg-violet-600', signupHover: 'hover:bg-violet-700' } },
 ];
 
