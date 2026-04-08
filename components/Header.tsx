@@ -5,6 +5,7 @@ import {
   Home, Heart, LayoutDashboard, LogOut, User, ChevronDown,
   Users, Sparkles, Briefcase, Search, LogIn, UserPlus,
   Menu, X, PlusCircle, Zap, ArrowLeftRight, Calculator,
+  Building2, ShoppingBag, CalendarDays, Compass,
 } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
@@ -19,6 +20,12 @@ const QUICK_LINKS = {
     { label: 'Browse Profiles',  href: '/renters',   icon: Users,          color: 'bg-blue-100 text-blue-700',   desc: 'Find your next tenant' },
     { label: 'Create Listing',   href: '/post',      icon: PlusCircle,     color: 'bg-amber-100 text-amber-700', desc: 'List your room for free' },
     { label: 'Unit Takeover',    href: '/takeover',  icon: ArrowLeftRight, color: 'bg-orange-100 text-orange-600', desc: 'Pass your lease to someone new' },
+  ],
+  find: [
+    { label: 'Jobs',      href: '/jobs',     icon: Briefcase,    color: 'bg-teal-100 text-teal-700',    desc: 'Full-time, part-time & casual' },
+    { label: 'Business',  href: '/business', icon: Building2,    color: 'bg-purple-100 text-purple-700', desc: 'Cafés, shops & businesses for sale' },
+    { label: 'Market',    href: '/market',   icon: ShoppingBag,  color: 'bg-amber-100 text-amber-700',  desc: 'Products, food & local services' },
+    { label: 'Events',    href: '/events',   icon: CalendarDays, color: 'bg-rose-100 text-rose-600',    desc: 'Meetups, markets & activities' },
   ],
 };
 
@@ -70,16 +77,17 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1">
-            {/* Jobs */}
+            {/* Find */}
             <Link
               href="/jobs"
               className={`relative flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-lg transition-colors ${
-                pathname.startsWith('/jobs') ? 'text-teal-600 bg-teal-50' : 'text-slate-600 hover:text-teal-600 hover:bg-slate-50'
+                ['/jobs', '/business', '/market', '/events'].some((p) => pathname.startsWith(p))
+                  ? 'text-teal-600 bg-teal-50'
+                  : 'text-slate-600 hover:text-teal-600 hover:bg-slate-50'
               }`}
             >
-              <Briefcase className="w-4 h-4" />
-              Jobs
-              <span className="absolute -top-0.5 -right-0.5 text-[9px] font-bold bg-teal-600 text-white px-1 py-0.5 rounded-full leading-none">NEW</span>
+              <Compass className="w-4 h-4" />
+              Find
             </Link>
 
             {/* Tools */}
@@ -107,47 +115,57 @@ export default function Header() {
               </button>
 
               {quickOpen && (
-                <div className="absolute left-0 top-full mt-2 w-[420px] bg-white border border-slate-200 rounded-2xl shadow-xl p-4 z-50">
-                  <div className="grid grid-cols-2 gap-3">
+                <div className="absolute left-0 top-full mt-2 w-[580px] bg-white border border-slate-200 rounded-2xl shadow-xl p-4 z-50">
+                  <div className="grid grid-cols-3 gap-3">
                     {/* For Renters */}
                     <div>
                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">For Renters</p>
                       <div className="space-y-1.5">
                         {QUICK_LINKS.renters.map(({ label, href, icon: Icon, color, desc }) => (
-                          <Link
-                            key={href}
-                            href={href}
-                            onClick={() => setQuickOpen(false)}
-                            className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors group"
-                          >
-                            <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
-                              <Icon className="w-4 h-4" />
+                          <Link key={href} href={href} onClick={() => setQuickOpen(false)}
+                            className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group">
+                            <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
+                              <Icon className="w-3.5 h-3.5" />
                             </div>
                             <div>
-                              <p className="text-sm font-semibold text-slate-800 group-hover:text-teal-700">{label}</p>
-                              <p className="text-[11px] text-slate-400">{desc}</p>
+                              <p className="text-xs font-semibold text-slate-800 group-hover:text-teal-700">{label}</p>
+                              <p className="text-[10px] text-slate-400 leading-tight">{desc}</p>
                             </div>
                           </Link>
                         ))}
                       </div>
                     </div>
-                    {/* Divider */}
+                    {/* For Subletters */}
                     <div className="border-l border-slate-100 pl-3">
                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">For Subletters</p>
                       <div className="space-y-1.5">
                         {QUICK_LINKS.subletters.map(({ label, href, icon: Icon, color, desc }) => (
-                          <Link
-                            key={href}
-                            href={href}
-                            onClick={() => setQuickOpen(false)}
-                            className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors group"
-                          >
-                            <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
-                              <Icon className="w-4 h-4" />
+                          <Link key={href} href={href} onClick={() => setQuickOpen(false)}
+                            className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group">
+                            <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
+                              <Icon className="w-3.5 h-3.5" />
                             </div>
                             <div>
-                              <p className="text-sm font-semibold text-slate-800 group-hover:text-teal-700">{label}</p>
-                              <p className="text-[11px] text-slate-400">{desc}</p>
+                              <p className="text-xs font-semibold text-slate-800 group-hover:text-teal-700">{label}</p>
+                              <p className="text-[10px] text-slate-400 leading-tight">{desc}</p>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                    {/* Find */}
+                    <div className="border-l border-slate-100 pl-3">
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">Find</p>
+                      <div className="space-y-1.5">
+                        {QUICK_LINKS.find.map(({ label, href, icon: Icon, color, desc }) => (
+                          <Link key={href} href={href} onClick={() => setQuickOpen(false)}
+                            className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-50 transition-colors group">
+                            <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
+                              <Icon className="w-3.5 h-3.5" />
+                            </div>
+                            <div>
+                              <p className="text-xs font-semibold text-slate-800 group-hover:text-teal-700">{label}</p>
+                              <p className="text-[10px] text-slate-400 leading-tight">{desc}</p>
                             </div>
                           </Link>
                         ))}
@@ -326,16 +344,24 @@ export default function Header() {
           <nav className="max-w-7xl mx-auto px-4 py-4 space-y-4">
 
             {/* Quick links */}
-            <Link
-              href="/jobs"
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
-                pathname.startsWith('/jobs') ? 'text-teal-600 bg-teal-50' : 'text-slate-700 hover:bg-slate-50'
-              }`}
-            >
-              <Briefcase className="w-4 h-4" />
-              Jobs
-              <span className="text-[9px] font-bold bg-teal-600 text-white px-1.5 py-0.5 rounded-full leading-none ml-1">NEW</span>
-            </Link>
+            {/* Find section */}
+            <div>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-4 mb-2">Find</p>
+              <div className="grid grid-cols-2 gap-2">
+                {QUICK_LINKS.find.map(({ label, href, icon: Icon, color, desc }) => (
+                  <Link key={href} href={href}
+                    className="flex flex-col items-start gap-2 p-3 rounded-xl border border-slate-100 hover:border-slate-200 bg-slate-50 hover:bg-white transition-colors">
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${color}`}>
+                      <Icon className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-slate-800">{label}</p>
+                      <p className="text-[10px] text-slate-400 leading-tight">{desc}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
 
             <Link
               href="/tools"

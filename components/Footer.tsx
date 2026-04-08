@@ -18,6 +18,15 @@ const footerLinks = {
       { label: 'Unit Takeover', href: '/takeover' },
     ],
   },
+  find: {
+    title: 'Find',
+    links: [
+      { label: 'Jobs', href: '/jobs' },
+      { label: 'Business for Sale', href: '/business' },
+      { label: 'Market', href: '/market' },
+      { label: 'Events', href: '/events' },
+    ],
+  },
   useful: {
     title: 'Useful Links',
     links: [
@@ -49,9 +58,9 @@ export default function Footer() {
     <footer className="bg-slate-900 text-slate-300 mt-16">
       {/* Main footer grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8">
           {/* Brand column */}
-          <div className="lg:col-span-1">
+          <div className="col-span-2 sm:col-span-3 lg:col-span-1">
             <Link href="/" className="inline-flex items-center gap-2 mb-4">
               <div className="bg-teal-500 p-1.5 rounded-lg">
                 <Home className="w-4 h-4 text-white" />
