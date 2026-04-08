@@ -67,14 +67,18 @@ const TOOLS = [
 export default function ToolsPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-2xl bg-indigo-100 flex items-center justify-center">
-            <Wrench className="w-5 h-5 text-indigo-600" />
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+        {/* Boxed hero */}
+        <div className="rounded-2xl bg-gradient-to-br from-violet-600 to-purple-800 text-white px-6 py-8 mb-8">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center">
+              <Wrench className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-xs font-semibold uppercase tracking-widest text-violet-200">Smart Tools</span>
           </div>
-          <h1 className="text-3xl font-bold text-slate-900">Tools</h1>
+          <h1 className="text-3xl font-bold mb-1">Free Tools for Life in Australia</h1>
+          <p className="text-violet-200 text-sm">Calculators and trackers for renters, workers, and visa holders — no sign-up needed.</p>
         </div>
-        <p className="text-slate-500 mb-8 text-sm">Free calculators and tools for renters, workers, and visa holders in Australia.</p>
 
         <div className="grid gap-3">
           {TOOLS.map(({ href, icon: Icon, color, accent, title, desc, badge, badgeColor }) => (
