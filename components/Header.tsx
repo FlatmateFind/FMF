@@ -57,12 +57,12 @@ function usePageTheme(pathname: string): PageTheme {
 // ─── Nav links ───────────────────────────────────────────────────────────────
 
 const TOOLS_LINKS = [
-  { label: 'Compatibility Quiz',    href: '/tools/compatibility-quiz', icon: Users,          color: 'bg-violet-100 text-violet-600',  desc: 'Discover your flatmate type' },
-  { label: 'Tax Calculator',        href: '/tools/tax-calculator',     icon: Calculator,     color: 'bg-indigo-100 text-indigo-600',  desc: 'Estimate your AU tax refund' },
-  { label: 'WHV Days Tracker',      href: '/tools/whv-tracker',        icon: CalendarCheck,  color: 'bg-emerald-100 text-emerald-600', desc: 'Track 88 / 179 regional days' },
-  { label: 'Work Hours Tracker',    href: '/tools/hours-tracker',      icon: Clock,          color: 'bg-blue-100 text-blue-600',      desc: 'Log fortnightly work hours' },
-  { label: 'ABN vs TFN',            href: '/tools/abn-tfn',            icon: Briefcase,      color: 'bg-slate-100 text-slate-600',    desc: 'Compare contractor vs employee' },
-  { label: 'Visa Pathways',         href: '/tools/visa-pathways',      icon: Layers,         color: 'bg-indigo-100 text-indigo-600',  desc: 'Stay longer, sponsorship & PR' },
+  { label: 'Flatmate Match',          href: '/tools/compatibility-quiz', icon: Users,          color: 'bg-violet-100 text-violet-600',  desc: 'Discover your flatmate type' },
+  { label: 'Tax Refund Calculator',  href: '/tools/tax-calculator',     icon: Calculator,     color: 'bg-indigo-100 text-indigo-600',  desc: 'Estimate your AU tax refund' },
+  { label: '2nd & 3rd Year Tracker', href: '/tools/whv-tracker',        icon: CalendarCheck,  color: 'bg-emerald-100 text-emerald-600', desc: 'Track 88 / 179 regional days' },
+  { label: 'Work Hours Tracker',     href: '/tools/hours-tracker',      icon: Clock,          color: 'bg-blue-100 text-blue-600',      desc: 'Log fortnightly work hours' },
+  { label: 'ABN & TFN Guide',        href: '/tools/abn-tfn',            icon: Briefcase,      color: 'bg-slate-100 text-slate-600',    desc: 'Compare contractor vs employee' },
+  { label: 'Visa Pathways',          href: '/tools/visa-pathways',      icon: Layers,         color: 'bg-indigo-100 text-indigo-600',  desc: 'Stay longer, sponsorship & PR' },
 ];
 
 const QUICK_LINKS = {
