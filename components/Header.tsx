@@ -142,40 +142,6 @@ export default function Header() {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1">
-            {/* Tools dropdown */}
-            <div className="relative" ref={toolsRef}>
-              <button
-                onClick={() => { setToolsOpen((v) => !v); setQuickOpen(false); }}
-                className={`flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-lg transition-colors ${
-                  toolsOpen || pathname.startsWith('/tools') ? theme.activeNav : 'text-slate-600 hover:bg-slate-50'
-                }`}
-              >
-                <Calculator className="w-4 h-4" />
-                Tools
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${toolsOpen ? 'rotate-180' : ''}`} />
-              </button>
-
-              {toolsOpen && (
-                <div className="absolute right-0 top-full mt-2 w-72 bg-white border border-slate-200 rounded-2xl shadow-xl p-3 z-50">
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">Tools</p>
-                  <div className="space-y-1">
-                    {TOOLS_LINKS.map(({ label, href, icon: Icon, color, desc }) => (
-                      <Link key={href} href={href} onClick={() => setToolsOpen(false)}
-                        className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors group">
-                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
-                          <Icon className="w-4 h-4" />
-                        </div>
-                        <div>
-                          <p className="text-xs font-semibold text-slate-800 group-hover:text-indigo-700">{label}</p>
-                          <p className="text-[10px] text-slate-400 leading-tight">{desc}</p>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
             {/* Get Started dropdown */}
             <div className="relative" ref={quickRef}>
               <button
@@ -190,7 +156,7 @@ export default function Header() {
               </button>
 
               {quickOpen && (
-                <div className="absolute right-0 top-full mt-2 w-[600px] bg-white border border-slate-200 rounded-2xl shadow-xl p-4 z-50">
+                <div className="absolute left-0 top-full mt-2 w-[600px] bg-white border border-slate-200 rounded-2xl shadow-xl p-4 z-50">
                   <div className="grid grid-cols-3 divide-x divide-slate-100">
                     {/* For Renters */}
                     <div className="pr-4">
@@ -246,6 +212,40 @@ export default function Header() {
                         ))}
                       </div>
                     </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Tools dropdown */}
+            <div className="relative" ref={toolsRef}>
+              <button
+                onClick={() => { setToolsOpen((v) => !v); setQuickOpen(false); }}
+                className={`flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-lg transition-colors ${
+                  toolsOpen || pathname.startsWith('/tools') ? theme.activeNav : 'text-slate-600 hover:bg-slate-50'
+                }`}
+              >
+                <Calculator className="w-4 h-4" />
+                Tools
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${toolsOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {toolsOpen && (
+                <div className="absolute right-0 top-full mt-2 w-72 bg-white border border-slate-200 rounded-2xl shadow-xl p-3 z-50">
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2 px-1">Tools</p>
+                  <div className="space-y-1">
+                    {TOOLS_LINKS.map(({ label, href, icon: Icon, color, desc }) => (
+                      <Link key={href} href={href} onClick={() => setToolsOpen(false)}
+                        className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors group">
+                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
+                          <Icon className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-semibold text-slate-800 group-hover:text-indigo-700">{label}</p>
+                          <p className="text-[10px] text-slate-400 leading-tight">{desc}</p>
+                        </div>
+                      </Link>
+                    ))}
                   </div>
                 </div>
               )}
