@@ -163,7 +163,7 @@ export default function HomePage() {
                   <div className="flex flex-col items-start gap-1 px-5 py-5 text-white">
                     <div className="flex items-center justify-between w-full mb-2">
                       <span className="font-extrabold text-2xl leading-tight tracking-tight">{state.abbr}</span>
-                      <span className="text-xs font-semibold bg-white/20 rounded-full px-2.5 py-0.5">
+                      <span className="text-xs font-semibold bg-white/20 rounded-full px-2.5 py-0.5 whitespace-nowrap">
                         {count > 0 ? `${count} listing${count !== 1 ? 's' : ''}` : 'Coming soon'}
                       </span>
                     </div>
