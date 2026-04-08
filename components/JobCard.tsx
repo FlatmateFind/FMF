@@ -49,13 +49,13 @@ export default function JobCard({ job }: { job: JobPost }) {
 
   return (
     <div className={clsx(
-      'bg-white border rounded-xl overflow-hidden transition-all duration-150 flex',
+      'bg-white border rounded-xl overflow-hidden transition-all duration-150 flex flex-col',
       isClosed
         ? 'border-slate-200 opacity-60'
-        : `border-slate-200 hover:shadow-md ${accent.hover}`
+        : 'border-slate-200 hover:shadow-md hover:border-blue-200 hover:shadow-blue-50'
     )}>
-      {/* Coloured left accent bar */}
-      {!isClosed && <div className={clsx('w-1 shrink-0', accent.bar)} />}
+      {/* Top accent bar — solid blue to match page header */}
+      {!isClosed && <div className="h-1 bg-blue-600" />}
 
       <div className="flex-1 p-4 min-w-0">
         {/* Header row */}

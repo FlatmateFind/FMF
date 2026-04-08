@@ -175,14 +175,14 @@ export default function JobsPage() {
                 <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center">
                   <Briefcase className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-xs font-semibold uppercase tracking-widest text-blue-200">Find Section</span>
+                <span className="text-xs font-semibold uppercase tracking-widest text-blue-200">Jobs & Careers</span>
               </div>
-              <h1 className="text-3xl sm:text-4xl font-bold mb-1">Jobs Board</h1>
-              <p className="text-blue-200 text-sm">Full-time, part-time, casual &amp; Working Holiday roles across Australia.</p>
+              <h1 className="text-3xl sm:text-4xl font-bold mb-1">Find Your Next Job in Australia</h1>
+              <p className="text-blue-200 text-sm">Browse roles across every state — full-time, casual, remote, and Working Holiday Visa friendly.</p>
             </div>
             <Link
               href="/jobs/post"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/20 hover:bg-white/30 border border-white/30 text-white font-semibold rounded-xl transition-colors text-sm shrink-0"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-white hover:bg-blue-50 text-blue-600 font-semibold rounded-xl transition-colors text-sm shrink-0"
             >
               <PlusCircle className="w-4 h-4" />
               Post a Job
