@@ -5,7 +5,7 @@ import {
   Home, Heart, LayoutDashboard, LogOut, User, ChevronDown,
   Users, Sparkles, Briefcase, Search, LogIn, UserPlus,
   Menu, X, PlusCircle, Zap, ArrowLeftRight, Calculator,
-  Building2, ShoppingBag, CalendarDays, CalendarCheck, Clock, Layers,
+  Building2, ShoppingBag, CalendarDays, CalendarCheck, Clock, Layers, Globe,
 } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
@@ -22,8 +22,9 @@ const TOOLS_LINKS = [
 
 const QUICK_LINKS = {
   renters: [
-    { label: 'Browse Listings',  href: '/listings', icon: Search,     color: 'bg-teal-100 text-teal-700',   desc: 'Rooms & apartments near you' },
-    { label: 'Create Profile',    href: '/profile',  icon: Sparkles,   color: 'bg-violet-100 text-violet-700', desc: 'Get found by subletters' },
+    { label: 'Browse Listings',  href: '/listings',     icon: Search,    color: 'bg-teal-100 text-teal-700',    desc: 'Rooms & apartments near you' },
+    { label: 'Create Profile',   href: '/profile',      icon: Sparkles,  color: 'bg-violet-100 text-violet-700', desc: 'Get found by subletters' },
+    { label: 'Communities',      href: '/communities',  icon: Globe,     color: 'bg-cyan-100 text-cyan-700',    desc: 'Connect with renters near you' },
   ],
   subletters: [
     { label: 'Browse Profiles',  href: '/renters',   icon: Users,          color: 'bg-blue-100 text-blue-700',   desc: 'Find your next tenant' },
