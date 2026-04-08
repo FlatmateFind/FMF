@@ -121,9 +121,11 @@ export default function Header() {
     setMobileQuickOpen(false); setMobileFindOpen(false); setMobileToolsOpen(false);
   }, [pathname]);
 
-  // Lock body scroll when mobile menu is open
+  // Lock body scroll + auto-open Getting Started when mobile menu opens
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    if (mobileOpen) setMobileQuickOpen(true);
+    else { setMobileQuickOpen(false); setMobileFindOpen(false); setMobileToolsOpen(false); }
     return () => { document.body.style.overflow = ''; };
   }, [mobileOpen]);
 
@@ -446,7 +448,7 @@ export default function Header() {
             {/* ── Getting Started accordion ── */}
             <div>
               <button
-                onClick={() => setMobileQuickOpen((v) => !v)}
+                onClick={() => { setMobileQuickOpen((v) => !v); setMobileFindOpen(false); setMobileToolsOpen(false); }}
                 className="flex items-center justify-between w-full px-3 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
               >
                 <span className="flex items-center gap-2.5">
@@ -498,7 +500,7 @@ export default function Header() {
             {/* ── Find accordion ── */}
             <div>
               <button
-                onClick={() => setMobileFindOpen((v) => !v)}
+                onClick={() => { setMobileFindOpen((v) => !v); setMobileQuickOpen(false); setMobileToolsOpen(false); }}
                 className="flex items-center justify-between w-full px-3 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
               >
                 <span className="flex items-center gap-2.5">
@@ -530,7 +532,7 @@ export default function Header() {
             {/* ── Tools accordion ── */}
             <div>
               <button
-                onClick={() => setMobileToolsOpen((v) => !v)}
+                onClick={() => { setMobileToolsOpen((v) => !v); setMobileQuickOpen(false); setMobileFindOpen(false); }}
                 className="flex items-center justify-between w-full px-3 py-3 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
               >
                 <span className="flex items-center gap-2.5">
