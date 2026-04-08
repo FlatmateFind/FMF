@@ -27,18 +27,13 @@ const footerLinks = {
       { label: 'Events', href: '/events' },
     ],
   },
-  useful: {
-    title: 'Useful Links',
+  resources: {
+    title: 'Resources',
     links: [
       { label: 'Safety Tips', href: '/safety-tips' },
       { label: 'Guide', href: '/how-it-works' },
       { label: 'FAQ', href: '/faq' },
-    ],
-  },
-  tools: {
-    title: 'Tools',
-    links: [
-      { label: 'Tax Refund Calculator', href: '/tools/tax-calculator' },
+      { label: 'Tax Calculator', href: '/tools/tax-calculator' },
     ],
   },
 };
@@ -58,9 +53,9 @@ export default function Footer() {
     <footer className="bg-slate-900 text-slate-300 mt-16">
       {/* Main footer grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-10">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-10">
           {/* Brand column */}
-          <div className="col-span-2 sm:col-span-3 lg:col-span-1">
+          <div className="col-span-2 sm:col-span-3 lg:col-span-1 lg:pr-4">
             <Link href="/" className="inline-flex items-center gap-2 mb-4">
               <div className="bg-teal-500 p-1.5 rounded-lg">
                 <Home className="w-4 h-4 text-white" />
