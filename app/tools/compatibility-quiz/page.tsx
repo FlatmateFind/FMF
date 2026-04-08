@@ -489,10 +489,10 @@ export default function CompatibilityQuizPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-violet-50/60 to-white">
-      {/* Header */}
-      <div className="bg-gradient-to-br from-violet-600 to-purple-800 text-white">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10">
+    <main className="min-h-screen bg-slate-50">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+        {/* Boxed header */}
+        <div className="rounded-2xl bg-gradient-to-br from-violet-600 to-purple-800 text-white px-6 py-8 mb-8">
           <Link href="/tools" className="flex items-center gap-1.5 text-violet-300 hover:text-white text-xs mb-4 transition-colors">
             <ChevronLeft className="w-3.5 h-3.5" /> Back to Tools
           </Link>
@@ -508,9 +508,6 @@ export default function CompatibilityQuizPage() {
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
 
         {/* ── Intro ─────────────────────────────────────────────────────────── */}
         {step === 0 && (
