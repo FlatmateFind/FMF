@@ -24,7 +24,7 @@ const footerLinks = {
     title: 'Find',
     links: [
       { label: 'Jobs', href: '/jobs' },
-      { label: 'Business for Sale', href: '/business' },
+      { label: 'Business', href: '/business' },
       { label: 'Market', href: '/market' },
       { label: 'Events', href: '/events' },
     ],
@@ -33,8 +33,8 @@ const footerLinks = {
     title: 'Resources',
     links: [
       { label: 'Site Guide', href: '/site-guide' },
+      { label: 'Tools', href: '/tools' },
       { label: 'Safety Tips', href: '/safety-tips' },
-      { label: 'Guide', href: '/how-it-works' },
       { label: 'FAQ', href: '/faq' },
     ],
   },
