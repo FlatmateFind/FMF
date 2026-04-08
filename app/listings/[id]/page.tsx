@@ -7,7 +7,7 @@ import {
   Flower2, Lock, ChevronRight, Calendar, Clock,
   ShoppingCart, Train, Bus, GraduationCap, School, Hospital,
   Trees, ShoppingBag, Pill, Coffee, Plane, Umbrella, MapPinned,
-  Zap, Home as HomeIcon, ArrowLeftRight,
+  Zap, Home as HomeIcon, ArrowLeftRight, Sunset, Package,
 } from 'lucide-react';
 import clsx from 'clsx';
 import { getListingById, getSimilarListings } from '@/lib/filterListings';
@@ -30,6 +30,8 @@ const FACILITY_ICONS: Record<string, React.ElementType> = {
   Garden: Flower2,
   Security: Lock,
   Internet: Wifi,
+  Balcony: Sunset,
+  Storage: Package,
 };
 
 const NEARBY_ICONS: Record<string, React.ElementType> = {
@@ -308,7 +310,9 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {listing.rules.map((rule) => (
                   <div key={rule} className="flex items-center gap-2.5 text-sm text-slate-700">
-                    <span className="w-5 h-5 rounded-full bg-red-50 border border-red-100 flex items-center justify-center shrink-0"><X className="w-3 h-3 text-red-400" /></span>
+                    <span className="w-5 h-5 rounded-full bg-teal-50 border border-teal-100 flex items-center justify-center shrink-0">
+                      <Check className="w-3 h-3 text-teal-500" />
+                    </span>
                     {rule}
                   </div>
                 ))}

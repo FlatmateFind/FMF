@@ -629,13 +629,13 @@ export default function PostListingPage() {
                   <div className="w-7 h-7 rounded-lg bg-teal-50 flex items-center justify-center shrink-0">
                     <Icon className="w-4 h-4 text-teal-600" />
                   </div>
-                  <span className="text-sm text-slate-700 w-36 shrink-0 sm:w-auto sm:truncate">{type}</span>
+                  <span className="text-sm text-slate-700 flex-1 min-w-0 truncate sm:w-auto">{type}</span>
                   <input
                     type="text"
                     value={nearbyDistances[type] ?? ''}
                     onChange={(e) => setNearbyDistances((prev) => ({ ...prev, [type]: e.target.value }))}
                     placeholder="e.g. 5 min walk"
-                    className="flex-1 sm:w-full text-sm border border-slate-200 rounded-lg py-1.5 px-2.5 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none"
+                    className="w-32 sm:w-full text-sm border border-slate-200 rounded-lg py-1.5 px-2.5 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none shrink-0"
                   />
                 </div>
               );
