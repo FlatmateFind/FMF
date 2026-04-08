@@ -191,9 +191,6 @@ export default function TakeoverPage() {
             </a>
           </div>
         </div>
-        {/* Decorative circles */}
-        <div className="absolute -right-16 -top-16 w-64 h-64 bg-white/10 rounded-full" />
-        <div className="absolute -right-4 -bottom-20 w-48 h-48 bg-white/10 rounded-full" />
       </div>
 
       {/* How it works strip */}
