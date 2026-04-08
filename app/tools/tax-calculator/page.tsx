@@ -1,7 +1,8 @@
 'use client';
 import { useState, useMemo } from 'react';
+import Link from 'next/link';
 import {
-  Calculator, ChevronDown, ChevronUp, Info, AlertCircle,
+  Calculator, ChevronLeft, ChevronDown, ChevronUp, Info, AlertCircle,
   TrendingDown, TrendingUp, DollarSign, ReceiptText, Minus,
 } from 'lucide-react';
 import clsx from 'clsx';
@@ -265,16 +266,20 @@ export default function TaxCalculatorPage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 space-y-5">
         {/* Boxed hero */}
         <div className="rounded-2xl bg-gradient-to-br from-indigo-600 to-indigo-800 text-white px-6 py-8">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center">
-              <Calculator className="w-5 h-5" />
+          <Link href="/tools" className="flex items-center gap-1.5 text-indigo-300 hover:text-white text-xs mb-4 transition-colors">
+            <ChevronLeft className="w-3.5 h-3.5" /> Back to Tools
+          </Link>
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-white/15 flex items-center justify-center shrink-0">
+              <Calculator className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xs font-semibold uppercase tracking-widest text-indigo-200">Free Tool</span>
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold mb-1">Tax Refund Calculator</h1>
+              <p className="text-indigo-200 text-sm">
+                Estimate your tax refund or balance for all visa types — Working Holiday, Student, Skilled, and more.
+              </p>
+            </div>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2">Australian Tax Refund Calculator</h1>
-          <p className="text-indigo-200 text-sm sm:text-base max-w-xl">
-            Estimate your tax refund or balance for all visa types — Working Holiday, Student, Skilled, and more.
-          </p>
         </div>
 
         {/* Disclaimer */}

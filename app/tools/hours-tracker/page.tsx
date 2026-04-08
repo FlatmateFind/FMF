@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
-import { ChevronLeft, PlusCircle, Trash2, AlertTriangle, CheckCircle2, Info } from 'lucide-react';
+import { ChevronLeft, PlusCircle, Trash2, AlertTriangle, CheckCircle2, Info, Clock } from 'lucide-react';
 import clsx from 'clsx';
 
 const STORAGE_KEY = 'flatmatefind_hours_tracker';
@@ -114,8 +114,15 @@ export default function HoursTrackerPage() {
           <Link href="/tools" className="flex items-center gap-1.5 text-blue-300 hover:text-white text-xs mb-4 transition-colors">
             <ChevronLeft className="w-3.5 h-3.5" /> Back to Tools
           </Link>
-          <h1 className="text-2xl sm:text-3xl font-bold mb-1">Visa Work Hours Tracker</h1>
-          <p className="text-blue-200 text-sm">Track your work hours by fortnight. Set your own limit based on your visa conditions.</p>
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-white/15 flex items-center justify-center shrink-0">
+              <Clock className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold mb-1">Work Hours Tracker</h1>
+              <p className="text-blue-200 text-sm">Track your work hours by fortnight. Set your own limit based on your visa conditions.</p>
+            </div>
+          </div>
         </div>
 
         {/* Limit setting */}

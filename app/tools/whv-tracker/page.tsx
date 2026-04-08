@@ -312,7 +312,7 @@ export default function WHVTrackerPage() {
               <CalendarRange className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold mb-1">WHV Days Tracker</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold mb-1">2nd & 3rd Year Tracker</h1>
               <p className="text-emerald-200 text-sm">
                 Track your 88 or 179 regional work days, estimate completion date, and find eligible jobs.
               </p>

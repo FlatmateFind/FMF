@@ -1,7 +1,7 @@
 'use client';
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { ChevronLeft, Info, CheckCircle2, XCircle } from 'lucide-react';
+import { ChevronLeft, Info, CheckCircle2, XCircle, Briefcase } from 'lucide-react';
 import clsx from 'clsx';
 
 // Resident tax (same as tax calculator)
@@ -86,8 +86,15 @@ export default function ABNvsTFNPage() {
           <Link href="/tools" className="flex items-center gap-1.5 text-slate-400 hover:text-white text-xs mb-4 transition-colors">
             <ChevronLeft className="w-3.5 h-3.5" /> Back to Tools
           </Link>
-          <h1 className="text-2xl sm:text-3xl font-bold mb-1">ABN vs TFN Calculator</h1>
-          <p className="text-slate-400 text-sm">Compare take-home pay as an ABN contractor vs a TFN/PAYG employee in Australia.</p>
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-white/15 flex items-center justify-center shrink-0">
+              <Briefcase className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold mb-1">ABN & TFN Guide</h1>
+              <p className="text-slate-400 text-sm">Compare take-home pay as an ABN contractor vs a TFN/PAYG employee in Australia.</p>
+            </div>
+          </div>
         </div>
 
         {/* Income input */}

@@ -501,7 +501,7 @@ export default function CompatibilityQuizPage() {
               <Users className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold mb-1">Flatmate Compatibility Quiz</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold mb-1">Flatmate Match</h1>
               <p className="text-violet-200 text-sm">
                 12 questions about your lifestyle, budget and preferences — matched to real available listings.
               </p>
