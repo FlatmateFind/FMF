@@ -4,6 +4,7 @@ import {
   Bell, BellOff, Home, Briefcase, ShoppingBag, CalendarDays,
   Building2, Users, CheckCircle2, X, Plus, MapPin,
   DollarSign, Globe, Loader2, BellRing, Share, SquarePlus,
+  Zap, Clock, SlidersHorizontal, ShieldCheck,
 } from 'lucide-react';
 import { subscribeToPush, unsubscribeFromPush, isSubscribed } from '@/components/PushNotificationManager';
 import type { NotificationPreferences } from '@/lib/pushSubscriptions';
@@ -152,9 +153,50 @@ export default function NotificationsPage() {
             </p>
           </div>
 
+          {/* Why enable notifications */}
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-3">
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Why turn on notifications?</p>
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-xl bg-teal-100 flex items-center justify-center shrink-0">
+                <Zap className="w-4 h-4 text-teal-600" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-slate-800">Be first to see new rooms</p>
+                <p className="text-xs text-slate-500 leading-snug">The best listings go fast. Get notified the moment a room in your chosen suburbs is posted — before anyone else.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-xl bg-blue-100 flex items-center justify-center shrink-0">
+                <SlidersHorizontal className="w-4 h-4 text-blue-600" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-slate-800">Only what you care about</p>
+                <p className="text-xs text-slate-500 leading-snug">You choose — rooms, jobs, events, community posts. No spam, no noise. Just updates that match your preferences.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-xl bg-amber-100 flex items-center justify-center shrink-0">
+                <Clock className="w-4 h-4 text-amber-600" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-slate-800">Never miss a job or event</p>
+                <p className="text-xs text-slate-500 leading-snug">Get instant alerts for casual jobs, local events, and community posts — right when they go live in your area.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-xl bg-green-100 flex items-center justify-center shrink-0">
+                <ShieldCheck className="w-4 h-4 text-green-600" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-slate-800">Turn off anytime</p>
+                <p className="text-xs text-slate-500 leading-snug">Full control, always. Change your preferences or turn off notifications at any time from this page.</p>
+              </div>
+            </div>
+          </div>
+
           {/* Steps */}
           <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">3 quick steps</p>
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">3 quick steps to get started</p>
 
             <div className="flex items-start gap-3">
               <div className="w-8 h-8 rounded-full bg-teal-100 text-teal-700 text-sm font-bold flex items-center justify-center shrink-0">1</div>
@@ -219,6 +261,26 @@ export default function NotificationsPage() {
             </div>
           </div>
         </div>
+
+        {/* Why enable — shown only when not yet subscribed */}
+        {!subscribed && (
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              { icon: Zap,               color: 'bg-teal-100 text-teal-600',   title: 'Be first to know',       desc: 'New rooms in your suburbs, the moment they're posted.' },
+              { icon: SlidersHorizontal, color: 'bg-blue-100 text-blue-600',   title: 'Fully personalised',     desc: 'Only alerts for rooms, jobs & events you actually want.' },
+              { icon: Clock,             color: 'bg-amber-100 text-amber-600', title: 'Never miss out',         desc: 'Casual jobs & local events — right when they go live.' },
+              { icon: ShieldCheck,       color: 'bg-green-100 text-green-600', title: 'Turn off anytime',       desc: 'Full control. Update or cancel from this page anytime.' },
+            ].map(({ icon: Icon, color, title, desc }) => (
+              <div key={title} className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+                <div className={`w-8 h-8 rounded-xl flex items-center justify-center mb-2 ${color}`}>
+                  <Icon className="w-4 h-4" />
+                </div>
+                <p className="text-sm font-semibold text-slate-800 mb-0.5">{title}</p>
+                <p className="text-xs text-slate-400 leading-snug">{desc}</p>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Status banner */}
         {subscribed && (
