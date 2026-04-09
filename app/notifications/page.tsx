@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import {
   Bell, BellOff, Home, Briefcase, ShoppingBag, CalendarDays,
   Building2, Users, CheckCircle2, X, Plus, MapPin,
-  DollarSign, Globe, Loader2, BellRing,
+  DollarSign, Globe, Loader2, BellRing, Share, SquarePlus,
 } from 'lucide-react';
 import { subscribeToPush, unsubscribeFromPush, isSubscribed } from '@/components/PushNotificationManager';
 import type { NotificationPreferences } from '@/lib/pushSubscriptions';
@@ -75,10 +75,19 @@ export default function NotificationsPage() {
   const [suburbInput, setSuburbInput] = useState('');
   const [status, setStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
-  const [supported, setSupported] = useState(true);
+  // 'loading' | 'ios-install' | 'supported' | 'unsupported'
+  const [supportState, setSupportState] = useState<'loading' | 'ios-install' | 'supported' | 'unsupported'>('loading');
 
   useEffect(() => {
-    setSupported('Notification' in window && 'serviceWorker' in navigator);
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isStandalone = ('standalone' in navigator) && (navigator as unknown as { standalone: boolean }).standalone;
+    if (isIOS && !isStandalone) {
+      setSupportState('ios-install');
+    } else if ('Notification' in window && 'serviceWorker' in navigator && 'PushManager' in window) {
+      setSupportState('supported');
+    } else {
+      setSupportState('unsupported');
+    }
     setSubscribed(isSubscribed());
     const saved = localStorage.getItem('push_preferences');
     if (saved) { try { setPrefs(JSON.parse(saved)); } catch {} }
@@ -126,13 +135,67 @@ export default function NotificationsPage() {
     else { setErrorMsg(result.error ?? 'Unknown error'); setStatus('error'); }
   }
 
-  if (!supported) {
+  if (supportState === 'loading') return null;
+
+  if (supportState === 'ios-install') {
+    return (
+      <main className="min-h-screen bg-slate-50">
+        <div className="max-w-sm mx-auto px-4 py-10 space-y-5">
+          {/* Hero */}
+          <div className="rounded-2xl bg-gradient-to-br from-teal-600 to-teal-800 text-white px-6 py-8 text-center">
+            <div className="w-14 h-14 rounded-2xl bg-white/15 flex items-center justify-center mx-auto mb-4">
+              <BellRing className="w-7 h-7 text-white" />
+            </div>
+            <h1 className="text-2xl font-bold mb-2">Enable Notifications</h1>
+            <p className="text-teal-200 text-sm">
+              To get push notifications on iPhone, you need to add FlatmateFind to your Home Screen first.
+            </p>
+          </div>
+
+          {/* Steps */}
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">3 quick steps</p>
+
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-full bg-teal-100 text-teal-700 text-sm font-bold flex items-center justify-center shrink-0">1</div>
+              <div>
+                <p className="text-sm font-semibold text-slate-800 mb-0.5">Tap the Share button</p>
+                <p className="text-xs text-slate-500">Tap <Share className="w-3.5 h-3.5 inline -mt-0.5" /> at the bottom of your Safari browser.</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-full bg-teal-100 text-teal-700 text-sm font-bold flex items-center justify-center shrink-0">2</div>
+              <div>
+                <p className="text-sm font-semibold text-slate-800 mb-0.5">Add to Home Screen</p>
+                <p className="text-xs text-slate-500">Scroll down and tap <SquarePlus className="w-3.5 h-3.5 inline -mt-0.5" /> <strong>&quot;Add to Home Screen&quot;</strong>, then tap <strong>Add</strong>.</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-full bg-teal-100 text-teal-700 text-sm font-bold flex items-center justify-center shrink-0">3</div>
+              <div>
+                <p className="text-sm font-semibold text-slate-800 mb-0.5">Open from Home Screen</p>
+                <p className="text-xs text-slate-500">Launch FlatmateFind from your Home Screen, then come back to this page to set up notifications.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-xs text-amber-800">
+            Requires <strong>iOS 16.4 or later</strong>. Check Settings → General → Software Update.
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  if (supportState === 'unsupported') {
     return (
       <main className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
         <div className="bg-white rounded-2xl border border-slate-200 p-8 max-w-sm w-full text-center shadow-sm">
           <BellOff className="w-10 h-10 text-slate-300 mx-auto mb-3" />
           <h2 className="font-bold text-slate-800 mb-1">Not Supported</h2>
-          <p className="text-sm text-slate-500">Push notifications aren&apos;t supported in this browser. Try Chrome or Safari on iOS 16.4+.</p>
+          <p className="text-sm text-slate-500">Push notifications aren&apos;t supported in this browser. Try Chrome on Android or Safari on iOS 16.4+.</p>
         </div>
       </main>
     );
