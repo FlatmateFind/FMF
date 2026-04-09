@@ -266,7 +266,7 @@ export default function NotificationsPage() {
         {!subscribed && (
           <div className="grid grid-cols-2 gap-3">
             {[
-              { icon: Zap,               color: 'bg-teal-100 text-teal-600',   title: 'Be first to know',       desc: 'New rooms in your suburbs, the moment they're posted.' },
+              { icon: Zap,               color: 'bg-teal-100 text-teal-600',   title: 'Be first to know',       desc: "New rooms in your suburbs, the moment they're posted." },
               { icon: SlidersHorizontal, color: 'bg-blue-100 text-blue-600',   title: 'Fully personalised',     desc: 'Only alerts for rooms, jobs & events you actually want.' },
               { icon: Clock,             color: 'bg-amber-100 text-amber-600', title: 'Never miss out',         desc: 'Casual jobs & local events — right when they go live.' },
               { icon: ShieldCheck,       color: 'bg-green-100 text-green-600', title: 'Turn off anytime',       desc: 'Full control. Update or cancel from this page anytime.' },
