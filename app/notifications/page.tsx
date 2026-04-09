@@ -270,23 +270,21 @@ export default function NotificationsPage() {
           {/* Budget */}
           <div>
             <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wide">
-              <DollarSign className="w-3 h-3 inline mr-1" />Weekly Rent Budget
+              <DollarSign className="w-3 h-3 inline mr-1" />Weekly Rent Budget ($/wk)
             </label>
-            <div className="flex items-center gap-2">
+            <div className="grid grid-cols-2 gap-2">
               <input
-                type="number" min="0" placeholder="Min $"
+                type="number" min="0" placeholder="Min e.g. 150"
                 value={prefs.budgetMin ?? ''}
                 onChange={(e) => setPrefs((p) => ({ ...p, budgetMin: e.target.value ? Number(e.target.value) : null }))}
-                className="flex-1 text-xs border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-300"
+                className="text-xs border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-300 w-full"
               />
-              <span className="text-slate-400 text-xs">to</span>
               <input
-                type="number" min="0" placeholder="Max $"
+                type="number" min="0" placeholder="Max e.g. 350"
                 value={prefs.budgetMax ?? ''}
                 onChange={(e) => setPrefs((p) => ({ ...p, budgetMax: e.target.value ? Number(e.target.value) : null }))}
-                className="flex-1 text-xs border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-300"
+                className="text-xs border border-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-300 w-full"
               />
-              <span className="text-slate-400 text-xs">/wk</span>
             </div>
           </div>
 
