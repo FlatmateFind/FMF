@@ -5,7 +5,7 @@ import {
   Home, Heart, LayoutDashboard, LogOut, User, ChevronDown,
   Users, Sparkles, Briefcase, Search, LogIn, UserPlus,
   Menu, X, PlusCircle, Zap, ArrowLeftRight, Calculator,
-  Building2, ShoppingBag, CalendarDays, CalendarCheck, Clock, Layers, Globe,
+  Building2, ShoppingBag, CalendarDays, CalendarCheck, Clock, Layers, Globe, Bell,
 } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
@@ -278,6 +278,11 @@ export default function Header() {
               )}
             </div>
 
+            {/* Notifications */}
+            <Link href="/notifications" title="Notifications" className="flex items-center justify-center w-9 h-9 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors">
+              <Bell className="w-5 h-5" />
+            </Link>
+
             {/* Auth / user menu */}
             {!loading && (
               user ? (
@@ -427,6 +432,11 @@ export default function Header() {
                 </div>
               )
             )}
+
+            {/* Notifications */}
+            <Link href="/notifications" title="Notifications" className="flex items-center justify-center w-9 h-9 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">
+              <Bell className="w-5 h-5" />
+            </Link>
 
             {/* Hamburger */}
             <button

@@ -33,7 +33,7 @@ const footerLinks = {
     title: 'Resources',
     links: [
       { label: 'Smart Tools', href: '/tools' },
-      { label: 'Notifications', href: '/notifications' },
+
       { label: 'Site Guide', href: '/site-guide' },
       { label: 'Safety Tips', href: '/safety-tips' },
       { label: 'FAQ', href: '/faq' },
