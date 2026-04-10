@@ -1,30 +1,12 @@
 'use client';
 import { useEffect, useState, useRef } from 'react';
 import { listings as seedListings } from '@/data/listings';
+import { createClient } from '@/lib/supabase/client';
 
 interface Stat {
   value: number;
   suffix: string;
   label: string;
-}
-
-function readListingCount(): number {
-  try {
-    const posted = JSON.parse(localStorage.getItem('flatmatefind_posted_listings') ?? '[]') as unknown[];
-    return seedListings.length + posted.length;
-  } catch {
-    return seedListings.length;
-  }
-}
-
-function readRenterCount(): number {
-  try {
-    const users = JSON.parse(localStorage.getItem('flatmatefind_users') ?? '[]') as { role: string }[];
-    // Seed offset so the number feels established even with 0 real sign-ups
-    return 120 + users.filter((u) => u.role === 'renter').length;
-  } catch {
-    return 120;
-  }
 }
 
 // Animate a number from `from` to `to` over ~1s
@@ -74,14 +56,39 @@ export default function LiveStats() {
   const [animate, setAnimate] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  // Read live counts from localStorage once on mount
+  // Query Supabase for live counts
   useEffect(() => {
-    setStats([
-      { value: readListingCount(), suffix: '+', label: 'Listings' },
-      { value: readRenterCount(),  suffix: '+', label: 'Renters joined' },
-      { value: 8,                  suffix: '',  label: 'States & Territories' },
-      { value: 0,                  suffix: '',  label: 'Free to browse' },
-    ]);
+    async function fetchCounts() {
+      try {
+        const supabase = createClient();
+
+        // Count active DB listings
+        const { count: dbListingCount } = await supabase
+          .from('listings')
+          .select('id', { count: 'exact', head: true })
+          .eq('status', 'active');
+
+        // Count renter profiles
+        const { count: renterCount } = await supabase
+          .from('profiles')
+          .select('id', { count: 'exact', head: true })
+          .eq('role', 'renter');
+
+        const totalListings = seedListings.length + (dbListingCount ?? 0);
+        // Seed offset so numbers feel established even with 0 sign-ups
+        const totalRenters = 120 + (renterCount ?? 0);
+
+        setStats([
+          { value: totalListings, suffix: '+', label: 'Listings' },
+          { value: totalRenters,  suffix: '+', label: 'Renters joined' },
+          { value: 8,             suffix: '',  label: 'States & Territories' },
+          { value: 0,             suffix: '',  label: 'Free to browse' },
+        ]);
+      } catch {
+        // On error, keep default seed-based values
+      }
+    }
+    void fetchCounts();
   }, []);
 
   // Trigger count-up animation when the section scrolls into view

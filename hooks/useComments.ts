@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
+import { createClient } from '@/lib/supabase/client';
 
 export interface Comment {
   id: string;
@@ -10,43 +11,60 @@ export interface Comment {
   createdAt: string;
 }
 
-const KEY = 'flatmatefind_comments';
-
-function load(): Comment[] {
-  try {
-    return JSON.parse(localStorage.getItem(KEY) ?? '[]');
-  } catch {
-    return [];
-  }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function fromDB(row: any): Comment {
+  return {
+    id: row.id,
+    listingId: row.listing_id,
+    userId: row.user_id,
+    userName: row.user_name,
+    text: row.text,
+    createdAt: row.created_at,
+  };
 }
 
 export function useComments(listingId: string) {
   const [comments, setComments] = useState<Comment[]>([]);
+  const supabase = createClient();
 
   useEffect(() => {
-    setComments(load().filter((c) => c.listingId === listingId));
+    supabase
+      .from('comments')
+      .select('*')
+      .eq('listing_id', listingId)
+      .order('created_at', { ascending: false })
+      .then(({ data, error }) => {
+        if (error) console.error('useComments fetch error:', error);
+        setComments((data ?? []).map(fromDB));
+      });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listingId]);
 
-  const addComment = useCallback((userId: string, userName: string, text: string) => {
-    const all = load();
-    const next: Comment = {
-      id: `c-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-      listingId,
-      userId,
-      userName,
-      text: text.trim(),
-      createdAt: new Date().toISOString(),
-    };
-    const updated = [next, ...all];
-    localStorage.setItem(KEY, JSON.stringify(updated));
-    setComments(updated.filter((c) => c.listingId === listingId));
+  const addComment = useCallback(async (userId: string, userName: string, text: string) => {
+    const { data, error } = await supabase
+      .from('comments')
+      .insert({
+        listing_id: listingId,
+        user_id: userId,
+        user_name: userName,
+        text: text.trim(),
+      })
+      .select()
+      .single();
+    if (error) { console.error('useComments addComment error:', error); return; }
+    setComments((prev) => [fromDB(data), ...prev]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listingId]);
 
-  const deleteComment = useCallback((commentId: string) => {
-    const updated = load().filter((c) => c.id !== commentId);
-    localStorage.setItem(KEY, JSON.stringify(updated));
-    setComments(updated.filter((c) => c.listingId === listingId));
-  }, [listingId]);
+  const deleteComment = useCallback(async (commentId: string) => {
+    const { error } = await supabase
+      .from('comments')
+      .delete()
+      .eq('id', commentId);
+    if (error) { console.error('useComments deleteComment error:', error); return; }
+    setComments((prev) => prev.filter((c) => c.id !== commentId));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return { comments, addComment, deleteComment };
 }

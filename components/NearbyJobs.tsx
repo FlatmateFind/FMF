@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Briefcase, MapPin, DollarSign, Clock, ChevronRight, ArrowRight } from 'lucide-react';
 import { SEED_JOBS, JobPost, JobType } from '@/data/jobs';
+import { createClient } from '@/lib/supabase/client';
 
 const TYPE_BADGE: Record<JobType, string> = {
   'Full-time':  'bg-blue-100 text-blue-700',
@@ -40,28 +41,50 @@ export default function NearbyJobs({ suburb, city, state }: NearbyJobsProps) {
   const [jobs, setJobs] = useState<JobPost[]>([]);
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('flatmatefind_jobs');
-      const userJobs: JobPost[] = stored ? JSON.parse(stored) : [];
-      const all = [...userJobs.filter((j) => j.status === 'active'), ...SEED_JOBS];
-      const seen = new Set<string>();
-      const deduped = all.filter((j) => { if (seen.has(j.id)) return false; seen.add(j.id); return true; });
+    async function loadNearbyJobs() {
+      try {
+        const supabase = createClient();
+        const { data } = await supabase
+          .from('jobs')
+          .select('*')
+          .eq('status', 'active');
+        const dbJobs: JobPost[] = (data ?? []).map((row) => ({
+          id: row.id,
+          title: row.title,
+          company: row.company ?? '',
+          type: row.type as JobType,
+          state: row.state,
+          suburb: row.suburb ?? '',
+          salary: row.pay ?? '',
+          description: row.description ?? '',
+          contactEmail: row.contact_email ?? '',
+          postedByName: '',
+          postedByRole: 'renter' as const,
+          postedByUserId: row.user_id,
+          postedAt: row.posted_at,
+          status: row.status as JobPost['status'],
+          postLanguage: row.post_language,
+        }));
+        const dbIds = new Set(dbJobs.map((j) => j.id));
+        const all = [...dbJobs, ...SEED_JOBS.filter((j) => !dbIds.has(j.id))];
 
-      const suburbLower = suburb.toLowerCase();
-      const cityLower = city.toLowerCase();
+        const suburbLower = suburb.toLowerCase();
+        const cityLower = city.toLowerCase();
 
-      const exact = deduped.filter((j) => j.suburb.toLowerCase() === suburbLower && j.status === 'active');
-      const cityMatch = deduped.filter(
-        (j) => j.status === 'active' && j.suburb.toLowerCase() !== suburbLower &&
-          (j.suburb.toLowerCase() === cityLower || j.suburb.toLowerCase().includes(cityLower))
-      );
-      const stateMatch = deduped.filter(
-        (j) => j.status === 'active' && j.state === state &&
-          j.suburb.toLowerCase() !== suburbLower && !j.suburb.toLowerCase().includes(cityLower)
-      );
+        const exact = all.filter((j) => j.suburb.toLowerCase() === suburbLower && j.status === 'active');
+        const cityMatch = all.filter(
+          (j) => j.status === 'active' && j.suburb.toLowerCase() !== suburbLower &&
+            (j.suburb.toLowerCase() === cityLower || j.suburb.toLowerCase().includes(cityLower))
+        );
+        const stateMatch = all.filter(
+          (j) => j.status === 'active' && j.state === state &&
+            j.suburb.toLowerCase() !== suburbLower && !j.suburb.toLowerCase().includes(cityLower)
+        );
 
-      setJobs([...exact, ...cityMatch, ...stateMatch].slice(0, 3));
-    } catch { /* ignore */ }
+        setJobs([...exact, ...cityMatch, ...stateMatch].slice(0, 3));
+      } catch { /* ignore */ }
+    }
+    void loadNearbyJobs();
   }, [suburb, city, state]);
 
   if (jobs.length === 0) return null;

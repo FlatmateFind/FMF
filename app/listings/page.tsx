@@ -12,88 +12,6 @@ import {
   SearchFilters, SortOption, Listing,
   AUSTRALIAN_STATES, PROPERTY_TYPES, NATIONALITIES, POST_LANGUAGES,
 } from '@/lib/types';
-import { usePostedListings, PostedListing } from '@/hooks/usePostedListings';
-
-/** Convert a user-posted localStorage listing into the standard Listing shape */
-function postedToListing(p: PostedListing): Listing {
-  return {
-    id: p.id,
-    title: p.title,
-    type: p.type as Listing['type'],
-    location: {
-      state: p.state ?? '',
-      city: p.city,
-      suburb: p.suburb,
-      postcode: p.postcode,
-      address: p.address,
-      country: 'Australia',
-    },
-    rent: {
-      amount: p.rentAmount,
-      currency: p.currency || 'AUD',
-      period: (p.period as 'week' | 'month') || 'week',
-    },
-    inclusions: p.inclusions ?? [],
-    bedrooms: p.bedrooms,
-    bathrooms: p.bathrooms,
-    currentOccupants: p.currentOccupants ?? 0,
-    totalCapacity: p.totalCapacity ?? p.bedrooms,
-    furnished: (p.furnished as 'furnished' | 'unfurnished') || 'unfurnished',
-    facilities: p.facilities ?? [],
-    roomFeatures: p.roomFeatures,
-    roomCategories: p.roomCategories,
-    postLanguage: p.postLanguage,
-    languages: p.languages,
-    preferredNationality: p.preferredNationalities ?? [],
-    preferredGender: (p.preferredGender as 'male' | 'female' | 'any') || 'any',
-    petsAllowed: p.petsAllowed ?? false,
-    smokingAllowed: p.smokingAllowed ?? false,
-    availableFrom: p.availableFrom,
-    minimumStay: p.minimumStay ?? '',
-    stayType: p.stayType as Listing['stayType'],
-    rules: p.rules,
-    nearbyPlaces: p.nearbyPlaces,
-    images: [],
-    description: p.description ?? '',
-    status: p.status,
-    postedBy: {
-      name: p.contactName,
-      type: 'owner',
-      responseTime: 'Fast',
-      verified: false,
-    },
-    postedAt: p.postedAt,
-    featured: false,
-  };
-}
-
-/** Apply the same filters used server-side, but client-side for user-posted listings */
-function matchesFilters(l: Listing, f: SearchFilters): boolean {
-  if (l.status === 'taken' || l.status === 'expired') return false;
-  if (f.state && l.location.state.toUpperCase() !== f.state.toUpperCase()) return false;
-  if (f.city && l.location.city.toLowerCase() !== f.city.toLowerCase()) return false;
-  if (f.type && l.type !== f.type) return false;
-  if (f.maxRent && l.rent.amount > f.maxRent) return false;
-  if (f.bedrooms && l.bedrooms < f.bedrooms) return false;
-  if (f.furnished && l.furnished !== f.furnished) return false;
-  if (f.nationality && f.nationality !== 'any') {
-    if (l.preferredNationality.length > 0 && !l.preferredNationality.includes(f.nationality)) return false;
-  }
-  if (f.gender && f.gender !== 'any') {
-    if (l.preferredGender !== 'any' && l.preferredGender !== f.gender) return false;
-  }
-  if (f.petsAllowed && !l.petsAllowed) return false;
-  if (f.availableBy) {
-    if (l.availableFrom && new Date(l.availableFrom) > new Date(f.availableBy)) return false;
-  }
-  if (f.language && l.postLanguage && l.postLanguage !== f.language) return false;
-  if (f.query) {
-    const q = f.query.toLowerCase();
-    const haystack = `${l.title} ${l.location.suburb} ${l.location.city} ${l.description}`.toLowerCase();
-    if (!haystack.includes(q)) return false;
-  }
-  return true;
-}
 
 const SORT_OPTIONS: { value: SortOption; label: string }[] = [
   { value: 'newest',          label: 'Newest first' },
@@ -125,7 +43,6 @@ function ListingsPageInner() {
   const [listings, setListings] = useState<Listing[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
-  const { posted, loaded: postedLoaded } = usePostedListings();
 
   const filters: SearchFilters = useMemo(() => ({
     state:       params.get('state')       || undefined,
@@ -193,16 +110,8 @@ function ListingsPageInner() {
         }
         const res = await fetch(`/api/listings?${apiParams.toString()}`);
         const data = await res.json() as { listings: Listing[]; total: number };
-
-        // Merge active user-posted listings (from localStorage) that pass the same filters
-        const userListings = posted
-          .filter((p) => p.status === 'active')
-          .map(postedToListing)
-          .filter((l) => matchesFilters(l, filters));
-        // Prepend user listings (they won't exist in seed data so no deduplication needed)
-        const merged = [...userListings, ...data.listings];
-        setListings(merged);
-        setTotal(merged.length);
+        setListings(data.listings);
+        setTotal(data.total);
       } catch (err) {
         console.error(err);
       } finally {
@@ -210,7 +119,7 @@ function ListingsPageInner() {
       }
     };
     void fetchListings();
-  }, [filters, posted, postedLoaded]);
+  }, [filters]);
 
   const FilterContent = () => (
     <div className="space-y-5">

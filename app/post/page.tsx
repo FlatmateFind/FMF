@@ -144,7 +144,7 @@ export default function PostListingPage() {
     return Object.keys(errs).length === 0;
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setBlockError('');
     setSpamWarnings([]);
@@ -173,8 +173,8 @@ export default function PostListingPage() {
     if (!validate()) return;
     // Derive state abbreviation from selected city
     const stateAbbr = AUSTRALIAN_STATES.find((s) => s.cities.includes(form.city))?.abbr ?? '';
-    // Save to localStorage for dashboard
-    add({
+    // Save to Supabase via usePostedListings hook
+    await add({
       id: `post-${Date.now()}`,
       title: `${form.type.charAt(0).toUpperCase() + form.type.slice(1)} in ${form.suburb}`,
       type: form.type,

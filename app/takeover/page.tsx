@@ -10,7 +10,7 @@ import {
 import { SEED_TAKEOVERS, TakeoverListing, TakeoverPropertyType } from '@/data/takeovers';
 import { AUSTRALIAN_STATES } from '@/lib/types';
 import { useAuth } from '@/context/AuthContext';
-import { usePostedTakeovers } from '@/hooks/usePostedTakeovers';
+import { createClient } from '@/lib/supabase/client';
 import AdSlot from '@/components/AdSlot';
 import ShareButton from '@/components/ShareButton';
 
@@ -47,7 +47,7 @@ function timeAgo(iso: string) {
 
 export default function TakeoverPage() {
   const { user } = useAuth();
-  const { all: userTakeovers } = usePostedTakeovers();
+  const [dbTakeovers, setDbTakeovers] = useState<TakeoverListing[]>([]);
   const [query, setQuery] = useState('');
   const [stateFilter, setStateFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState<TakeoverPropertyType | ''>('');
@@ -56,12 +56,51 @@ export default function TakeoverPage() {
   const [agentOpenFilter, setAgentOpenFilter] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  useEffect(() => {
+    async function loadTakeovers() {
+      try {
+        const supabase = createClient();
+        const { data } = await supabase
+          .from('takeovers')
+          .select('*')
+          .eq('status', 'active')
+          .order('posted_at', { ascending: false });
+        const rows: TakeoverListing[] = (data ?? []).map((row) => ({
+          id: row.id,
+          suburb: row.suburb ?? '',
+          city: row.city ?? '',
+          state: row.state ?? '',
+          postcode: row.postcode ?? '',
+          propertyType: (row.property_type as TakeoverPropertyType) ?? 'apartment',
+          bedrooms: row.bedrooms ?? 1,
+          bathrooms: row.bathrooms ?? 1,
+          rent: Number(row.rent_amount ?? 0),
+          bond: 0,
+          availableFrom: row.available_from ?? '',
+          leaseEndDate: row.lease_end ?? undefined,
+          agencyName: undefined,
+          agentOpenToNew: false,
+          furnished: (row.furnished as TakeoverListing['furnished']) ?? 'unfurnished',
+          inclusions: [],
+          description: row.description ?? '',
+          contactName: '',
+          contactEmail: '',
+          postedAt: row.posted_at,
+          status: 'active' as const,
+          postedByUserId: row.user_id,
+          images: row.images ?? [],
+        }));
+        setDbTakeovers(rows);
+      } catch { /* ignore */ }
+    }
+    void loadTakeovers();
+  }, []);
+
   const allListings = useMemo(() => {
-    const active = userTakeovers.filter((t) => t.status === 'active');
-    const combined = [...active, ...SEED_TAKEOVERS];
-    const seen = new Set<string>();
-    return combined.filter((t) => { if (seen.has(t.id)) return false; seen.add(t.id); return true; });
-  }, [userTakeovers]);
+    const dbIds = new Set(dbTakeovers.map((t) => t.id));
+    const combined = [...dbTakeovers, ...SEED_TAKEOVERS.filter((t) => !dbIds.has(t.id))];
+    return combined.filter((t) => t.status === 'active');
+  }, [dbTakeovers]);
 
   const filtered = useMemo(() => allListings
     .filter((t) => t.status === 'active')

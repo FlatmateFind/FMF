@@ -1,5 +1,6 @@
 'use client';
 import { useEffect } from 'react';
+import { createClient } from '@/lib/supabase/client';
 
 const VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!;
 
@@ -34,6 +35,26 @@ export async function subscribeToPush(
 
     const subJson = sub.toJSON() as { endpoint: string; keys: { auth: string; p256dh: string } };
 
+    // Store subscription in Supabase
+    try {
+      const supabase = createClient();
+      const { data: { session } } = await supabase.auth.getSession();
+      await supabase.from('push_subscriptions').upsert(
+        {
+          user_id: session?.user?.id ?? null,
+          endpoint: subJson.endpoint,
+          p256dh: subJson.keys.p256dh,
+          auth_key: subJson.keys.auth,
+          preferences,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: 'endpoint' }
+      );
+    } catch (dbErr) {
+      console.warn('Failed to save push subscription to DB:', dbErr);
+    }
+
+    // Also call the existing API route for backward compatibility
     const res = await fetch('/api/push/subscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -42,7 +63,7 @@ export async function subscribeToPush(
 
     if (!res.ok) return { success: false, error: 'Server error saving subscription.' };
 
-    // Persist endpoint locally so we can unsubscribe later
+    // Keep endpoint in localStorage for unsubscribe reference
     localStorage.setItem('push_endpoint', subJson.endpoint);
     localStorage.setItem('push_preferences', JSON.stringify(preferences));
     return { success: true };
@@ -55,6 +76,12 @@ export async function unsubscribeFromPush(): Promise<boolean> {
   try {
     const endpoint = localStorage.getItem('push_endpoint');
     if (endpoint) {
+      // Remove from Supabase
+      try {
+        const supabase = createClient();
+        await supabase.from('push_subscriptions').delete().eq('endpoint', endpoint);
+      } catch { /* ignore */ }
+
       await fetch('/api/push/unsubscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

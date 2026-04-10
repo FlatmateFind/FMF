@@ -23,11 +23,11 @@ function SignInForm() {
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get('from') || '/dashboard';
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError('');
     if (!email || !password) { setError('Please fill in all fields.'); return; }
-    const result = signIn(email, password);
+    const result = await signIn(email, password);
     if (result.success) {
       router.push(redirectTo);
     } else {

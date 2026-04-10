@@ -1,14 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { consumeVerificationToken } from '@/lib/verificationTokens';
+import { NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
-  const { token } = await req.json();
-  if (!token) return NextResponse.json({ error: 'Token required' }, { status: 400 });
-
-  const email = consumeVerificationToken(token);
-  if (!email) {
-    return NextResponse.json({ error: 'Invalid or expired link.' }, { status: 400 });
-  }
-
-  return NextResponse.json({ ok: true, email });
+// Supabase handles email verification via its own secure token flow.
+// This endpoint is kept as a no-op for backwards compatibility.
+export async function POST() {
+  return NextResponse.json({ ok: true });
 }

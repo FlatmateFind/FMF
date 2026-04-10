@@ -15,21 +15,15 @@ export default function SignUpPage() {
   const { signUp } = useAuth();
   const router = useRouter();
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError('');
     if (!role) { setError('Please select whether you are a renter or subletter.'); return; }
     if (!name.trim()) { setError('Please enter your name.'); return; }
     if (!email || !email.includes('@')) { setError('Please enter a valid email.'); return; }
     if (password.length < 6) { setError('Password must be at least 6 characters.'); return; }
-    const result = signUp(name.trim(), email.trim(), password, role);
+    const result = await signUp(name.trim(), email.trim(), password, role);
     if (result.success) {
-      // Fire-and-forget: send verification email
-      fetch('/api/auth/send-verification', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim(), name: name.trim() }),
-      });
       router.push('/auth/verify-email');
     } else {
       setError(result.error ?? 'Sign up failed.');

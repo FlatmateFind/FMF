@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Briefcase, PlusCircle, Filter } from 'lucide-react';
 import { SEED_JOBS, JobPost, JobType } from '@/data/jobs';
 import { useAuth } from '@/context/AuthContext';
+import { createClient } from '@/lib/supabase/client';
 import JobCard from '@/components/JobCard';
 
 const ALL_TYPES: JobType[] = ['Full-time', 'Part-time', 'Casual', 'Contract', 'Remote', 'Internship'];
@@ -14,14 +15,39 @@ export default function HomeJobBoard() {
   const [filter, setFilter] = useState<JobType | 'All'>('All');
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('flatmatefind_jobs');
-      const userJobs: JobPost[] = stored ? JSON.parse(stored) : [];
-      const combined = [...userJobs.filter((j) => j.status === 'active'), ...SEED_JOBS];
-      // De-duplicate by id
-      const seen = new Set<string>();
-      setAllJobs(combined.filter((j) => { if (seen.has(j.id)) return false; seen.add(j.id); return true; }));
-    } catch { /* ignore */ }
+    async function loadJobs() {
+      try {
+        const supabase = createClient();
+        const { data } = await supabase
+          .from('jobs')
+          .select('*')
+          .eq('status', 'active')
+          .order('posted_at', { ascending: false });
+        const dbJobs: JobPost[] = (data ?? []).map((row) => ({
+          id: row.id,
+          title: row.title,
+          company: row.company ?? '',
+          type: row.type as JobType,
+          state: row.state,
+          suburb: row.suburb ?? '',
+          salary: row.pay ?? '',
+          description: row.description ?? '',
+          contactEmail: row.contact_email ?? '',
+          postedByName: '',
+          postedByRole: 'renter' as const,
+          postedByUserId: row.user_id,
+          postedAt: row.posted_at,
+          status: row.status as JobPost['status'],
+          postLanguage: row.post_language,
+        }));
+        const dbIds = new Set(dbJobs.map((j) => j.id));
+        const combined = [...dbJobs, ...SEED_JOBS.filter((j) => !dbIds.has(j.id))];
+        setAllJobs(combined);
+      } catch {
+        setAllJobs(SEED_JOBS);
+      }
+    }
+    void loadJobs();
   }, []);
 
   const filtered = filter === 'All'

@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, FormEvent } from 'react';
 import { Flag, X, CheckCircle } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
 
 const REASONS = [
   'Fake or fraudulent listing',
@@ -30,21 +31,19 @@ export default function ReportListingModal({ listingId, listingTitle, onClose }:
     return () => document.removeEventListener('keydown', onKey);
   }, [onClose]);
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!reason) return;
 
-    // Save report to localStorage
+    // Save report to Supabase
     try {
-      const reports = JSON.parse(localStorage.getItem('flatmatefind_reports') ?? '[]') as object[];
-      reports.push({
-        listingId,
-        listingTitle,
+      const supabase = createClient();
+      await supabase.from('reports').insert({
+        listing_id: listingId,
+        listing_title: listingTitle,
         reason,
-        comment: comment.trim(),
-        reportedAt: new Date().toISOString(),
+        details: comment.trim(),
       });
-      localStorage.setItem('flatmatefind_reports', JSON.stringify(reports));
     } catch { /* fail silently */ }
 
     setSubmitted(true);

@@ -1,23 +1,15 @@
 'use client';
 import { useState, useEffect, useCallback } from 'react';
+import { createClient } from '@/lib/supabase/client';
 
 export const REACTION_EMOJIS = ['👍', '❤️', '🏠', '🔥', '😍', '🤔'] as const;
 export type ReactionEmoji = (typeof REACTION_EMOJIS)[number];
 
-interface ReactionEntry {
-  listingId: string;
-  userId: string;
-  emoji: ReactionEmoji;
-}
-
-const KEY = 'flatmatefind_reactions';
-
-function load(): ReactionEntry[] {
-  try {
-    return JSON.parse(localStorage.getItem(KEY) ?? '[]');
-  } catch {
-    return [];
-  }
+interface ReactionRow {
+  id: string;
+  listing_id: string;
+  user_id: string | null;
+  emoji: string;
 }
 
 export function useReactions(listingId: string, userId: string | null) {
@@ -25,39 +17,69 @@ export function useReactions(listingId: string, userId: string | null) {
     () => Object.fromEntries(REACTION_EMOJIS.map((e) => [e, 0])) as Record<ReactionEmoji, number>
   );
   const [myReaction, setMyReaction] = useState<ReactionEmoji | null>(null);
+  const supabase = createClient();
 
-  function compute(all: ReactionEntry[]) {
-    const forListing = all.filter((r) => r.listingId === listingId);
+  function computeFromRows(rows: ReactionRow[]) {
     const c = Object.fromEntries(REACTION_EMOJIS.map((e) => [e, 0])) as Record<ReactionEmoji, number>;
-    for (const r of forListing) c[r.emoji] = (c[r.emoji] ?? 0) + 1;
+    for (const r of rows) {
+      if (REACTION_EMOJIS.includes(r.emoji as ReactionEmoji)) {
+        c[r.emoji as ReactionEmoji] = (c[r.emoji as ReactionEmoji] ?? 0) + 1;
+      }
+    }
     setCounts(c);
     if (userId) {
-      const mine = forListing.find((r) => r.userId === userId);
-      setMyReaction(mine?.emoji ?? null);
+      const mine = rows.find((r) => r.user_id === userId);
+      setMyReaction(mine ? (mine.emoji as ReactionEmoji) : null);
     }
   }
 
   useEffect(() => {
-    compute(load());
+    supabase
+      .from('reactions')
+      .select('*')
+      .eq('listing_id', listingId)
+      .then(({ data, error }) => {
+        if (error) console.error('useReactions fetch error:', error);
+        computeFromRows((data ?? []) as ReactionRow[]);
+      });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listingId, userId]);
 
-  const react = useCallback((emoji: ReactionEmoji) => {
+  const react = useCallback(async (emoji: ReactionEmoji) => {
     if (!userId) return;
-    const all = load();
-    const existing = all.findIndex((r) => r.listingId === listingId && r.userId === userId);
-    let updated: ReactionEntry[];
-    if (existing !== -1 && all[existing].emoji === emoji) {
+
+    // Fetch current state fresh
+    const { data: existing } = await supabase
+      .from('reactions')
+      .select('*')
+      .eq('listing_id', listingId)
+      .eq('user_id', userId);
+
+    const currentRow = existing?.[0] as ReactionRow | undefined;
+
+    if (currentRow && currentRow.emoji === emoji) {
       // Toggle off
-      updated = all.filter((_, i) => i !== existing);
-    } else if (existing !== -1) {
+      await supabase.from('reactions').delete().eq('id', currentRow.id);
+    } else if (currentRow) {
       // Switch reaction
-      updated = all.map((r, i) => i === existing ? { ...r, emoji } : r);
+      await supabase
+        .from('reactions')
+        .update({ emoji })
+        .eq('id', currentRow.id);
     } else {
-      updated = [...all, { listingId, userId, emoji }];
+      // New reaction
+      await supabase
+        .from('reactions')
+        .insert({ listing_id: listingId, user_id: userId, emoji });
     }
-    localStorage.setItem(KEY, JSON.stringify(updated));
-    compute(updated);
+
+    // Reload counts
+    const { data: updated } = await supabase
+      .from('reactions')
+      .select('*')
+      .eq('listing_id', listingId);
+    computeFromRows((updated ?? []) as ReactionRow[]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listingId, userId]);
 
   const total = Object.values(counts).reduce((a, b) => a + b, 0);

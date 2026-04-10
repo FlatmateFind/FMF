@@ -11,15 +11,58 @@ import { RenterProfile } from '@/lib/types';
 import { RenterAvatar } from '@/components/RenterCard';
 import { useAuth } from '@/context/AuthContext';
 import AuthPromptModal from '@/components/AuthPromptModal';
+import { createClient } from '@/lib/supabase/client';
+import { SEED_RENTER_PROFILES } from '@/data/renterProfiles';
 
-const STORAGE_KEY = 'flatmatefind_renter_profiles';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function fromDB(row: any): RenterProfile {
+  const d = row.profile_data ?? {};
+  return {
+    userId: row.user_id,
+    name: row.name,
+    photo: d.photo ?? null,
+    age: row.age ?? null,
+    nationality: row.nationality ?? '',
+    aboutMe: row.bio ?? '',
+    preferredRoomTypes: d.preferredRoomTypes ?? [],
+    preferredStates: d.preferredStates ?? (row.preferred_state ? [row.preferred_state] : []),
+    preferredCities: d.preferredCities ?? [],
+    budgetMin: row.budget_min ?? null,
+    budgetMax: row.budget_max ?? null,
+    moveInDate: row.move_in_date ?? null,
+    minimumStay: d.minimumStay ?? '',
+    preferredFacilities: d.preferredFacilities ?? [],
+    preferredStayType: d.preferredStayType,
+    furnishedPreference: d.furnishedPreference ?? 'any',
+    houseGenderPreference: d.houseGenderPreference ?? 'any',
+    petsOk: d.petsOk ?? false,
+    smokingOk: d.smokingOk ?? false,
+    status: row.active ? 'active' : 'inactive',
+    phone: row.phone ?? undefined,
+    showPhone: d.showPhone,
+    showEmail: d.showEmail,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
 
-function readProfiles(): RenterProfile[] {
-  if (typeof window === 'undefined') return [];
+async function findProfile(userId: string): Promise<RenterProfile | null> {
+  // Check seed profiles first
+  const seed = SEED_RENTER_PROFILES.find((p) => p.userId === userId);
+  if (seed) return seed;
+
+  // Fetch from Supabase
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]') as RenterProfile[];
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from('renter_profiles')
+      .select('*')
+      .eq('user_id', userId)
+      .maybeSingle();
+    if (error) console.error('findProfile error:', error);
+    return data ? fromDB(data) : null;
   } catch {
-    return [];
+    return null;
   }
 }
 
@@ -41,17 +84,17 @@ function RenterDetailInner() {
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   useEffect(() => {
-    const profiles = readProfiles();
-    const found = profiles.find((p) => p.userId === userId) ?? null;
-    setProfile(found);
-    setLoaded(true);
+    findProfile(userId).then((found) => {
+      setProfile(found);
+      setLoaded(true);
 
-    // scroll to #chat if hash present
-    if (window.location.hash === '#chat' && found) {
-      setTimeout(() => {
-        document.getElementById('chat-section')?.scrollIntoView({ behavior: 'smooth' });
-      }, 300);
-    }
+      // scroll to #chat if hash present
+      if (window.location.hash === '#chat' && found) {
+        setTimeout(() => {
+          document.getElementById('chat-section')?.scrollIntoView({ behavior: 'smooth' });
+        }, 300);
+      }
+    });
   }, [userId]);
 
   if (!loaded || authLoading) {

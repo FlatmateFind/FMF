@@ -118,7 +118,7 @@ export default function PostTakeoverPage() {
     return Object.keys(errs).length === 0;
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setSpamWarnings([]);
 
@@ -129,7 +129,7 @@ export default function PostTakeoverPage() {
 
     if (!validate()) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
 
-    add({
+    await add({
       id: `to-${user.id}-${Date.now()}`,
       suburb: suburb.trim(),
       city: city.trim() || suburb.trim(),

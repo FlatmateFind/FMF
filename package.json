@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.30.0",
+    "@supabase/ssr": "^0.10.2",
+    "@supabase/supabase-js": "^2.103.0",
     "@types/web-push": "^3.6.4",
     "clsx": "^2.1.1",
     "lucide-react": "^0.400.0",
@@ -21,9 +23,11 @@
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
     "@types/node": "^20",
+    "@types/pg": "^8.20.0",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10",
+    "pg": "^8.20.0",
     "postcss": "^8",
     "sharp": "^0.34.5",
     "tailwindcss": "^3.4.1",

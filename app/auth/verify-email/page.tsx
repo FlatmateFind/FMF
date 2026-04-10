@@ -1,25 +1,10 @@
 'use client';
-import { useState } from 'react';
 import Link from 'next/link';
-import { Mail, Home, RefreshCw, CheckCircle } from 'lucide-react';
+import { Mail, Home } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
 export default function VerifyEmailPage() {
   const { user } = useAuth();
-  const [resent, setResent] = useState(false);
-  const [sending, setSending] = useState(false);
-
-  async function handleResend() {
-    if (!user) return;
-    setSending(true);
-    await fetch('/api/auth/send-verification', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: user.email, name: user.name }),
-    });
-    setSending(false);
-    setResent(true);
-  }
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-10">
@@ -43,24 +28,8 @@ export default function VerifyEmailPage() {
             <p className="text-sm font-semibold text-slate-800 mb-5">{user.email}</p>
           )}
           <p className="text-xs text-slate-400 mb-6">
-            Click the link in the email to verify your account. It expires in 24 hours.
+            Click the link in the email to verify your account. The link is sent by Supabase and expires in 24 hours.
           </p>
-
-          {resent ? (
-            <div className="flex items-center justify-center gap-2 text-sm text-teal-600 font-medium">
-              <CheckCircle className="w-4 h-4" />
-              Email resent!
-            </div>
-          ) : (
-            <button
-              onClick={handleResend}
-              disabled={sending || !user}
-              className="flex items-center gap-2 mx-auto text-sm text-slate-500 hover:text-teal-600 transition-colors disabled:opacity-50"
-            >
-              <RefreshCw className={`w-4 h-4 ${sending ? 'animate-spin' : ''}`} />
-              {sending ? 'Sending…' : 'Resend email'}
-            </button>
-          )}
 
           <div className="border-t border-slate-100 mt-6 pt-5">
             <Link href="/dashboard" className="text-sm text-teal-600 font-medium hover:text-teal-800">
