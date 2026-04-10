@@ -21,7 +21,7 @@ const NEARBY_ICONS: Record<string, LucideIcon> = {
   'Beach':              Umbrella,
 };
 import Link from 'next/link';
-import { CITIES, PROPERTY_TYPES, ROOM_CATEGORIES_LIST, INCLUSIONS_LIST, FACILITIES_LIST, ROOM_FEATURES_LIST, ROOM_TERMS_LIST, HOUSE_RULES_LIST, NATIONALITIES, POST_LANGUAGES, NEARBY_PLACE_TYPES, NearbyPlace } from '@/lib/types';
+import { CITIES, PROPERTY_TYPES, ROOM_CATEGORIES_LIST, INCLUSIONS_LIST, FACILITIES_LIST, ROOM_FEATURES_LIST, ROOM_TERMS_LIST, HOUSE_RULES_LIST, NATIONALITIES, POST_LANGUAGES, NEARBY_PLACE_TYPES, NearbyPlace, AUSTRALIAN_STATES } from '@/lib/types';
 import { usePostedListings } from '@/hooks/usePostedListings';
 import { checkSpam, isValidAUPostcode, checkRateLimit } from '@/lib/spamGuard';
 import CustomTagInput from '@/components/CustomTagInput';
@@ -171,11 +171,14 @@ export default function PostListingPage() {
     }
 
     if (!validate()) return;
+    // Derive state abbreviation from selected city
+    const stateAbbr = AUSTRALIAN_STATES.find((s) => s.cities.includes(form.city))?.abbr ?? '';
     // Save to localStorage for dashboard
     add({
       id: `post-${Date.now()}`,
       title: `${form.type.charAt(0).toUpperCase() + form.type.slice(1)} in ${form.suburb}`,
       type: form.type,
+      state: stateAbbr,
       city: form.city,
       suburb: form.suburb,
       postcode: form.postcode,
@@ -185,6 +188,15 @@ export default function PostListingPage() {
       period: form.period,
       bedrooms: Number(form.bedrooms),
       bathrooms: Number(form.bathrooms),
+      furnished: form.furnished || 'unfurnished',
+      currentOccupants: Number(form.currentOccupants) || 0,
+      totalCapacity: Number(form.totalCapacity) || Number(form.bedrooms),
+      preferredNationalities: form.preferredNationalities,
+      preferredGender: form.preferredGender || 'any',
+      petsAllowed: form.petsAllowed,
+      smokingAllowed: form.smokingAllowed,
+      description: form.description,
+      minimumStay: form.minimumStay,
       availableFrom: form.availableFrom,
       postedAt: new Date().toISOString(),
       status: 'active',

@@ -5,6 +5,7 @@ export interface PostedListing {
   id: string;
   title: string;
   type: string;
+  state: string;
   city: string;
   suburb: string;
   postcode: string;
@@ -14,7 +15,16 @@ export interface PostedListing {
   period: string;
   bedrooms: number;
   bathrooms: number;
+  furnished?: string;
+  currentOccupants?: number;
+  totalCapacity?: number;
+  preferredNationalities?: string[];
+  preferredGender?: string;
+  petsAllowed?: boolean;
+  smokingAllowed?: boolean;
+  description?: string;
   availableFrom: string;
+  minimumStay?: string;
   postedAt: string;
   status: 'active' | 'paused' | 'taken';
   contactName: string;
