@@ -1,6 +1,17 @@
 'use client';
 import { Suspense, useCallback, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import SectionTabs from '@/components/SectionTabs';
+
+const SECTION_TABS = [
+  { label: 'Jobs', href: '/jobs' },
+  { label: 'Events', href: '/events' },
+  { label: 'Market', href: '/market' },
+  { label: 'Business', href: '/business' },
+  { label: 'Community', href: '/community' },
+  { label: 'Renters', href: '/renters' },
+  { label: 'Takeover', href: '/takeover' },
+];
 import { Users, Loader2, Search, SlidersHorizontal, X, UserPlus } from 'lucide-react';
 import { useRenterProfiles } from '@/hooks/useRenterProfiles';
 import { RenterProfileFilters, AUSTRALIAN_STATES, PROPERTY_TYPES, NATIONALITIES } from '@/lib/types';
@@ -164,6 +175,7 @@ function RentersPageInner() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <SectionTabs tabs={SECTION_TABS} className="mb-6 max-w-4xl" />
       {/* Page header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>

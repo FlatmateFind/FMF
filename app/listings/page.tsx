@@ -1,6 +1,14 @@
 'use client';
 import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import SectionTabs from '@/components/SectionTabs';
+
+const SECTION_TABS = [
+  { label: 'Find a Room', href: '/listings' },
+  { label: 'Post a Room', href: '/post' },
+  { label: 'Compare', href: '/compare' },
+  { label: 'Favourites', href: '/favorites' },
+];
 import {
   Home, Loader2, Search, SlidersHorizontal, X,
   PlusCircle, Calendar, SearchX,
@@ -332,6 +340,7 @@ function ListingsPageInner() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <SectionTabs tabs={SECTION_TABS} className="mb-6 max-w-4xl" />
       {/* Page header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>

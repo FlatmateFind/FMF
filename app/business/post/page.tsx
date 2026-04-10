@@ -5,6 +5,8 @@ import { Building2, ChevronLeft, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import { AUSTRALIAN_STATES, POST_LANGUAGES } from '@/lib/types';
 import { BusinessCategory } from '@/data/businesses';
+import { createClient } from '@/lib/supabase/client';
+import { useAuth } from '@/context/AuthContext';
 
 const CATEGORIES: BusinessCategory[] = [
   'Café', 'Restaurant', 'Food & Bev', 'Retail', 'Service', 'Online', 'Franchise', 'Other',
@@ -36,9 +38,12 @@ const EMPTY: FormData = {
 
 export default function PostBusinessPage() {
   const router = useRouter();
+  const { user } = useAuth();
+  const supabase = createClient();
   const [form, setForm] = useState<FormData>(EMPTY);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   function set(field: keyof FormData, value: string) {
     setForm((f) => ({ ...f, [field]: value }));
@@ -59,9 +64,27 @@ export default function PostBusinessPage() {
     return Object.keys(e).length === 0;
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!validate()) return;
+    setSubmitError('');
+
+    const row = {
+      user_id: user?.id ?? null,
+      name: form.name.trim(),
+      category: form.category || null,
+      suburb: form.suburb || null,
+      state: form.state || null,
+      description: form.description.trim(),
+      owner_name: form.contactName.trim(),
+      contact_email: form.contactEmail.trim(),
+    };
+
+    const { error } = await supabase.from('businesses').insert(row);
+    if (error) {
+      setSubmitError(error.message);
+      return;
+    }
     setSubmitted(true);
   }
 
@@ -224,6 +247,9 @@ export default function PostBusinessPage() {
           </div>
         </Section>
 
+        {submitError && (
+          <p className="text-sm text-rose-600 bg-rose-50 border border-rose-200 rounded-xl px-4 py-3">{submitError}</p>
+        )}
         <button type="submit"
           className="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-2xl text-sm transition-colors">
           Submit Listing →

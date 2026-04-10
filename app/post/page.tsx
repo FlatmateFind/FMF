@@ -1,5 +1,13 @@
 'use client';
 import { useState, FormEvent } from 'react';
+import SectionTabs from '@/components/SectionTabs';
+
+const SECTION_TABS = [
+  { label: 'Find a Room', href: '/listings' },
+  { label: 'Post a Room', href: '/post' },
+  { label: 'Compare', href: '/compare' },
+  { label: 'Favourites', href: '/favorites' },
+];
 import { CheckCircle, AlertTriangle, Zap, Home as HomeIcon, ArrowLeftRight, ShoppingCart, Train, Bus, GraduationCap, School, Hospital, Dumbbell, Trees, ShoppingBag, Pill, Coffee, Plane, Umbrella, MapPinned, PlusCircle, type LucideIcon } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import AuthPromptModal from '@/components/AuthPromptModal';
@@ -250,6 +258,7 @@ export default function PostListingPage() {
       />
     )}
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
+      <SectionTabs tabs={SECTION_TABS} className="mb-6 max-w-4xl" />
       <div className="mb-7">
         <h1 className="text-2xl font-bold text-slate-900 mb-1">Post a Listing</h1>
         <p className="text-slate-500 text-sm">Fill in your property details to reach thousands of potential tenants.</p>

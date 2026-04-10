@@ -1,6 +1,14 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import SectionTabs from '@/components/SectionTabs';
+
+const SECTION_TABS = [
+  { label: 'Find a Room', href: '/listings' },
+  { label: 'Post a Room', href: '/post' },
+  { label: 'Compare', href: '/compare' },
+  { label: 'Favourites', href: '/favorites' },
+];
 import { Heart, ArrowLeft } from 'lucide-react';
 import { useFavorites } from '@/hooks/useFavorites';
 import { listings } from '@/data/listings';
@@ -27,6 +35,7 @@ export default function FavoritesPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <SectionTabs tabs={SECTION_TABS} className="mb-6 max-w-4xl" />
       <div className="flex items-center gap-3 mb-8">
         <div className="p-2 bg-rose-100 rounded-xl">
           <Heart className="w-5 h-5 text-rose-500 fill-current" />

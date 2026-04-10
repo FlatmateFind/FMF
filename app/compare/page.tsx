@@ -2,6 +2,14 @@
 import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import SectionTabs from '@/components/SectionTabs';
+
+const SECTION_TABS = [
+  { label: 'Find a Room', href: '/listings' },
+  { label: 'Post a Room', href: '/post' },
+  { label: 'Compare', href: '/compare' },
+  { label: 'Favourites', href: '/favorites' },
+];
 import Image from 'next/image';
 import { ArrowLeft, Check, X, GitCompareArrows } from 'lucide-react';
 import { listings } from '@/data/listings';
@@ -61,6 +69,7 @@ function ComparePage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 pb-24">
+      <SectionTabs tabs={SECTION_TABS} className="mb-6 max-w-4xl" />
       <Link href="/listings" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-teal-600 transition-colors mb-6">
         <ArrowLeft className="w-4 h-4" /> Back to listings
       </Link>

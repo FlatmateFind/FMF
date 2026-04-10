@@ -7,6 +7,8 @@ import {
   ProductCategory, ServiceCategory, ProductCondition, PriceType,
   MarketKind,
 } from '@/data/market';
+import { createClient } from '@/lib/supabase/client';
+import { useAuth } from '@/context/AuthContext';
 
 const PRODUCT_CATS: ProductCategory[] = [
   'Electronics', 'Food & Snacks', 'Clothing', 'Furniture', 'Books & Study', 'Vehicles', 'Kitchen', 'Sports & Fitness', 'Other',
@@ -41,9 +43,12 @@ const EMPTY: FormData = {
 };
 
 export default function PostMarketPage() {
+  const { user } = useAuth();
+  const supabase = createClient();
   const [form, setForm] = useState<FormData>(EMPTY);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   function set(field: keyof FormData, value: string) {
     setForm((f) => {
@@ -72,9 +77,31 @@ export default function PostMarketPage() {
     return Object.keys(e).length === 0;
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!validate()) return;
+    setSubmitError('');
+
+    const row = {
+      user_id: user?.id ?? null,
+      title: form.title.trim(),
+      category: form.category || null,
+      condition: form.kind === 'product' ? (form.condition || null) : null,
+      price: form.price && form.priceType !== 'Free' && form.priceType !== 'Contact' ? Number(form.price) : null,
+      negotiable: form.priceType === 'Negotiable',
+      suburb: form.suburb || null,
+      state: form.state || null,
+      description: form.description.trim(),
+      seller_name: form.contactName.trim(),
+      contact_email: form.contactEmail.trim(),
+      contact_phone: form.contactPhone || null,
+    };
+
+    const { error } = await supabase.from('market_items').insert(row);
+    if (error) {
+      setSubmitError(error.message);
+      return;
+    }
     setSubmitted(true);
   }
 
@@ -258,6 +285,9 @@ export default function PostMarketPage() {
               </div>
             </Section>
 
+            {submitError && (
+              <p className="text-sm text-rose-600 bg-rose-50 border border-rose-200 rounded-xl px-4 py-3">{submitError}</p>
+            )}
             <button type="submit"
               className="w-full py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-2xl text-sm transition-colors">
               Post Listing →

@@ -1,6 +1,17 @@
 'use client';
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import SectionTabs from '@/components/SectionTabs';
+
+const SECTION_TABS = [
+  { label: 'Jobs', href: '/jobs' },
+  { label: 'Events', href: '/events' },
+  { label: 'Market', href: '/market' },
+  { label: 'Business', href: '/business' },
+  { label: 'Community', href: '/community' },
+  { label: 'Renters', href: '/renters' },
+  { label: 'Takeover', href: '/takeover' },
+];
 import Image from 'next/image';
 import {
   Home, PlusCircle, Search, SlidersHorizontal, X, MapPin,
@@ -209,6 +220,7 @@ export default function TakeoverPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <SectionTabs tabs={SECTION_TABS} className="mb-6 max-w-4xl" />
       {/* Hero banner */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-orange-500 via-orange-600 to-amber-600 text-white mb-8 px-6 py-8 sm:px-10">
         <div className="relative z-10 max-w-2xl">

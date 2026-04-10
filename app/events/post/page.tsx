@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { CalendarDays, ChevronLeft, AlertCircle } from 'lucide-react';
 import { AUSTRALIAN_STATES, POST_LANGUAGES } from '@/lib/types';
 import { EventCategory } from '@/data/events';
+import { createClient } from '@/lib/supabase/client';
+import { useAuth } from '@/context/AuthContext';
 
 const CATEGORIES: EventCategory[] = [
   'Social', 'Food & Drink', 'Sports', 'Arts & Culture', 'Music', 'Markets', 'Community', 'Study & Career', 'Games & Fun', 'Other',
@@ -34,9 +36,12 @@ const EMPTY: FormData = {
 };
 
 export default function PostEventPage() {
+  const { user } = useAuth();
+  const supabase = createClient();
   const [form, setForm] = useState<FormData>(EMPTY);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   function set(field: keyof FormData, value: string) {
     setForm((f) => ({ ...f, [field]: value }));
@@ -59,9 +64,33 @@ export default function PostEventPage() {
     return Object.keys(e).length === 0;
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!validate()) return;
+    setSubmitError('');
+
+    const row = {
+      user_id: user?.id ?? null,
+      title: form.title.trim(),
+      category: form.category || null,
+      date: form.date || null,
+      time: form.time || null,
+      location: form.venue || null,
+      suburb: form.suburb || null,
+      state: form.state || null,
+      description: form.description.trim(),
+      organizer: form.organizer.trim(),
+      contact_email: form.contactEmail.trim(),
+      website: form.link || null,
+      is_free: form.priceType === 'Free',
+      price: form.priceType === 'Paid' && form.price ? Number(form.price) : null,
+    };
+
+    const { error } = await supabase.from('events').insert(row);
+    if (error) {
+      setSubmitError(error.message);
+      return;
+    }
     setSubmitted(true);
   }
 
@@ -236,6 +265,9 @@ export default function PostEventPage() {
           </div>
         </Section>
 
+        {submitError && (
+          <p className="text-sm text-rose-600 bg-rose-50 border border-rose-200 rounded-xl px-4 py-3">{submitError}</p>
+        )}
         <button type="submit"
           className="w-full py-3 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-2xl text-sm transition-colors">
           Post Event →

@@ -1,6 +1,17 @@
 'use client';
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
+import SectionTabs from '@/components/SectionTabs';
+
+const SECTION_TABS = [
+  { label: 'Tools Home', href: '/tools' },
+  { label: 'Compatibility Quiz', href: '/tools/compatibility-quiz' },
+  { label: 'Tax Calculator', href: '/tools/tax-calculator' },
+  { label: 'WHV Tracker', href: '/tools/whv-tracker' },
+  { label: 'Hours Tracker', href: '/tools/hours-tracker' },
+  { label: 'ABN & TFN', href: '/tools/abn-tfn' },
+  { label: 'Visa Pathways', href: '/tools/visa-pathways' },
+];
 import {
   ChevronLeft, ChevronDown, ChevronUp, ChevronRight,
   Plane, GraduationCap, Briefcase, MapPin, Home, Users, Building2,
@@ -999,6 +1010,7 @@ export default function VisaPathwaysPage() {
 
   return (
     <main className="min-h-screen bg-slate-50">
+      <SectionTabs tabs={SECTION_TABS} className="px-4 pt-4 max-w-4xl mx-auto" />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8">
         {/* Boxed hero */}
         <div className="rounded-2xl bg-gradient-to-br from-blue-700 to-blue-900 text-white px-6 py-8">
