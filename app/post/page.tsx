@@ -1,8 +1,8 @@
 'use client';
 import { useState, FormEvent } from 'react';
-import SectionTabs from '@/components/SectionTabs';
+import NavRow from '@/components/NavRow';
 
-const SECTION_TABS = [
+const STARTED_TABS = [
   { label: 'Find a Room', href: '/listings' },
   { label: 'Post a Room', href: '/post' },
   { label: 'Compare', href: '/compare' },
@@ -257,12 +257,14 @@ export default function PostListingPage() {
         message="You're almost there! Sign up for free to publish your listing and start receiving enquiries."
       />
     )}
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
-      <SectionTabs tabs={SECTION_TABS} className="mb-6 max-w-4xl" />
-      <div className="mb-7">
-        <h1 className="text-2xl font-bold text-slate-900 mb-1">Post a Listing</h1>
-        <p className="text-slate-500 text-sm">Fill in your property details to reach thousands of potential tenants.</p>
+    <div className="bg-gradient-to-br from-teal-600 to-cyan-700 text-white">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+        <h1 className="text-2xl font-bold mb-1">Post a Listing</h1>
+        <p className="text-teal-100 text-sm">Fill in your property details to reach thousands of potential tenants.</p>
+        <NavRow tabs={STARTED_TABS} />
       </div>
+    </div>
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
 
       {/* Rate limit / block error */}
       {blockError && (

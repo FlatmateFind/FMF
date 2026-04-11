@@ -1,9 +1,9 @@
 'use client';
 import { Suspense, useCallback, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import SectionTabs from '@/components/SectionTabs';
+import NavRow from '@/components/NavRow';
 
-const SECTION_TABS = [
+const FIND_MORE_TABS = [
   { label: 'Jobs', href: '/jobs' },
   { label: 'Events', href: '/events' },
   { label: 'Market', href: '/market' },
@@ -174,25 +174,31 @@ function RentersPageInner() {
   );
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <SectionTabs tabs={SECTION_TABS} className="mb-6 max-w-4xl" />
-      {/* Page header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <Users className="w-6 h-6 text-teal-600" />
-            <h1 className="text-2xl font-bold text-slate-900">Browse Profiles</h1>
+    <div>
+      {/* Hero */}
+      <div className="bg-gradient-to-br from-teal-600 to-emerald-700 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <Users className="w-6 h-6 text-white/80" />
+                <span className="text-xs font-semibold uppercase tracking-widest text-teal-100">Renter Profiles</span>
+              </div>
+              <h1 className="text-2xl font-bold">Browse Profiles</h1>
+              <p className="text-teal-100 text-sm mt-1">Verified renters looking for a home across Australia</p>
+            </div>
+            <Link
+              href="/profile"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-teal-50 text-teal-700 font-semibold rounded-lg transition-colors text-sm shrink-0"
+            >
+              <UserPlus className="w-4 h-4" />
+              Create My Profile
+            </Link>
           </div>
-          <p className="text-slate-500 text-sm">Verified renters looking for a home across Australia</p>
+          <NavRow tabs={FIND_MORE_TABS} />
         </div>
-        <Link
-          href="/profile"
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-lg transition-colors text-sm shrink-0"
-        >
-          <UserPlus className="w-4 h-4" />
-          Create My Profile
-        </Link>
       </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
       {/* Search bar */}
       <div className="relative mb-6">
@@ -310,6 +316,7 @@ function RentersPageInner() {
         </div>
       </div>
     </div>
+  </div>
   );
 }
 

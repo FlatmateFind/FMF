@@ -1,9 +1,9 @@
 'use client';
 import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import SectionTabs from '@/components/SectionTabs';
+import NavRow from '@/components/NavRow';
 
-const SECTION_TABS = [
+const STARTED_TABS = [
   { label: 'Find a Room', href: '/listings' },
   { label: 'Post a Room', href: '/post' },
   { label: 'Compare', href: '/compare' },
@@ -339,25 +339,31 @@ function ListingsPageInner() {
   );
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <SectionTabs tabs={SECTION_TABS} className="mb-6 max-w-4xl" />
-      {/* Page header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <Home className="w-6 h-6 text-teal-600" />
-            <h1 className="text-2xl font-bold text-slate-900">Browse Listings</h1>
+    <div>
+      {/* Hero */}
+      <div className="bg-gradient-to-br from-teal-600 to-cyan-700 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <Home className="w-5 h-5 text-white/80" />
+                <span className="text-xs font-semibold uppercase tracking-widest text-teal-100">Find a Home</span>
+              </div>
+              <h1 className="text-2xl font-bold">Browse Listings</h1>
+              <p className="text-teal-100 text-sm mt-1">Rooms, apartments and houses for rent across Australia</p>
+            </div>
+            <Link
+              href="/post"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-teal-50 text-teal-700 font-semibold rounded-lg transition-colors text-sm shrink-0"
+            >
+              <PlusCircle className="w-4 h-4" />
+              Post a Listing
+            </Link>
           </div>
-          <p className="text-slate-500 text-sm">Rooms, apartments and houses for rent across Australia</p>
+          <NavRow tabs={STARTED_TABS} />
         </div>
-        <Link
-          href="/post"
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-lg transition-colors text-sm shrink-0"
-        >
-          <PlusCircle className="w-4 h-4" />
-          Post a Listing
-        </Link>
       </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
       {/* Search bar */}
       <div className="relative mb-6">
@@ -499,6 +505,7 @@ function ListingsPageInner() {
           )}
         </div>
       </div>
+    </div>
     </div>
   );
 }

@@ -1,9 +1,10 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import SectionTabs from '@/components/SectionTabs';
+import NavRow from '@/components/NavRow';
+import { Briefcase, PlusCircle, Search, SlidersHorizontal, X, ArrowUpDown, Languages } from 'lucide-react';
 
-const SECTION_TABS = [
+const FIND_MORE_TABS = [
   { label: 'Jobs', href: '/jobs' },
   { label: 'Events', href: '/events' },
   { label: 'Market', href: '/market' },
@@ -12,7 +13,6 @@ const SECTION_TABS = [
   { label: 'Renters', href: '/renters' },
   { label: 'Takeover', href: '/takeover' },
 ];
-import { Briefcase, PlusCircle, Search, SlidersHorizontal, X, ArrowUpDown, Languages } from 'lucide-react';
 import { SEED_JOBS, JobPost, JobType } from '@/data/jobs';
 import { POST_LANGUAGES, AUSTRALIAN_STATES } from '@/lib/types';
 import { useAuth } from '@/context/AuthContext';
@@ -204,7 +204,6 @@ export default function JobsPage() {
 
   return (
     <div>
-      <SectionTabs tabs={SECTION_TABS} className="px-4 pt-4 max-w-4xl mx-auto" />
       {/* Hero header */}
       <div className="bg-gradient-to-br from-blue-600 to-indigo-800 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -227,6 +226,7 @@ export default function JobsPage() {
               Post a Job
             </Link>
           </div>
+          <NavRow tabs={FIND_MORE_TABS} />
         </div>
       </div>
 

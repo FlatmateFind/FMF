@@ -2,9 +2,9 @@
 import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import SectionTabs from '@/components/SectionTabs';
+import NavRow from '@/components/NavRow';
 
-const SECTION_TABS = [
+const STARTED_TABS = [
   { label: 'Find a Room', href: '/listings' },
   { label: 'Post a Room', href: '/post' },
   { label: 'Compare', href: '/compare' },
@@ -68,16 +68,21 @@ function ComparePage() {
   const rentDiff = a.rent.amount - b.rent.amount;
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 pb-24">
-      <SectionTabs tabs={SECTION_TABS} className="mb-6 max-w-4xl" />
+    <div>
+      <div className="bg-gradient-to-br from-teal-600 to-cyan-700 text-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
+          <div className="flex items-center gap-2 mb-1">
+            <GitCompareArrows className="w-5 h-5 text-white/80" />
+            <span className="text-xs font-semibold uppercase tracking-widest text-teal-100">Compare</span>
+          </div>
+          <h1 className="text-2xl font-bold mb-1">Compare Listings</h1>
+          <NavRow tabs={STARTED_TABS} />
+        </div>
+      </div>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 pb-24">
       <Link href="/listings" className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-teal-600 transition-colors mb-6">
         <ArrowLeft className="w-4 h-4" /> Back to listings
       </Link>
-
-      <div className="flex items-center gap-2 mb-6">
-        <GitCompareArrows className="w-5 h-5 text-teal-600" />
-        <h1 className="text-2xl font-bold text-slate-900">Compare Listings</h1>
-      </div>
 
       {/* Header cards */}
       <div className="grid grid-cols-2 gap-4 mb-6">
@@ -198,6 +203,7 @@ function ComparePage() {
           View Listing B
         </Link>
       </div>
+    </div>
     </div>
   );
 }

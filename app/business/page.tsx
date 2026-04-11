@@ -1,9 +1,9 @@
 'use client';
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import SectionTabs from '@/components/SectionTabs';
+import NavRow from '@/components/NavRow';
 
-const SECTION_TABS = [
+const FIND_MORE_TABS = [
   { label: 'Jobs', href: '/jobs' },
   { label: 'Events', href: '/events' },
   { label: 'Market', href: '/market' },
@@ -85,7 +85,6 @@ export default function BusinessPage() {
 
   return (
     <main className="min-h-screen bg-slate-50">
-      <SectionTabs tabs={SECTION_TABS} className="px-4 pt-4 max-w-4xl mx-auto" />
       {/* Hero */}
       <div className="bg-gradient-to-br from-purple-700 to-purple-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -110,6 +109,7 @@ export default function BusinessPage() {
               List Your Business
             </Link>
           </div>
+          <NavRow tabs={FIND_MORE_TABS} />
         </div>
       </div>
 

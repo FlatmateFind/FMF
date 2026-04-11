@@ -1,9 +1,9 @@
 'use client';
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
-import SectionTabs from '@/components/SectionTabs';
+import NavRow from '@/components/NavRow';
 
-const SECTION_TABS = [
+const TOOLS_TABS = [
   { label: 'Tools Home', href: '/tools' },
   { label: 'Compatibility Quiz', href: '/tools/compatibility-quiz' },
   { label: 'Tax Calculator', href: '/tools/tax-calculator' },
@@ -312,7 +312,6 @@ export default function WHVTrackerPage() {
 
   return (
     <main className="min-h-screen bg-slate-50">
-      <SectionTabs tabs={SECTION_TABS} className="px-4 pt-4 max-w-4xl mx-auto" />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 space-y-5">
         {/* Boxed hero */}
         <div className="rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-800 text-white px-6 py-8">
@@ -330,6 +329,7 @@ export default function WHVTrackerPage() {
               </p>
             </div>
           </div>
+          <NavRow tabs={TOOLS_TABS} />
         </div>
 
         {/* ── Visa year selector ─────────────────────────────────────────── */}

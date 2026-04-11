@@ -2,9 +2,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { ChevronLeft, PlusCircle, Trash2, AlertTriangle, CheckCircle2, Info, Clock } from 'lucide-react';
-import SectionTabs from '@/components/SectionTabs';
+import NavRow from '@/components/NavRow';
 
-const SECTION_TABS = [
+const TOOLS_TABS = [
   { label: 'Tools Home', href: '/tools' },
   { label: 'Compatibility Quiz', href: '/tools/compatibility-quiz' },
   { label: 'Tax Calculator', href: '/tools/tax-calculator' },
@@ -119,7 +119,6 @@ export default function HoursTrackerPage() {
 
   return (
     <main className="min-h-screen bg-slate-50">
-      <SectionTabs tabs={SECTION_TABS} className="px-4 pt-4 max-w-4xl mx-auto" />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 space-y-5">
         {/* Boxed hero */}
         <div className="rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-800 text-white px-6 py-8">
@@ -135,6 +134,7 @@ export default function HoursTrackerPage() {
               <p className="text-blue-200 text-sm">Track your work hours by fortnight. Set your own limit based on your visa conditions.</p>
             </div>
           </div>
+          <NavRow tabs={TOOLS_TABS} />
         </div>
 
         {/* Limit setting */}

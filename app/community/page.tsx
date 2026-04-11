@@ -1,8 +1,8 @@
 'use client';
 import { useState } from 'react';
-import SectionTabs from '@/components/SectionTabs';
+import NavRow from '@/components/NavRow';
 
-const SECTION_TABS = [
+const FIND_MORE_TABS = [
   { label: 'Jobs', href: '/jobs' },
   { label: 'Events', href: '/events' },
   { label: 'Market', href: '/market' },
@@ -249,8 +249,6 @@ export default function CommunityPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <SectionTabs tabs={SECTION_TABS} className="mb-6 max-w-4xl" />
-
       {/* Hero */}
       <div className="rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white px-6 py-8 sm:px-10 mb-8 relative overflow-hidden">
         <div className="relative max-w-2xl">
@@ -283,6 +281,7 @@ export default function CommunityPage() {
             </a>
           </div>
         </div>
+        <NavRow tabs={FIND_MORE_TABS} />
       </div>
 
       {/* Tip banner */}

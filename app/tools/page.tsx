@@ -1,8 +1,9 @@
+'use client';
 import Link from 'next/link';
 import { Calculator, ChevronRight, Users, CalendarCheck, Clock, Briefcase, Wrench, Layers } from 'lucide-react';
-import SectionTabs from '@/components/SectionTabs';
+import NavRow from '@/components/NavRow';
 
-const SECTION_TABS = [
+const TOOLS_TABS = [
   { label: 'Tools Home', href: '/tools' },
   { label: 'Compatibility Quiz', href: '/tools/compatibility-quiz' },
   { label: 'Tax Calculator', href: '/tools/tax-calculator' },
@@ -78,7 +79,6 @@ const TOOLS = [
 export default function ToolsPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
-      <SectionTabs tabs={SECTION_TABS} className="px-4 pt-4 max-w-4xl mx-auto" />
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
         {/* Boxed hero */}
         <div className="rounded-2xl bg-gradient-to-br from-violet-600 to-purple-800 text-white px-6 py-8 mb-8">
@@ -90,6 +90,7 @@ export default function ToolsPage() {
           </div>
           <h1 className="text-3xl font-bold mb-1">Free Tools for Life in Australia</h1>
           <p className="text-violet-200 text-sm">Calculators and trackers for renters, workers, and visa holders — no sign-up needed.</p>
+          <NavRow tabs={TOOLS_TABS} />
         </div>
 
         <div className="grid gap-3">

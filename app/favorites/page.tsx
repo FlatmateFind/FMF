@@ -1,9 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import SectionTabs from '@/components/SectionTabs';
+import NavRow from '@/components/NavRow';
 
-const SECTION_TABS = [
+const STARTED_TABS = [
   { label: 'Find a Room', href: '/listings' },
   { label: 'Post a Room', href: '/post' },
   { label: 'Compare', href: '/compare' },
@@ -34,21 +34,23 @@ export default function FavoritesPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <SectionTabs tabs={SECTION_TABS} className="mb-6 max-w-4xl" />
-      <div className="flex items-center gap-3 mb-8">
-        <div className="p-2 bg-rose-100 rounded-xl">
-          <Heart className="w-5 h-5 text-rose-500 fill-current" />
-        </div>
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">Saved Listings</h1>
-          <p className="text-sm text-slate-500">
+    <div>
+      <div className="bg-gradient-to-br from-teal-600 to-cyan-700 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <div className="flex items-center gap-3 mb-2">
+            <Heart className="w-5 h-5 text-white/80" />
+            <span className="text-xs font-semibold uppercase tracking-widest text-teal-100">Favourites</span>
+          </div>
+          <h1 className="text-2xl font-bold">Saved Listings</h1>
+          <p className="text-teal-100 text-sm mt-1">
             {savedListings.length === 0
               ? 'No saved listings yet'
               : `${savedListings.length} listing${savedListings.length !== 1 ? 's' : ''} saved`}
           </p>
+          <NavRow tabs={STARTED_TABS} />
         </div>
       </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
       {savedListings.length === 0 ? (
         <div className="text-center py-20 bg-slate-50 rounded-2xl border border-slate-200">
@@ -81,6 +83,7 @@ export default function FavoritesPage() {
           Back to all listings
         </Link>
       </div>
+    </div>
     </div>
   );
 }
